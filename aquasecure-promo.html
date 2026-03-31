@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aqua Secure AI — Quick Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#8A63FF;--p2:#6D56A5;--p3:#B8A5FF;
+  --bg:#0A0B14;
+  --text:#E7E0FF;--sub:rgba(200,186,255,0.6);
+  --cyan:#35BBFF;--green:#29E07A;--red:#FF5C5C;--amber:#FFB020;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Syne',sans-serif}
+
+/* Compact container */
+.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+
+/* Slides - tighter spacing */
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 40px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.slide.active{opacity:1;pointer-events:all}
+
+/* Progress bar - faster */
+.progress-bar{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--p),var(--cyan));z-index:100;transition:width 0.05s linear}
+.progress-dots{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:100}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(138,99,255,0.3);transition:all 0.2s;cursor:pointer}
+.dot.active{background:var(--p);width:18px;border-radius:2px}
+
+/* Nav arrows - smaller */
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:1px solid rgba(138,99,255,0.25);background:rgba(10,11,20,0.6);color:var(--sub);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:100;backdrop-filter:blur(8px);transition:all 0.2s;font-size:14px}
+.nav-btn:hover{border-color:var(--p);color:var(--p)}
+.nav-prev{left:15px}
+.nav-next{right:15px}
+
+/* Counter - smaller */
+.slide-counter{position:fixed;top:15px;right:20px;font-family:'Space Mono',monospace;font-size:10px;color:var(--sub);letter-spacing:1px;z-index:100}
+
+/* Logo - smaller */
+.logo-bar{position:fixed;top:15px;left:20px;display:flex;align-items:center;gap:8px;z-index:100}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--p);animation:pulse-dot 2s infinite}
+.logo-name{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:0.5px}
+
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+/* Faster animations */
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+.slide.active .anim-1{animation:slideUp 0.4s ease-out 0.05s both}
+.slide.active .anim-2{animation:slideUp 0.4s ease-out 0.12s both}
+.slide.active .anim-3{animation:slideUp 0.4s ease-out 0.19s both}
+.slide.active .anim-4{animation:slideUp 0.4s ease-out 0.26s both}
+.slide.active .anim-5{animation:slideUp 0.4s ease-out 0.33s both}
+.slide.active .anim-right{animation:slideRight 0.4s ease-out 0.12s both}
+
+/* Slide 1: Hero - compact */
+#s1{text-align:center;gap:12px}
+.s1-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(138,99,255,0.10);border:1px solid rgba(138,99,255,0.22);border-radius:100px;padding:4px 12px;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--p3)}
+.s1-badge-dot{width:4px;height:4px;border-radius:50%;background:var(--p);animation:pulse-dot 1.5s infinite}
+.s1-title{font-size:clamp(28px,6vw,52px);font-weight:800;line-height:1.1;color:#fff}
+.s1-title span{background:linear-gradient(135deg,var(--p3),var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s1-sub{font-size:12px;color:var(--sub);max-width:450px;line-height:1.5;margin-top:4px}
+.s1-pipe{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px}
+.pipe-stage{padding:3px 10px;border-radius:3px;font-size:9px}
+.pipe-prevent{background:rgba(138,99,255,0.15);color:var(--p3);border:1px solid rgba(138,99,255,0.3)}
+.pipe-detect{background:rgba(53,187,255,0.12);color:var(--cyan);border:1px solid rgba(53,187,255,0.25)}
+.pipe-respond{background:rgba(41,224,122,0.10);color:var(--green);border:1px solid rgba(41,224,122,0.22)}
+.pipe-arrow{color:rgba(138,99,255,0.4);font-size:12px}
+
+/* Slide 2: Problem - compact */
+#s2{gap:16px}
+.s2-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--p);text-transform:uppercase}
+.s2-title{font-size:clamp(22px,4vw,40px);font-weight:800;line-height:1.2;color:#fff;max-width:600px;text-align:center}
+.s2-title em{color:var(--red);font-style:normal}
+.threat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:700px;width:100%}
+.threat-card{background:rgba(22,18,42,0.80);border:1px solid rgba(138,99,255,0.14);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.threat-num{font-size:clamp(20px,3vw,32px);font-weight:800;font-family:'Space Mono',monospace}
+.threat-num.red{color:var(--red)}
+.threat-num.amber{color:var(--amber)}
+.threat-num.cyan{color:var(--cyan)}
+.threat-label{font-size:10px;color:var(--sub);line-height:1.4}
+.threat-bar{height:2px;margin-top:4px}
+.threat-bar.red{background:linear-gradient(90deg,var(--red),transparent)}
+.threat-bar.amber{background:linear-gradient(90deg,var(--amber),transparent)}
+.threat-bar.cyan{background:linear-gradient(90deg,var(--cyan),transparent)}
+
+/* Slide 3: Pipeline - compact */
+#s3{gap:16px;text-align:center}
+.s3-title{font-size:clamp(22px,4vw,40px);font-weight:800;color:#fff}
+.s3-title span{background:linear-gradient(135deg,var(--p3),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pipeline-row{display:flex;gap:0;max-width:800px;width:100%;border-radius:12px;overflow:hidden;border:1px solid rgba(138,99,255,0.18)}
+.pipe-block{flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:8px}
+.pb-prevent{background:rgba(138,99,255,0.08)}
+.pb-detect{background:rgba(53,187,255,0.06);border-left:1px solid rgba(138,99,255,0.12);border-right:1px solid rgba(138,99,255,0.12)}
+.pb-respond{background:rgba(41,224,122,0.06)}
+.pb-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
+.pb-label.pu{color:var(--p3)}
+.pb-label.cy{color:var(--cyan)}
+.pb-label.gr{color:var(--green)}
+.pb-heading{font-size:13px;font-weight:800;color:#fff}
+.pb-items{display:flex;flex-direction:column;gap:4px}
+.pb-item{font-size:9px;color:var(--sub);display:flex;align-items:center;gap:5px}
+.pb-item::before{content:'';width:3px;height:3px;border-radius:50%;flex-shrink:0}
+.pb-item.pu::before{background:var(--p)}
+.pb-item.cy::before{background:var(--cyan)}
+.pb-item.gr::before{background:var(--green)}
+
+/* Slide 4: Products - compact */
+#s4{gap:16px;text-align:center}
+.s4-title{font-size:clamp(20px,3.5vw,32px);font-weight:800;color:#fff}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:800px;width:100%}
+.prod-card{background:rgba(22,18,42,0.80);border:1px solid rgba(138,99,255,0.14);border-radius:10px;padding:10px 8px;display:flex;flex-direction:column;gap:6px;text-align:left}
+.prod-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(138,99,255,0.10)}
+.prod-name{font-size:11px;font-weight:800;color:#fff}
+.prod-tag{font-size:8px;color:var(--p3);line-height:1.3}
+.prod-chips{display:flex;flex-wrap:wrap;gap:3px}
+.chip{font-size:7px;font-weight:600;padding:1px 5px;border-radius:100px;background:rgba(138,99,255,0.08);color:var(--p3);border:1px solid rgba(138,99,255,0.18)}
+.prod-card-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;max-width:800px;width:100%;margin-top:6px}
+.prod-card-sm{background:rgba(22,18,42,0.80);border:1px solid rgba(138,99,255,0.14);border-radius:10px;padding:8px;display:flex;align-items:center;gap:8px}
+.prod-card-sm .prod-name{font-size:10px}
+.prod-card-sm .prod-tag{font-size:7px}
+.prod-card-sm .prod-icon{width:24px;height:24px;font-size:12px}
+
+/* Slide 5: TIP - compact */
+#s5{gap:20px}
+.s5-left{flex:1;display:flex;flex-direction:column;gap:12px;max-width:400px}
+.s5-right{flex:1;display:flex;align-items:center;justify-content:center}
+.s5-row{display:flex;align-items:center;gap:24px;width:100%;max-width:850px}
+.tip-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(41,224,122,0.10);border:1px solid rgba(41,224,122,0.22);border-radius:100px;padding:3px 10px;font-size:8px;font-weight:700;letter-spacing:1px;color:var(--green)}
+.tip-title{font-size:clamp(24px,3.5vw,36px);font-weight:800;color:#fff;line-height:1.1}
+.tip-title span{background:linear-gradient(135deg,var(--green),#00c9a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tip-desc{font-size:11px;color:var(--sub);line-height:1.5}
+.tip-features{display:flex;flex-direction:column;gap:6px}
+.tip-feat{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--sub)}
+.tip-feat-icon{width:22px;height:22px;border-radius:6px;background:rgba(41,224,122,0.10);border:1px solid rgba(41,224,122,0.20);display:flex;align-items:center;justify-content:center;font-size:10px}
+.tip-url{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);background:rgba(41,224,122,0.08);border:1px solid rgba(41,224,122,0.18);border-radius:6px;padding:5px 10px;display:inline-block}
+.tip-mockup{width:280px;background:rgba(16,14,30,0.90);border:1px solid rgba(41,224,122,0.25);border-radius:12px;overflow:hidden}
+.tip-bar{height:28px;background:rgba(10,9,18,0.95);display:flex;align-items:center;padding:0 10px;gap:4px}
+.tip-bar-dot{width:6px;height:6px;border-radius:50%}
+.tip-search{flex:1;height:16px;background:rgba(41,224,122,0.06);border-radius:3px;margin-left:6px;display:flex;align-items:center;padding:0 6px}
+.tip-search-text{font-size:7px}
+.tip-body{padding:12px}
+.tip-ip-label{font-size:7px;margin-bottom:6px}
+.tip-score-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.tip-score-ring{width:55px;height:55px;border-radius:50%;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.tip-score-num{font-size:16px;font-weight:800;color:var(--green)}
+.tip-score-lbl{font-size:6px}
+.tip-info{display:flex;flex-direction:column;gap:4px}
+.tip-row{font-size:7px;display:flex;gap:6px}
+.tip-row span:first-child{width:55px}
+.tip-tags-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.tip-chip{font-size:6px;padding:1px 5px;border-radius:100px}
+
+/* Slide 6: Stats - compact */
+#s6{gap:16px;text-align:center}
+.s6-title{font-size:clamp(20px,3.5vw,32px);font-weight:800;color:#fff}
+.stats-row{display:flex;gap:16px;max-width:750px;width:100%}
+.stat-card{flex:1;background:rgba(22,18,42,0.80);border:1px solid rgba(138,99,255,0.14);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px;text-align:left}
+.stat-num{font-size:clamp(28px,4vw,42px);font-weight:800;font-family:'Space Mono',monospace;background:linear-gradient(135deg,#fff,var(--p3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:11px;font-weight:700;color:var(--text)}
+.stat-sub{font-size:9px;color:var(--sub)}
+.stat-bar{height:2px;margin-top:6px}
+.solutions-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:700px}
+.sol-pill{font-size:9px;font-weight:600;padding:4px 10px;border-radius:100px;background:rgba(138,99,255,0.08);border:1px solid rgba(138,99,255,0.18);color:var(--p3)}
+
+/* Slide 7: CTA - compact */
+#s7{gap:16px;text-align:center}
+.s7-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase}
+.s7-title{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.1;color:#fff}
+.s7-title .line2{background:linear-gradient(135deg,var(--p3),var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s7-sub{font-size:11px;color:var(--sub);max-width:420px;line-height:1.5}
+.s7-links{display:flex;gap:12px;align-items:center}
+.s7-btn{font-size:11px;font-weight:700;padding:8px 20px;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none}
+.s7-btn-primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff}
+.s7-btn-outline{background:rgba(138,99,255,0.08);color:var(--p3);border:1px solid rgba(138,99,255,0.28)}
+.s7-email{font-family:'Space Mono',monospace;font-size:9px;color:var(--sub)}
+.s7-email a{color:var(--p3);text-decoration:none}
+
+/* Glow orbs - smaller */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(60px)}
+.orb-1{width:250px;height:250px;background:rgba(138,99,255,0.06);top:-80px;left:-80px}
+.orb-2{width:200px;height:200px;background:rgba(53,187,255,0.04);bottom:-60px;right:-60px}
+.orb-3{width:180px;height:180px;background:rgba(41,224,122,0.03);top:50%;left:50%}
+
+/* Slide transitions - faster */
+.slide-enter{animation:slide-in 0.3s ease-out both}
+.slide-exit{animation:slide-out 0.25s ease-in both}
+@keyframes slide-in{from{opacity:0;transform:scale(0.98) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes slide-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(0.98) translateY(-8px)}}
+
+/* Responsive */
+@media(max-width:768px){
+  .slide{padding:20px}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .threat-grid{grid-template-columns:1fr}
+  .stats-row{flex-direction:column}
+  .s5-row{flex-direction:column}
+  .pipeline-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg" style="position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(138,99,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(138,99,255,0.03) 1px,transparent 1px);background-size:40px 40px"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="logo-bar">
+  <div class="logo-dot"></div>
+  <span class="logo-name">AQUA SECURE AI</span>
+</div>
+
+<div class="slide-counter" id="counter">01 / 07</div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="progress-dots" id="dots"></div>
+
+<button class="nav-btn nav-prev" id="prevBtn" onclick="changeSlide(-1)">←</button>
+<button class="nav-btn nav-next" id="nextBtn" onclick="changeSlide(1)">→</button>
+
+<div class="stage">
+
+<div class="slide active" id="s1">
+  <div class="s1-badge anim-1"><span class="s1-badge-dot"></span>AI-Powered Platform</div>
+  <div class="s1-title anim-2">Aqua Secure AI<span>Security. Simplified.</span></div>
+  <p class="s1-sub anim-3">SOC operations, GRC automation, and threat intelligence — unified.</p>
+  <div class="s1-pipe anim-4"><span class="pipe-stage pipe-prevent">PREVENT</span><span class="pipe-arrow">→</span><span class="pipe-stage pipe-detect">DETECT</span><span class="pipe-arrow">→</span><span class="pipe-stage pipe-respond">RESPOND</span></div>
+</div>
+
+<div class="slide" id="s2">
+  <div class="s2-tag anim-1">Threat Landscape</div>
+  <div class="s2-title anim-2">Cyber threats are <em>evolving faster</em> than defenses.</div>
+  <div class="threat-grid anim-3">
+    <div class="threat-card"><div class="threat-num red">$4.45M</div><div class="threat-label">Avg data breach cost</div><div class="threat-bar red"></div></div>
+    <div class="threat-card"><div class="threat-num amber">277 days</div><div class="threat-label">Avg time to contain</div><div class="threat-bar amber"></div></div>
+    <div class="threat-card"><div class="threat-num cyan">91%</div><div class="threat-label">Phishing attacks start</div><div class="threat-bar cyan"></div></div>
+  </div>
+</div>
+
+<div class="slide" id="s3">
+  <div class="s2-tag anim-1" style="color:var(--p3)">How It Works</div>
+  <div class="s3-title anim-2">One pipeline. <span>Total protection.</span></div>
+  <div class="pipeline-row anim-3">
+    <div class="pipe-block pb-prevent"><div class="pb-label pu">PREVENT</div><div class="pb-heading">Proactive Defence</div><div class="pb-items"><div class="pb-item pu">GRC automation</div><div class="pb-item pu">Risk monitoring</div><div class="pb-item pu">Asset inventory</div></div></div>
+    <div class="pipe-block pb-detect"><div class="pb-label cy">DETECT</div><div class="pb-heading">AI Detection</div><div class="pb-items"><div class="pb-item cy">Threat intel feeds</div><div class="pb-item cy">DMARC security</div><div class="pb-item cy">Dark web monitoring</div></div></div>
+    <div class="pipe-block pb-respond"><div class="pb-label gr">RESPOND</div><div class="pb-heading">Auto Response</div><div class="pb-items"><div class="pb-item gr">Incident creation</div><div class="pb-item gr">Workflow orchestration</div><div class="pb-item gr">24/7 SOC</div></div></div>
+  </div>
+</div>
+
+<div class="slide" id="s4">
+  <div class="s2-tag anim-1" style="color:var(--p3)">Product Suite</div>
+  <div class="s4-title anim-2">7 modules. Unified platform.</div>
+  <div class="products-grid anim-3">
+    <div class="prod-card"><div class="prod-icon">🔵</div><div class="prod-name">Aqua SIEM</div><div class="prod-tag">Security Info & Event</div><div class="prod-chips"><span class="chip">Logs</span><span class="chip">Alerts</span></div></div>
+    <div class="prod-card"><div class="prod-icon">🟣</div><div class="prod-name">SOC</div><div class="prod-tag">24/7 Operations</div><div class="prod-chips"><span class="chip">Monitor</span><span class="chip">Response</span></div></div>
+    <div class="prod-card"><div class="prod-icon">🌐</div><div class="prod-name">Threat Intel</div><div class="prod-tag">Global Intelligence</div><div class="prod-chips"><span class="chip">IOC</span><span class="chip">Risk</span></div></div>
+    <div class="prod-card"><div class="prod-icon">🕸</div><div class="prod-name">Dark Web</div><div class="prod-tag">Monitoring</div><div class="prod-chips"><span class="chip">Breach</span><span class="chip">Leaks</span></div></div>
+  </div>
+  <div class="prod-card-bottom anim-4">
+    <div class="prod-card-sm"><div class="prod-icon">🪝</div><div><div class="prod-name">Phishbot</div><div class="prod-tag">Phishing</div></div></div>
+    <div class="prod-card-sm"><div class="prod-icon">📦</div><div><div class="prod-name">Asset Mgmt</div><div class="prod-tag">Inventory</div></div></div>
+    <div class="prod-card-sm"><div class="prod-icon">🛡</div><div><div class="prod-name">GRC</div><div class="prod-tag">Compliance</div></div></div>
+  </div>
+</div>
+
+<div class="slide" id="s5">
+  <div class="s5-row">
+    <div class="s5-left"><div class="tip-badge anim-1"><span>●</span> Free Tool</div><div class="tip-title anim-2">AQUA TIP<br/><span>Threat Intelligence</span></div><p class="tip-desc anim-3">Real-time IP reputation intelligence — free to try, no signup.</p><div class="tip-features anim-4"><div class="tip-feat"><div class="tip-feat-icon">🔍</div> IP lookup & scoring</div><div class="tip-feat"><div class="tip-feat-icon">🏷</div> Threat classification</div><div class="tip-feat"><div class="tip-feat-icon">✅</div> 1 free search/day</div></div><div class="tip-url anim-5">tip.aquasecure.ai</div></div>
+    <div class="s5-right anim-right"><div class="tip-mockup"><div class="tip-bar"><div class="tip-bar-dot" style="background:#FF5C5C"></div><div class="tip-bar-dot" style="background:#FFB020"></div><div class="tip-bar-dot" style="background:#29E07A"></div><div class="tip-search"><span class="tip-search-text">tip.aquasecure.ai</span></div></div><div class="tip-body"><div class="tip-ip-label">IP LOOKUP</div><div class="tip-score-row"><div class="tip-score-ring"><div class="tip-score-num">82</div><div class="tip-score-lbl">RISK</div></div><div class="tip-info"><div class="tip-row"><span>IP</span> 185.220.101.47</div><div class="tip-row"><span>Type</span> Tor Exit Node</div></div></div><div class="tip-tags-row"><span class="tip-chip">Malicious</span><span class="tip-chip">High Risk</span></div></div></div></div>
+  </div>
+</div>
+
+<div class="slide" id="s6">
+  <div class="s2-tag anim-1" style="color:var(--p3)">Platform Overview</div>
+  <div class="s6-title anim-2">Numbers that <span>speak.</span></div>
+  <div class="stats-row anim-3"><div class="stat-card"><div class="stat-num">7+</div><div class="stat-label">Security Products</div><div class="stat-sub">SIEM · SOC · TIP · Dark Web</div><div class="stat-bar"></div></div><div class="stat-card"><div class="stat-num">100+</div><div class="stat-label">Compliance Frameworks</div><div class="stat-sub">GDPR · HIPAA · ISO 27001</div><div class="stat-bar" style="background:linear-gradient(90deg,var(--cyan),transparent)"></div></div><div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">SOC Coverage</div><div class="stat-sub">AI-powered analysts</div><div class="stat-bar" style="background:linear-gradient(90deg,var(--green),transparent)"></div></div></div>
+  <div class="solutions-row anim-4"><span class="sol-pill">SIEM</span><span class="sol-pill">Attack Surface</span><span class="sol-pill">DMARC</span><span class="sol-pill">Phishing</span><span class="sol-pill">Compliance</span></div>
+</div>
+
+<div class="slide" id="s7">
+  <div class="s7-tag anim-1">Get Started</div>
+  <div class="s7-title anim-2">Secure your<br/><span class="line2">organisation.</span></div>
+  <p class="s7-sub anim-3">Join organisations protected by Aqua Secure AI.</p>
+  <div class="s7-links anim-4"><a href="#" class="s7-btn s7-btn-primary"><span>↗</span> Get Started</a><a href="#" class="s7-btn s7-btn-outline">Try TIP →</a></div>
+  <div class="s7-email anim-5">info@aquasecure.ai</div>
+</div>
+
+</div>
+
+<script>
+// Auto-close after one complete run
+let hasCompleted = false;
+
+// Slides
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+const DURATION = 4000; // Faster: 4 seconds per slide
+
+const counter = document.getElementById('counter');
+const progBar = document.getElementById('progressBar');
+const dotsEl = document.getElementById('dots');
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function pad(n) { return String(n + 1).padStart(2, '0'); }
+
+function goTo(idx) {
+  if (idx === current || hasCompleted) return;
+  
+  const from = slides[current];
+  const to = slides[idx];
+  
+  from.classList.add('slide-exit');
+  setTimeout(() => { from.classList.remove('active', 'slide-exit'); }, 250);
+  
+  to.classList.add('active', 'slide-enter');
+  setTimeout(() => { to.classList.remove('slide-enter'); }, 300);
+  
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  counter.textContent = pad(idx) + ' / ' + pad(total - 1);
+  current = idx;
+  resetProgress();
+  
+  // Check if completed all slides
+  if (current === total - 1) {
+    setTimeout(() => {
+      if (!hasCompleted) {
+        hasCompleted = true;
+        // Auto-close after last slide
+        setTimeout(() => {
+          window.close();
+          // Fallback: redirect to blank
+          document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0A0B14;color:#fff;font-family:monospace;">Demo completed. You can close this window.</div>';
+        }, 1500);
+      }
+    }, 500);
+  }
+}
+
+function changeSlide(dir) {
+  if (hasCompleted) return;
+  const next = (current + dir + total) % total;
+  goTo(next);
+}
+
+// Progress bar
+let startTime = null;
+let rafId = null;
+
+function animProgress(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = ts - startTime;
+  const pct = Math.min(elapsed / DURATION * 100, 100);
+  progBar.style.width = pct + '%';
+  if (pct < 100) {
+    rafId = requestAnimationFrame(animProgress);
+  } else {
+    if (!hasCompleted) changeSlide(1);
+  }
+}
+
+function resetProgress() {
+  cancelAnimationFrame(rafId);
+  startTime = null;
+  progBar.style.width = '0%';
+  rafId = requestAnimationFrame(animProgress);
+}
+
+resetProgress();
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (hasCompleted) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+  if (e.key === 'ArrowLeft') changeSlide(-1);
+});
+
+// Touch navigation
+let touchX = 0;
+document.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  if (hasCompleted) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+});
+</script>
+</body>
+</html>
