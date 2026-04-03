@@ -1,0 +1,1 @@
+"aquasecure.ai" | Out-File -FilePath "public\CNAME" -Encoding utf8 -NoNewline
