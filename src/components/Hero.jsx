@@ -87,13 +87,13 @@ export default function Hero({ onDemo }) {
             <motion.div variants={fadeUp}>
               <h1
                 className="font-black leading-[1.1] tracking-tight"
-                style={{ fontSize: 38, color: "#1e1b4b" }}
+                style={{ fontSize: "clamp(26px,3.8vw,44px)", color: "#1e1b4b" }}
               >
                 Modern Soc Operations
               </h1>
               <h1
                 className="font-black leading-[1.1] tracking-tight mb-3"
-                style={{ fontSize: 38 }}
+                style={{ fontSize: "clamp(26px,3.8vw,44px)" }}
               >
                 <span
                   style={{
@@ -139,8 +139,8 @@ export default function Hero({ onDemo }) {
 
             <motion.p
               variants={fadeUp}
-              className="leading-[1.78] mb-5"
-              style={{ fontSize: 14, color: "rgba(79,46,220,0.60)" }}
+              className="text-lead leading-[1.8] mb-5"
+              style={{ color: "rgba(79,46,220,0.60)" }}
             >
               Aqua Secure AI empowers human SOC analysts with AI-powered
               monitoring, automated response, and global threat intelligence.
