@@ -28,7 +28,7 @@ const SOLUTIONS = {
     tagline: "Managed SIEM Service",
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.08)",
-    img: "/assets/images/Aqua-siem-dashboard.png",
+    img: "/AquaSecureAI/images/Aqua-siem-dashboard.png",
     headline: "Enterprise SIEM without the operational overhead",
     sub: "Let Aqua Secure AI manage your SIEM end-to-end — log collection, rule tuning, correlation, and alerting — while your team focuses on response.",
     features: [
@@ -80,7 +80,7 @@ const SOLUTIONS = {
     tagline: "Attack Surface Management",
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.08)",
-    img: "/assets/images/assets-dashboard.png",
+    img: "/AquaSecureAI/images/assets-dashboard.png",
     headline: "See your organisation exactly the way attackers do",
     sub: "Continuously discover and monitor your external attack surface — domains, IPs, open ports, and exposed services — before threat actors exploit unknown assets.",
     features: [
@@ -132,7 +132,7 @@ const SOLUTIONS = {
     tagline: "Email Authentication & Anti-Spoofing",
     color: "#8A63FF",
     bg: "rgba(184,165,255,0.10)",
-    img: "/assets/images/product-dark-web.png",
+    img: "/AquaSecureAI/images/product-dark-web.png",
     headline: "Stop email fraud, spoofing, and impersonation at the source",
     sub: "Deploy and manage DMARC, DKIM, and SPF authentication across your domain estate — protecting your brand, employees, and customers from email-based attacks.",
     features: [
@@ -184,7 +184,7 @@ const SOLUTIONS = {
     tagline: "Phishing Simulation & Security Awareness",
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.08)",
-    img: "/assets/images/product-phishbot.png",
+    img: "/AquaSecureAI/images/product-phishbot.png",
     headline: "Turn your biggest vulnerability into your strongest defence",
     sub: "Realistic phishing simulations that test, train, and track your workforce — with automated follow-up training that actually changes behaviour.",
     features: [
@@ -236,7 +236,7 @@ const SOLUTIONS = {
     tagline: "Cybersecurity Training & Education",
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.08)",
-    img: "/assets/images/product-phishbot.png",
+    img: "/AquaSecureAI/images/product-phishbot.png",
     headline: "Build a security-aware culture across your entire organisation",
     sub: "Role-based cybersecurity e-learning that is trackable, measurable, and built around the threats your employees actually face.",
     features: [
@@ -288,7 +288,7 @@ const SOLUTIONS = {
     tagline: "GRC & Regulatory Compliance",
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.08)",
-    img: "/assets/images/grc-dashboard.png",
+    img: "/AquaSecureAI/images/grc-dashboard.png",
     headline: "Automate compliance and be audit-ready every single day",
     sub: "Centralise your governance, risk, and compliance workflows — with real-time monitoring, automated evidence collection, and always-on audit readiness.",
     features: [
