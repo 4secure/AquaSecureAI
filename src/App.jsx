@@ -116,7 +116,7 @@ function PageTransitionOverlay() {
           }}
         />
         <img
-          src="/AquaSecureAI/images/Aquasecureicon.png"
+          src="/images/Aquasecureicon.png"
           alt="Aqua Secure AI"
           style={{ width: 360, position: "relative", zIndex: 1 }}
         />
@@ -371,7 +371,7 @@ export default function App() {
 //         <div style={{ position:'absolute', width:120, height:120, borderRadius:'50%', border:'1.5px solid rgba(138,99,255,0.35)', animation:'ringPulse 1.1s ease-out infinite' }}/>
 //         <div style={{ position:'absolute', width:120, height:120, borderRadius:'50%', border:'1px solid rgba(184,165,255,0.20)', animation:'ringPulse 1.1s ease-out 0.28s infinite' }}/>
 //         <img
-//           src="/AquaSecureAI/images/Aquasecureicon.png"
+//           src="/images/Aquasecureicon.png"
 //           alt="Aqua Secure AI"
 //           style={{ width: 360, position: 'relative', zIndex: 1 }}
 //         />

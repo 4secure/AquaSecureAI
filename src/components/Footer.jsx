@@ -69,10 +69,7 @@ export default function Footer() {
               to="/"
               className="inline-block align-top justify-self-start mb-3 align-left"
             >
-              <img
-                src="/AquaSecureAI/images/Aquasecure_logo3.png"
-                alt="Aqua Secure AI"
-              />
+              <img src="/images/Aquasecure_logo3.png" alt="Aqua Secure AI" />
             </Link>
             <p
               className="text-xs leading-relaxed mb-4 -mt-0"
