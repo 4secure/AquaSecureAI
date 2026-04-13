@@ -325,7 +325,7 @@ export default function Hero({ onDemo }) {
                 }}
               >
                 <img
-                  src="/AquaSecureAI/images/dashboard-hero.png"
+                  src="/images/dashboard-hero.png"
                   alt="Aqua Secure AI Dashboard"
                   className="w-full block"
                   style={{ display: "block" }}
