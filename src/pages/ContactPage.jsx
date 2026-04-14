@@ -795,33 +795,8 @@ const INFO_CARDS = [
     sub: 'We reply within 24 hours',
     href: 'mailto:info@aquasecure.ai',
   },
-  {
-    icon: ExternalLink,
-    color: '#35BBFF',
-    bg: 'rgba(53,187,255,0.10)',
-    label: 'Login / Dashboard',
-    value: 'secureye.io',
-    sub: 'Access your SOC platform',
-    href: 'https://secureye.io',
-  },
-  {
-    icon: Shield,
-    color: '#29E07A',
-    bg: 'rgba(41,224,122,0.10)',
-    label: 'Threat Intel Platform',
-    value: 'tip.aquasecure.ai',
-    sub: '1 free IP lookup per day',
-    href: 'https://tip.aquasecure.ai',
-  },
-  {
-    icon: Clock,
-    color: '#FFB020',
-    bg: 'rgba(255,176,32,0.10)',
-    label: 'Support Hours',
-    value: '24 / 7 Available',
-    sub: 'Managed services included',
-    href: null,
-  },
+ 
+
 ]
 
 function InputField({ label, name, type='text', placeholder, value, onChange, required }) {
@@ -965,12 +940,12 @@ export default function ContactPage() {
               <span className="badge">Get In Touch</span>
             </motion.div>
             <motion.h1 variants={fadeUp} className="font-black leading-tight tracking-tight mb-5"
-              style={{ fontSize:'clamp(38px,5.5vw,66px)', color:'#E7E0FF', letterSpacing:'-0.03em' }}>
+              style={{ fontSize:'clamp(38px,5.5vw,66px)', color:'#0b0b0c', letterSpacing:'-0.03em' }}>
               Let's Talk{' '}
               <span className="tg">Security</span>
             </motion.h1>
             <motion.p variants={fadeUp} className="text-lead leading-[1.8] max-w-[500px] mx-auto"
-              style={{ color:'rgba(200,186,255,0.60)' }}>
+              style={{ color:'rgba(39, 28, 82, 0.6)' }}>
               Have questions, need a demo, or want to discuss your organisation's security needs? We'd love to hear from you.
             </motion.p>
           </motion.div>
@@ -979,10 +954,10 @@ export default function ContactPage() {
 
       {/* ── Main content ── */}
       <section className="relative overflow-hidden" style={{ background:'#f0eaff' }}>
-        <div className="absolute inset-0 pointer-events-none"
+        <div className="absolute inset-0 pointer-events-none "
           style={{ background:'radial-gradient(ellipse 80% 50% at 50% 80%, rgba(109,86,165,0.10) 0%, transparent 70%)' }}/>
 
-        <div className="wrap pb-24 relative z-10">
+        <div className="wrap pb-24 relative z-10 mt-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10 lg:gap-14 items-start">
 
             {/* ── Left: Form ── */}
