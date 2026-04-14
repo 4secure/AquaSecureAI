@@ -31,7 +31,7 @@ const PRODUCTS = {
     bg: "rgba(138,99,255,0.08)",
     headline: "Centralise and correlate every security event in real time",
     sub: "Aqua SIEM gives your team a single pane of glass across all log sources — with AI-powered correlation that surfaces real threats, not noise.",
-    img: "/images/Aqua-siem-dashboard.png",
+    img: "/images/Aqua-siem-dashboard.jpg",
     features: [
       {
         title: "Real-time Log Management",
@@ -78,7 +78,7 @@ const PRODUCTS = {
     bg: "rgba(138,99,255,0.08)",
     headline: "AI-powered 24/7 threat detection and human-led response",
     sub: "Aqua Secure SOC empowers your analysts with AI SecOps — automated investigation, smart case management, and threat hunting — so they can focus on what matters.",
-    img: "/images/soc-dashboard.png",
+    img: "/images/soc-dashboard.jpg",
     features: [
       {
         title: "24/7 AI-Powered Monitoring",
@@ -173,7 +173,7 @@ const PRODUCTS = {
     headline:
       "Monitor the dark web so attackers can't use your data against you",
     sub: "Continuous dark web surveillance for leaked credentials, stolen data, and brand impersonation — with actionable alerts before damage is done.",
-    img: "/images/darkweb-dashboard.png",
+    img: "/images/darkweb-dashboard.jpg",
     features: [
       {
         title: "Credential & Data Leak Monitoring",
@@ -220,7 +220,7 @@ const PRODUCTS = {
     bg: "rgba(138,99,255,0.08)",
     headline: "Build a human firewall through realistic phishing simulations",
     sub: "Launch automated phishing campaigns that test, train, and track your employees — turning your weakest link into your strongest defence.",
-    img: "/images/product-phishbot.png",
+    img: "/images/product-phishbot.jpg",
     features: [
       {
         title: "Automated Phishing Campaigns",
@@ -268,7 +268,7 @@ const PRODUCTS = {
     headline:
       "Know exactly what you own, who owns it, and what risk it carries",
     sub: "Complete asset lifecycle management across cloud, on-prem, and hybrid — with real-time ownership context and continuous risk scoring.",
-    img: "/images/assets-dashboard.png",
+    img: "/images/assets-dashboard.jpg",
     features: [
       {
         title: "Unified Asset Discovery",
@@ -315,7 +315,7 @@ const PRODUCTS = {
     bg: "rgba(138,99,255,0.08)",
     headline: "Automate compliance across every major framework",
     sub: "Centralise governance, risk, and compliance in one platform — with real-time audit readiness, automated evidence collection, and continuous monitoring.",
-    img: "/images/grc-dashboard.png",
+    img: "/images/grc-dashboard.jpg",
     features: [
       {
         title: "Multi-Framework Support",

@@ -32,7 +32,7 @@ const PRODUCTS = [
     color: "#6D56A5",
     bg: "rgba(109,86,165,0.10)",
     bd: "rgba(109,86,165,0.25)",
-    img: "/images/grc-dashboard.png",
+    img: "/images/grc-dashboard.jpg",
     headline: "Automate compliance across every major framework",
     desc: "Automate compliance with ETHRM, CTDISR, ISO 27001, and more. Centralise governance, risk management, and compliance workflows with real-time audit readiness.",
     features: [
@@ -49,7 +49,7 @@ const PRODUCTS = [
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.10)",
     bd: "rgba(138,99,255,0.25)",
-    img: "/images/Aqua-siem-dashboard.png",
+    img: "/images/Aqua-siem-dashboard.jpg",
     headline: "Centralise and correlate security events in real time",
     desc: "Aqua SIEM collects, correlates, and analyses security events across your entire infrastructure. Get real-time log management, threat detection rules, dashboards, and compliance reporting.",
     features: [
@@ -69,7 +69,7 @@ const PRODUCTS = [
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.10)",
     bd: "rgba(138,99,255,0.25)",
-    img: "/images/soc-dashboard.png",
+    img: "/images/soc-dashboard.jpg",
     headline: "AI-powered 24/7 threat detection and defense",
     desc: "AI-powered monitoring and automated response for 24/7 threat detection. Empower human SOC analysts with AI SecOps — investigation, case management, incident workflows, and threat hunting.",
     features: [
@@ -90,7 +90,7 @@ const PRODUCTS = [
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.10)",
     bd: "rgba(138,99,255,0.25)",
-    img: "/images/assets-dashboard.png",
+    img: "/images/assets-dashboard.jpg",
     headline: "Know exactly what you have and who owns it",
     desc: "Unified asset inventory with real-time ownership and operational context. Full asset lifecycle management across cloud, on-prem, and hybrid environments with risk scoring.",
     features: [
@@ -110,7 +110,7 @@ const PRODUCTS = [
     color: "#8A63FF",
     bg: "rgba(138,99,255,0.10)",
     bd: "rgba(138,99,255,0.25)",
-    img: "/images/darkweb-dashboard.png",
+    img: "/images/darkweb-dashboard.jpg",
     headline: "Monitor the dark web before attackers act",
     desc: "Continuously scan dark web forums, marketplaces, and data breach repositories for mentions of your organisation, exposed credentials, and leaked assets.",
     features: [
@@ -125,7 +125,7 @@ const PRODUCTS = [
   // {
   //   icon: Bug, slug:'phishbot', name:'Phishbot', tagline:'Phishing Campaign Management',
   //   color:'#8A63FF', bg:'rgba(138,99,255,0.10)', bd:'rgba(138,99,255,0.25)',
-  //   img:'/images/product-phishbot.png',
+  //   img:'/images/product-phishbot.jpg',
   //   headline:'Build a human firewall through realistic phishing tests',
   //   desc:'Launch automated phishing simulation campaigns to test employee awareness. Track click rates, identify at-risk staff, and deliver targeted training to strengthen your human firewall.',
   //   features:['Automated phishing campaigns','Realistic email templates','Click-through tracking','At-risk employee identification','Automated training assignment','Campaign performance dashboards'],
