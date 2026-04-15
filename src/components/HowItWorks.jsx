@@ -614,7 +614,7 @@ export default function HowItWorks({ onDemo }) {
                 </motion.div>
               );
             })}
-            <motion.div variants={fadeUp} className="mt-2 ml-14">
+            {/* <motion.div variants={fadeUp} className="mt-2 ml-14">
               <motion.button
                 className="btn-primary"
                 onClick={onDemo}
@@ -626,7 +626,7 @@ export default function HowItWorks({ onDemo }) {
               >
                 See It In Action <ArrowRight className="w-4 h-4" />
               </motion.button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
           <motion.div

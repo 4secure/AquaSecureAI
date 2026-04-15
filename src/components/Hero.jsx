@@ -187,35 +187,7 @@ export default function Hero({ onDemo }) {
                 Get Started <ArrowRight className="w-3.5 h-3.5" />
               </motion.a>
               {/* <a href=''> */}
-              <motion.button
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-[13px]"
-                style={{
-                  background: "rgba(124,58,237,0.07)",
-                  border: "1px solid rgba(124,58,237,0.22)",
-                  color: "#6D28D9",
-                }}
-                whileHover={{
-                  background: "rgba(124,58,237,0.14)",
-                  borderColor: "rgba(124,58,237,0.40)",
-                  scale: 1.03,
-                }}
-                whileTap={{ scale: 0.97 }}
-                onClick={onDemo}
-              >
-                <span
-                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: "rgba(124,58,237,0.12)",
-                    border: "1px solid rgba(124,58,237,0.25)",
-                  }}
-                >
-                  <Play
-                    className="w-2.5 h-2.5 fill-current"
-                    style={{ color: "#7C3AED" }}
-                  />
-                </span>
-                Product Overview
-              </motion.button>
+         
               {/* </a> */}
             </motion.div>
 

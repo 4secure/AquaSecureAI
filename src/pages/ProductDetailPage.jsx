@@ -508,14 +508,14 @@ export default function ProductDetailPage() {
                 >
                   Get Started Free <ExternalLink className="w-3.5 h-3.5" />
                 </motion.a>
-                <motion.a
+                {/* <motion.a
                   href="mailto:info@aquasecure.ai"
                   className="btn-outline text-[14px] inline-flex items-center gap-2"
                   style={{ color: "#1e1b4b" }}
                   whileHover={{ borderColor: "rgba(138,99,255,0.5)" }}
                 >
                   Request Demo <ArrowRight className="w-3.5 h-3.5" />
-                </motion.a>
+                </motion.a> */}
               </motion.div>
             </motion.div>
 
