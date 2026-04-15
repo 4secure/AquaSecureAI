@@ -887,36 +887,50 @@ export default function ContactPage() {
   const handle = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   const setCategory = cat => setForm(f => ({ ...f, category: f.category === cat ? '' : cat, item:'' }))
 
-  const submit = async e => {
-    e.preventDefault()
-    if (!form.name || !form.email || !form.message) return
-    setLoading(true)
-    try {
-      const res = await fetch('https://aquasecure.ai/contact.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name:     form.name,
-          email:    form.email,
-          company:  form.company,
-          topic:    form.topic,
-          category: form.category || '',
-          item:     form.item || '',
-          message:  form.message,
-        }),
-      })
-      const data = await res.json()
-      if (res.ok && data.ok) {
-        setSent(true)
-      } else {
-        alert(data?.error || 'Something went wrong. Please try again.')
-      }
-    } catch {
-      alert('Network error — please check your connection and try again.')
-    } finally {
-      setLoading(false)
+ const submit = async (e) => {
+  e.preventDefault();
+
+  if (!form.name || !form.email || !form.message) return;
+
+  setLoading(true);
+
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: "02610ac4-e0df-4304-b478-e41a9d58e328",
+
+        subject: `[Aqua Secure] ${form.topic}${form.category ? ` — ${form.category}: ${form.item}` : ""} — from ${form.name}`,
+
+        from_name: "Aqua Secure Website",
+
+        name: form.name,
+        email: form.email,
+        company: form.company,
+        topic: form.topic,
+        category: form.category || "None",
+        item: form.item || "None",
+        message: form.message,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setSent(true);
+    } else {
+      alert(data.message || "Something went wrong");
     }
+  } catch (error) {
+    alert("Network error. Try again.");
+  } finally {
+    setLoading(false);
   }
+};
 
   const reset = () => {
     setSent(false)
