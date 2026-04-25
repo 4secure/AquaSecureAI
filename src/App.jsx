@@ -1,5 +1,5 @@
 // import { useState, useEffect } from "react";
-// import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
+// import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 // import { HelmetProvider, Helmet } from "react-helmet-async";
 // import { motion, AnimatePresence } from "framer-motion";
 // import { useReveal } from "./hooks";
@@ -264,7 +264,7 @@
 
 //   return (
 //     <HelmetProvider>
-//       <HashRouter>
+//       <BrowserRouter>
 //         {/* Scroll progress bar */}
 //         <ScrollProgress />
 
@@ -285,13 +285,13 @@
 //         {/* Floating UI */}
 //         <BackToTop />
 //         <ContactModal isOpen={modal} onClose={() => setModal(false)} />
-//       </HashRouter>
+//       </BrowserRouter>
 //     </HelmetProvider>
 //   );
 // }
 
 import { useState, useEffect } from "react";
-import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReveal } from "./hooks";
@@ -472,7 +472,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <HashRouter>
+      <BrowserRouter>
         <ScrollProgress />
         <AnnouncementBar onDismiss={() => setBarVisible(false)} />
         <Navbar barVisible={barVisible} onDemo={() => setModal(true)} />
@@ -482,7 +482,7 @@ export default function App() {
         <Footer />
         <BackToTop />
         <ContactModal isOpen={modal} onClose={() => setModal(false)} />
-      </HashRouter>
+      </BrowserRouter>
     </HelmetProvider>
   );
 }
