@@ -290,199 +290,199 @@
 //   );
 // }
 
-import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { HelmetProvider, Helmet } from "react-helmet-async";
-import { motion, AnimatePresence } from "framer-motion";
-import { useReveal } from "./hooks";
+  import { useState, useEffect } from "react";
+  import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+  import { HelmetProvider, Helmet } from "react-helmet-async";
+  import { motion, AnimatePresence } from "framer-motion";
+  import { useReveal } from "./hooks";
 
-import AnnouncementBar from "./components/AnnouncementBar";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import ContactModal from "./components/ContactModal";
-import BackToTop from "./components/BackToTop";
-import ScrollProgress from "./components/ScrollProgress";
+  import AnnouncementBar from "./components/AnnouncementBar";
+  import Navbar from "./components/Navbar";
+  import Footer from "./components/Footer";
+  import ContactModal from "./components/ContactModal";
+  import BackToTop from "./components/BackToTop";
+  import ScrollProgress from "./components/ScrollProgress";
 
-import Hero from "./components/Hero";
-import LogosStrip from "./components/LogosStrip";
-import About from "./components/About";
-import StatsStrip from "./components/StatsStrip";
-import MeetPlatform from "./components/MeetPlatform";
-import HowItWorks from "./components/HowItWorks";
-import Products from "./components/Products";
-import Testimonials from "./components/Testimonials";
-import Resources from "./components/Resources";
-import TrustedBy from "./components/TrustedBy";
-import Integrations from "./components/Integrations";
-import Partners from "./components/Partners";
+  import Hero from "./components/Hero";
+  import LogosStrip from "./components/LogosStrip";
+  import About from "./components/About";
+  import StatsStrip from "./components/StatsStrip";
+  import MeetPlatform from "./components/MeetPlatform";
+  import HowItWorks from "./components/HowItWorks";
+  import Products from "./components/Products";
+  import Testimonials from "./components/Testimonials";
+  import Resources from "./components/Resources";
+  import TrustedBy from "./components/TrustedBy";
+  import Integrations from "./components/Integrations";
+  import Partners from "./components/Partners";
 
-import ProductsPage from "./pages/ProductsPage";
-import SolutionsPage from "./pages/SolutionsPage";
-import PricingPage from "./pages/PricingPage";
-import PlatformPage from "./pages/PlatformPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import SolutionDetailPage from "./pages/SolutionDetailPage";
+  import ProductsPage from "./pages/ProductsPage";
+  import SolutionsPage from "./pages/SolutionsPage";
+  import PricingPage from "./pages/PricingPage";
+  import PlatformPage from "./pages/PlatformPage";
+  import AboutPage from "./pages/AboutPage";
+  import ContactPage from "./pages/ContactPage";
+  import ProductDetailPage from "./pages/ProductDetailPage";
+  import SolutionDetailPage from "./pages/SolutionDetailPage";
 
-/* ── Scroll to top on every route change ── */
-function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname]);
-  return null;
-}
+  /* ── Scroll to top on every route change ── */
+  function ScrollToTop() {
+    const { pathname } = useLocation();
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }, [pathname]);
+    return null;
+  }
 
-/* ── Page wrapper ── */
-const PT = ({ children }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
-  >
-    {children}
-  </motion.div>
-);
-
-/* Home page */
-function HomePage({ onDemo }) {
-  useReveal();
-  return (
-    <PT>
-      <Helmet>
-        <title>AquaSecure.ai — AI-Powered Cloud Native Cybersecurity</title>
-        <meta
-          name="description"
-          content="AquaSecure stops cyber attacks before they happen — AI threat detection, container security, runtime protection and automated response from code to cloud to prompt."
-        />
-        <meta
-          property="og:title"
-          content="AquaSecure.ai — AI-Powered Cybersecurity"
-        />
-        <meta
-          property="og:description"
-          content="The pioneer in AI-native cloud security. Stop threats in under 50ms."
-        />
-        <meta property="og:url" content="https://aquasecure.ai" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="theme-color" content="#7A44E4" />
-      </Helmet>
-      <Hero onDemo={onDemo} />
-      {/* <LogosStrip /> */}
-      <About />
-      <StatsStrip />
-      <MeetPlatform onDemo={onDemo} />
-      <HowItWorks onDemo={onDemo} />
-      <Products />
-      {/* <Testimonials /> */}
-      {/* <Resources /> */}
-      {/* <TrustedBy /> */}
-      <Integrations onDemo={onDemo} />
-      {/* <Partners onDemo={onDemo} /> */}
-    </PT>
+  /* ── Page wrapper ── */
+  const PT = ({ children }) => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
+    >
+      {children}
+    </motion.div>
   );
-}
 
-/* Animated router */
-function AnimatedRoutes({ onDemo }) {
-  const location = useLocation();
-  useReveal();
-  return (
-    <>
-      <ScrollToTop />
-      <AnimatePresence mode="sync">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<HomePage onDemo={onDemo} />} />
-          <Route
-            path="/products"
-            element={
-              <PT>
-                <ProductsPage onDemo={onDemo} />
-              </PT>
-            }
+  /* Home page */
+  function HomePage({ onDemo }) {
+    useReveal();
+    return (
+      <PT>
+        <Helmet>
+          <title>AquaSecure.ai — AI-Powered Cloud Native Cybersecurity</title>
+          <meta
+            name="description"
+            content="AquaSecure stops cyber attacks before they happen — AI threat detection, container security, runtime protection and automated response from code to cloud to prompt."
           />
-          <Route
-            path="/products/:slug"
-            element={
-              <PT>
-                <ProductDetailPage onDemo={onDemo} />
-              </PT>
-            }
+          <meta
+            property="og:title"
+            content="AquaSecure.ai — AI-Powered Cybersecurity"
           />
-          <Route
-            path="/solutions"
-            element={
-              <PT>
-                <SolutionsPage onDemo={onDemo} />
-              </PT>
-            }
+          <meta
+            property="og:description"
+            content="The pioneer in AI-native cloud security. Stop threats in under 50ms."
           />
-          <Route
-            path="/solutions/:slug"
-            element={
-              <PT>
-                <SolutionDetailPage onDemo={onDemo} />
-              </PT>
-            }
-          />
-          <Route
-            path="/platform"
-            element={
-              <PT>
-                <PlatformPage onDemo={onDemo} />
-              </PT>
-            }
-          />
-          <Route
-            path="/pricing"
-            element={
-              <PT>
-                <PricingPage onDemo={onDemo} />
-              </PT>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <PT>
-                <AboutPage onDemo={onDemo} />
-              </PT>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <PT>
-                <ContactPage onDemo={onDemo} />
-              </PT>
-            }
-          />
-          <Route path="*" element={<HomePage onDemo={onDemo} />} />
-        </Routes>
-      </AnimatePresence>
-    </>
-  );
-}
+          <meta property="og:url" content="https://aquasecure.ai" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="theme-color" content="#7A44E4" />
+        </Helmet>
+        <Hero onDemo={onDemo} />
+        {/* <LogosStrip /> */}
+        <About />
+        <StatsStrip />
+        <MeetPlatform onDemo={onDemo} />
+        <HowItWorks onDemo={onDemo} />
+        <Products />
+        {/* <Testimonials /> */}
+        {/* <Resources /> */}
+        {/* <TrustedBy /> */}
+        <Integrations onDemo={onDemo} />
+        {/* <Partners onDemo={onDemo} /> */}
+      </PT>
+    );
+  }
 
-export default function App() {
-  const [modal, setModal] = useState(false);
-  const [barVisible, setBarVisible] = useState(true);
+  /* Animated router */
+  function AnimatedRoutes({ onDemo }) {
+    const location = useLocation();
+    useReveal();
+    return (
+      <>
+        <ScrollToTop />
+        <AnimatePresence mode="sync">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage onDemo={onDemo} />} />
+            <Route
+              path="/products"
+              element={
+                <PT>
+                  <ProductsPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/products/:slug"
+              element={
+                <PT>
+                  <ProductDetailPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/solutions"
+              element={
+                <PT>
+                  <SolutionsPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/solutions/:slug"
+              element={
+                <PT>
+                  <SolutionDetailPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/platform"
+              element={
+                <PT>
+                  <PlatformPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <PT>
+                  <PricingPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <PT>
+                  <AboutPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <PT>
+                  <ContactPage onDemo={onDemo} />
+                </PT>
+              }
+            />
+            <Route path="*" element={<HomePage onDemo={onDemo} />} />
+          </Routes>
+        </AnimatePresence>
+      </>
+    );
+  }
 
-  return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <ScrollProgress />
-        <AnnouncementBar onDismiss={() => setBarVisible(false)} />
-        <Navbar barVisible={barVisible} onDemo={() => setModal(true)} />
-        <main>
-          <AnimatedRoutes onDemo={() => setModal(true)} />
-        </main>
-        <Footer />
-        <BackToTop />
-        <ContactModal isOpen={modal} onClose={() => setModal(false)} />
-      </BrowserRouter>
-    </HelmetProvider>
-  );
-}
+  export default function App() {
+    const [modal, setModal] = useState(false);
+    const [barVisible, setBarVisible] = useState(true);
+
+    return (
+      <HelmetProvider>
+        <BrowserRouter>
+          <ScrollProgress />
+          <AnnouncementBar onDismiss={() => setBarVisible(false)} />
+          <Navbar barVisible={barVisible} onDemo={() => setModal(true)} />
+          <main>
+            <AnimatedRoutes onDemo={() => setModal(true)} />
+          </main>
+          <Footer />
+          <BackToTop />
+          <ContactModal isOpen={modal} onClose={() => setModal(false)} />
+        </BrowserRouter>
+      </HelmetProvider>
+    );
+  }
