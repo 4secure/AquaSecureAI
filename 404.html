@@ -1,13 +1,17 @@
-@'
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>AquaSecure AI</title>
     <script>
-      sessionStorage.redirect = location.href;
-      location.replace('/');
+      var redirect = sessionStorage.redirect;
+      sessionStorage.removeItem('redirect');
+      location.replace(redirect && redirect !== location.href ? redirect : '/');
     </script>
   </head>
+  <body>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/">
+    </noscript>
+  </body>
 </html>
-'@ | Out-File -FilePath "public\404.html" -Encoding utf8
