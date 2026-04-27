@@ -291,7 +291,7 @@
 // }
 
   import { useState, useEffect } from "react";
-  import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+  import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
   import { HelmetProvider, Helmet } from "react-helmet-async";
   import { motion, AnimatePresence } from "framer-motion";
   import { useReveal } from "./hooks";
@@ -472,7 +472,7 @@
 
     return (
       <HelmetProvider>
-        <BrowserRouter>
+        <HashRouter>
           <ScrollProgress />
           <AnnouncementBar onDismiss={() => setBarVisible(false)} />
           <Navbar barVisible={barVisible} onDemo={() => setModal(true)} />
@@ -482,7 +482,7 @@
           <Footer />
           <BackToTop />
           <ContactModal isOpen={modal} onClose={() => setModal(false)} />
-        </BrowserRouter>
+        </HashRouter>
       </HelmetProvider>
     );
   }
