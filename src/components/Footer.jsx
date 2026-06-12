@@ -27,7 +27,7 @@ const SOLUTIONS = [
   { label: "Manage SIEM", slug: "manage-siem" },
   { label: "Attack Surface", slug: "attack-surface" },
   { label: "DMARC", slug: "dmarc" },
-  { label: "Fishing Campaigns", slug: "fishing-campaigns" },
+  { label: "Phishing Campaigns", slug: "phishing-campaigns" },
   { label: "E-Learning", slug: "e-learning" },
   { label: "Compliance Management", slug: "compliance-management" },
 ];

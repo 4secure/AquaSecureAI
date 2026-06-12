@@ -178,7 +178,7 @@ const SOLUTIONS = {
       { val: "Guided", label: "Policy journey" },
     ],
   },
-  "fishing-campaigns": {
+  "phishing-campaigns": {
     icon: Fish,
     name: "Phishing Campaigns",
     tagline: "Phishing Simulation & Security Awareness",

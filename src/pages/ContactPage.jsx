@@ -30,15 +30,15 @@ const INFO_CARDS = [
     sub: 'We reply within 24 hours',
     href: 'mailto:info@aquasecure.ai',
   },
-  {
-    icon: MapPin,
-    color: '#6D56A5',
-    bg: 'rgba(109,86,165,0.10)',
-    label: 'Visit Us',
-    value: 'Singapore, SG',
-    sub: 'By appointment only',
-    href: null,
-  },
+  // {
+  //   icon: MapPin,
+  //   color: '#6D56A5',
+  //   bg: 'rgba(109,86,165,0.10)',
+  //   label: 'Visit Us',
+  //   value: 'Singapore, SG',
+  //   sub: 'By appointment only',
+  //   href: null,
+  // },
   {
     icon: MessageSquare,
     color: '#29E07A',
@@ -48,15 +48,15 @@ const INFO_CARDS = [
     sub: 'Available Mon–Fri, 9am–6pm SGT',
     href: '#',
   },
-  {
-    icon: Phone,
-    color: '#FF6B6B',
-    bg: 'rgba(255,107,107,0.10)',
-    label: 'Call Us',
-    value: '+65 1234 5678',
-    sub: 'Mon–Fri, 9am–6pm SGT',
-    href: 'tel:+6512345678',
-  },
+  // {
+  //   icon: Phone,
+  //   color: '#FF6B6B',
+  //   bg: 'rgba(255,107,107,0.10)',
+  //   label: 'Call Us',
+  //   value: '+65 1234 5678',
+  //   sub: 'Mon–Fri, 9am–6pm SGT',
+  //   href: 'tel:+6512345678',
+  // },
 ]
 
 // ─── Custom Themed Select Component ───
@@ -365,7 +365,7 @@ export default function ContactPage() {
         />
 
         <div className="wrap pb-24 relative z-10 mt-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10 lg:gap-14 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10 lg:gap-14">
             {/* ── Left: Form ── */}
             <motion.div
               variants={fadeLeft}
@@ -679,12 +679,12 @@ export default function ContactPage() {
 
             {/* ── Right: Info ── */}
             <motion.div
-              variants={fadeRight}
-              initial="hidden"
-              whileInView="show"
-              viewport={viewport}
-              className="flex flex-col gap-4 lg:sticky lg:top-28"
-            >
+  variants={fadeRight}
+  initial="hidden"
+  whileInView="show"
+  viewport={viewport}
+  className="flex flex-col gap-4 lg:sticky lg:top-28"
+>
               {/* Info cards */}
               {INFO_CARDS.map((card, i) => {
                 const Icon = card.icon
