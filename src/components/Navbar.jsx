@@ -126,7 +126,7 @@ export default function Navbar({ barVisible, onDemo }) {
               src={
                 scrolled
                   ? "/images/Aquasecure_logo3.png"
-                  : "/images/aquasecure_logo.png"
+                  : "/images/aquasecure_logo1.png"
               }
               style={{
                 width: "180px",
