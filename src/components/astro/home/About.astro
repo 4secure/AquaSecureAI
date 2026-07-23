@@ -1,0 +1,27 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section class="relative py-16 overflow-hidden" style="background:var(--surface-2)">
+  {/* Subtle centre radial bloom */}
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 70% 80% at 50% 50%, rgba(var(--accent-rgb) / 0.16) 0%, transparent 70%)"></div>
+
+  <div class="reveal relative z-10 wrap text-center max-w-[680px] mx-auto">
+    <p class="text-[15px] leading-[1.85] mb-5" style="color:rgba(var(--accent-rgb) / 0.80)">
+      Cybersecurity is crucial in today's digital world —{' '}
+      <span style="color:#ffffff;font-weight:600">Aqua Secure AI</span>{' '}
+      ensures your assets remain protected from evolving global threats with
+      AI-powered SOC operations, GRC compliance automation, and real-time threat intelligence.
+    </p>
+    <a href="/products">
+      <span class="about-explore inline-flex items-center gap-1.5 text-[14px] font-semibold cursor-pointer" style="color:var(--accent-light)">
+        Explore all products <Icon name="lucide:arrow-right" class="w-3.5 h-3.5" />
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .about-explore { transition: transform .2s; }
+  a:hover .about-explore { transform: translateX(4px); }
+</style>

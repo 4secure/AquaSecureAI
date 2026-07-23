@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Base
+  title="Page not found — Aqua Secure AI"
+  description="The page you are looking for could not be found."
+>
+  <section class="relative overflow-hidden" style="background:var(--surface);min-height:70vh">
+    <div class="absolute inset-0 pointer-events-none opacity-35" style="background-image:radial-gradient(circle, rgba(var(--accent-rgb) / 0.18) 1px, transparent 1px);background-size:28px 28px"></div>
+    <div class="wrap relative z-10 flex flex-col items-center justify-center text-center" style="padding-top:calc(66px + 5rem);padding-bottom:6rem">
+      <p class="text-[11px] font-bold uppercase tracking-widest mb-4" style="color:var(--accent)">404 — Not Found</p>
+      <h1 class="font-black leading-[1.05] tracking-tight mb-4" style="font-size:clamp(40px,7vw,88px);color:var(--text)">
+        Page not <span style="background:linear-gradient(135deg,var(--accent) 0%,var(--accent) 50%,var(--accent-hover) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">found</span>
+      </h1>
+      <p class="text-lead mb-8" style="color:rgba(var(--text-rgb) / 0.60);max-width:520px">
+        The page you're looking for doesn't exist or has moved. Let's get you back on track.
+      </p>
+      <a
+        href="/"
+        class="hero-cta inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-[14px] text-white"
+        style="background:linear-gradient(135deg,var(--accent),var(--accent-hover));box-shadow:0 4px 18px rgba(var(--accent-rgb) / 0.35)"
+      >
+        <Icon name="lucide:arrow-left" class="w-4 h-4" /> Back to Home
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .hero-cta { transition: transform .15s, box-shadow .15s; }
+    .hero-cta:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(var(--accent-rgb) / 0.55); }
+    .hero-cta:active { transform: scale(0.97); }
+  </style>
+</Base>

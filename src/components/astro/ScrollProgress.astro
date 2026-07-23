@@ -1,0 +1,31 @@
+---
+---
+
+<div id="scroll-progress" class="scroll-progress fixed top-0 left-0 right-0 z-[999] origin-left"></div>
+
+<style>
+  .scroll-progress {
+    height: 2px;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent-bright));
+    transition: transform .1s linear;
+    will-change: transform;
+  }
+</style>
+
+<script>
+  function initScrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    const update = () => {
+      const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const p = h > 0 ? window.scrollY / h : 0;
+      bar.style.transform = `scaleX(${p})`;
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  }
+  initScrollProgress();
+  document.addEventListener('astro:page-load', initScrollProgress);
+</script>

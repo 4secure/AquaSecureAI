@@ -1,0 +1,162 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const PRODUCTS = [
+  { label: 'GRC', slug: 'grc' },
+  { label: 'SOC', slug: 'soc' },
+  { label: 'Aqua SIEM', slug: 'siem' },
+  { label: 'Threat Intelligence', slug: 'threat-intel' },
+  { label: 'Asset Management', slug: 'asset-management' },
+  { label: 'Dark Web', slug: 'dark-web' },
+  { label: 'Phishbot', slug: 'phishbot' },
+];
+const SOLUTIONS = [
+  { label: 'Manage SIEM', slug: 'manage-siem' },
+  { label: 'Attack Surface', slug: 'attack-surface' },
+  { label: 'DMARC', slug: 'dmarc' },
+  { label: 'Phishing Campaigns', slug: 'phishing-campaigns' },
+  { label: 'E-Learning', slug: 'e-learning' },
+  { label: 'Compliance Management', slug: 'compliance-management' },
+];
+const SOCIAL = [
+  { icon: 'lucide:facebook', href: 'https://www.facebook.com/AquaSecureAI' },
+  { icon: 'lucide:linkedin', href: 'https://www.linkedin.com/company/aqua-secure-ai' },
+  { icon: 'lucide:instagram', href: 'https://www.instagram.com/AquaSecureAI' },
+  { icon: 'lucide:twitter', href: 'https://x.com/AquaSecureAI' },
+];
+const QUICK = [
+  { l: 'AQUA TIP — Threat Intel', h: 'https://tip.aquasecure.ai', icon: 'lucide:zap' },
+  { l: 'Login', h: 'https://secureye.io/login', icon: 'lucide:cpu' },
+  { l: 'Get Started Free', h: 'https://secureye.io/get-started', icon: 'lucide:shield' },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap py-12">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
+      {/* Brand */}
+      <div class="md:col-span-3 justify-self-start">
+        <a href="/" class="inline-block align-top justify-self-start mb-3">
+          <img src="/images/Aquasecure_logo3.png" alt="Aqua Secure AI" />
+        </a>
+        <p class="text-xs leading-relaxed mb-4 foot-dim">
+          AI-powered cybersecurity platform protecting your digital assets.
+        </p>
+        <div class="flex gap-2">
+          {
+            SOCIAL.map(({ icon, href }) => (
+              <a href={href} target="_blank" rel="noopener noreferrer" class="foot-social w-8 h-8 rounded-lg flex items-center justify-center transition-all">
+                <Icon name={icon} class="w-3.5 h-3.5" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Products */}
+      <div class="md:col-span-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider mb-4 foot-head">Products</h4>
+        <ul class="space-y-2">
+          {PRODUCTS.map(({ label, slug }) => (
+            <li><a href={`/products/${slug}`} class="foot-link text-xs block">{label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Solutions */}
+      <div class="md:col-span-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider mb-4 foot-head">Solutions</h4>
+        <ul class="space-y-2">
+          {SOLUTIONS.map(({ label, slug }) => (
+            <li><a href={`/solutions/${slug}`} class="foot-link text-xs block">{label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Stay Updated */}
+      <div class="md:col-span-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider mb-4 foot-head">Stay Updated</h4>
+        <p class="text-xs mb-3 foot-dim">Get threat intelligence &amp; security updates.</p>
+        <form id="foot-news" class="flex gap-2 mb-3">
+          <input
+            type="email"
+            name="email"
+            placeholder="your@email.com"
+            class="foot-input flex-1 text-xs px-3 py-2 rounded-lg outline-none"
+          />
+          <button type="submit" class="foot-sub px-4 py-2 rounded-lg text-xs font-medium text-white">Subscribe</button>
+        </form>
+        <div class="flex items-center gap-1.5 mb-4">
+          <Icon name="lucide:shield" class="w-3 h-3" style="color:rgba(var(--accent-rgb) / 0.6)" />
+          <p class="text-[10px]" style="color:rgba(var(--text-rgb) / 0.4)">No spam. Unsubscribe anytime.</p>
+        </div>
+        <div class="space-y-1.5">
+          {
+            QUICK.map(({ l, h, icon }) => (
+              <a href={h} target="_blank" rel="noopener noreferrer" class="foot-qlink text-[10px] flex items-center gap-1.5">
+                <Icon name={icon} class="w-3 h-3" />
+                {l}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom bar */}
+    <div class="foot-bottom pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-[10px]" style="color:rgba(var(--text-rgb) / 0.35)">© 2026 All Rights Reserved.</p>
+      <div class="flex gap-4">
+        <a href="/privacypolicy" class="text-[10px]" style="color:rgba(var(--text-rgb) / 0.4)">Privacy Policy</a>
+        <a href="/termscondition" class="text-[10px]" style="color:rgba(var(--text-rgb) / 0.4)">Terms &amp; Conditions</a>
+        <a href="mailto:info@aquasecure.ai" class="text-[10px]" style="color:rgba(var(--text-rgb) / 0.4)">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--bg); border-top: 1px solid rgba(var(--accent-rgb) / 0.12); }
+  .site-footer img { filter: brightness(0.2) saturate(2); }
+  :global(html.dark) .site-footer img { filter: none; }
+  .foot-dim { color: rgba(var(--text-rgb) / 0.55); }
+  .foot-head { color: var(--text); }
+  .foot-link { color: rgba(var(--text-rgb) / 0.55); transition: color .15s; }
+  .foot-link:hover { color: var(--accent-light); }
+  .foot-social {
+    background: rgba(var(--accent-rgb) / 0.08);
+    border: 1px solid rgba(var(--accent-rgb) / 0.2);
+    color: rgba(var(--text-rgb) / 0.6);
+  }
+  .foot-social:hover { background: rgba(var(--accent-rgb) / 0.2); color: var(--accent-light); }
+  .foot-input {
+    background: rgba(10,11,20,0.8);
+    border: 1px solid rgba(var(--accent-rgb) / 0.2);
+    color: var(--text);
+  }
+  .foot-sub { background: var(--accent); transition: transform .15s; }
+  .foot-sub:hover { transform: scale(1.02); }
+  .foot-sub:active { transform: scale(0.98); }
+  .foot-qlink { color: rgba(var(--text-rgb) / 0.45); transition: color .15s; }
+  .foot-qlink:hover { color: var(--accent-light); }
+  .foot-bottom { border-top: 1px solid rgba(var(--accent-rgb) / 0.1); }
+</style>
+
+<script>
+  function initFooterNews() {
+    const form = document.getElementById('foot-news');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = '1';
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (!input || !btn || !input.value) return;
+      btn.textContent = '✓';
+      input.value = '';
+      setTimeout(() => { btn.textContent = 'Subscribe'; }, 3000);
+    });
+  }
+  initFooterNews();
+  document.addEventListener('astro:page-load', initFooterNews);
+</script>

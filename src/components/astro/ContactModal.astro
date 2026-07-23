@@ -1,0 +1,204 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const SUBJECTS = [
+  'GRC & Compliance',
+  'SOC Services',
+  'Threat Intelligence',
+  'Asset Management',
+  'Training & Awareness',
+  'AQUA TIP Platform',
+  'General Inquiry',
+];
+---
+
+<div id="contact-modal" class="contact-modal fixed inset-0 z-[200] items-center justify-center p-4" role="dialog" aria-modal="true">
+  <div class="cm-overlay absolute inset-0" data-cm-close></div>
+
+  <div class="cm-panel relative w-full max-w-[480px] rounded-xl overflow-hidden">
+    <div class="h-[3px] w-full" style="background:linear-gradient(90deg,var(--accent-hover),var(--accent),var(--accent-light),var(--accent),var(--accent-hover))"></div>
+
+    <button class="cm-x absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center transition-all" data-cm-close aria-label="Close">
+      <Icon name="lucide:x" class="w-4 h-4" />
+    </button>
+
+    <div class="p-7 md:p-9">
+      {/* Success view */}
+      <div class="cm-success text-center py-6" hidden>
+        <div class="cm-success-ring w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center">
+          <Icon name="lucide:check" class="w-7 h-7" style="color:var(--accent);stroke-width:2.5" />
+        </div>
+        <h3 class="text-[22px] font-extrabold mb-2" style="color:var(--text)">Message sent!</h3>
+        <p class="text-[14px]" style="color:rgba(var(--text-rgb) / 0.60)">
+          We'll respond at <strong style="color:var(--accent-light)">info@aquasecure.ai</strong> within 24 hours.
+        </p>
+      </div>
+
+      {/* Form view */}
+      <div class="cm-form-wrap">
+        <div class="mb-7">
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-2 h-2 rounded-full animate-pulse" style="background:var(--accent);box-shadow:0 0 8px rgba(var(--accent-rgb) / 0.8)"></div>
+            <h3 class="text-[20px] font-extrabold" style="color:var(--text)">Get in Touch</h3>
+          </div>
+          <p class="text-[13px]" style="color:rgba(var(--text-rgb) / 0.55)">
+            Contact us at <a href="mailto:info@aquasecure.ai" style="color:var(--accent)" class="hover:underline">info@aquasecure.ai</a> or fill the form below.
+          </p>
+        </div>
+
+        <form class="cm-form flex flex-col gap-3.5" novalidate>
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgba(var(--text-rgb) / 0.55)">Name</label>
+              <input name="name" class="input" placeholder="Full Name" />
+              <p class="cm-err text-[11px] text-red-400 mt-1" data-for="name" hidden>Required</p>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgba(var(--text-rgb) / 0.55)">Work Email</label>
+              <input type="email" name="email" class="input" placeholder="you@company.com" />
+              <p class="cm-err text-[11px] text-red-400 mt-1" data-for="email" hidden>Valid email required</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgba(var(--text-rgb) / 0.55)">Phone Number</label>
+            <input type="tel" name="phone" class="input" placeholder="+1 (555) 000-0000" />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgba(var(--text-rgb) / 0.55)">Subject</label>
+            <div class="relative">
+              <select name="subject" class="input appearance-none cursor-pointer pr-9" style="background:rgba(255,255,255,0.04)">
+                <option value="" style="background:var(--surface)">Select a subject…</option>
+                {SUBJECTS.map((s) => <option value={s} style="background:var(--surface)">{s}</option>)}
+              </select>
+              <Icon name="lucide:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style="color:rgba(var(--text-rgb) / 0.4)" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgba(var(--text-rgb) / 0.55)">Message</label>
+            <textarea name="message" class="input resize-none" rows="3" placeholder="Tell us how we can help…"></textarea>
+          </div>
+
+          <button type="submit" class="cm-submit btn-primary w-full justify-center py-3.5 text-[14px] mt-1 disabled:opacity-70 disabled:cursor-not-allowed">
+            <span class="cm-submit-idle">Send Message</span>
+            <span class="cm-submit-busy hidden items-center gap-2">
+              <Icon name="lucide:loader-2" class="w-4 h-4 animate-spin" />Sending…
+            </span>
+          </button>
+
+          <div class="flex items-center justify-between pt-1">
+            <p class="text-[11px]" style="color:rgba(var(--text-rgb) / 0.3)">© 2026 Aqua Secure AI</p>
+            <a href="https://secureye.io/get-started" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-semibold" style="color:var(--accent)">
+              Get Started Free <Icon name="lucide:external-link" class="w-3 h-3" />
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .contact-modal { display: none; }
+  .contact-modal.open { display: flex; }
+  .cm-overlay { background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); opacity: 0; transition: opacity .3s ease; }
+  .contact-modal.open .cm-overlay { opacity: 1; }
+  .cm-panel {
+    background: var(--surface);
+    border: 1px solid rgba(var(--border-rgb) / 0.25);
+    box-shadow: 0 32px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(var(--border-rgb) / 0.15);
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    transition: opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .contact-modal.open .cm-panel { opacity: 1; transform: translateY(0) scale(1); }
+  .cm-x { color: rgba(var(--text-rgb) / 0.5); background: rgba(var(--border-rgb) / 0.08); }
+  .cm-x:hover { color: var(--text); background: rgba(var(--border-rgb) / 0.15); }
+  .cm-success-ring {
+    background: rgba(var(--accent-rgb) / 0.12);
+    border: 1px solid rgba(var(--accent-rgb) / 0.3);
+    animation: cmGlow 2s infinite;
+  }
+  @keyframes cmGlow {
+    0%,100% { box-shadow: 0 0 0px rgba(var(--accent-rgb) / 0); }
+    50% { box-shadow: 0 0 40px rgba(var(--accent-rgb) / 0.5); }
+  }
+</style>
+
+<script>
+  function initContactModal() {
+    const modal = document.getElementById('contact-modal');
+    if (!modal || modal.dataset.bound) return;
+    modal.dataset.bound = '1';
+
+    const form = modal.querySelector('.cm-form') as HTMLFormElement;
+    const successView = modal.querySelector('.cm-success') as HTMLElement;
+    const formWrap = modal.querySelector('.cm-form-wrap') as HTMLElement;
+    const submitBtn = modal.querySelector('.cm-submit') as HTMLButtonElement;
+    const idle = modal.querySelector('.cm-submit-idle') as HTMLElement;
+    const busy = modal.querySelector('.cm-submit-busy') as HTMLElement;
+
+    const showError = (name: string, show: boolean) => {
+      const el = modal.querySelector(`.cm-err[data-for="${name}"]`) as HTMLElement | null;
+      if (el) el.hidden = !show;
+    };
+
+    const open = () => {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        form?.reset();
+        successView.hidden = true;
+        formWrap.hidden = false;
+        showError('name', false);
+        showError('email', false);
+        idle.classList.remove('hidden');
+        busy.classList.add('hidden');
+        submitBtn.disabled = false;
+      }, 400);
+    };
+
+    // Openers: any [data-contact] element, or a custom event
+    document.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement)?.closest('[data-contact]');
+      if (t) { e.preventDefault(); open(); }
+    });
+    window.addEventListener('aqua:open-contact', open);
+
+    // Closers
+    modal.querySelectorAll('[data-cm-close]').forEach((el) => el.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '').trim();
+      const emailOk = /^\S+@\S+\.\S+$/.test(email);
+      showError('name', !name);
+      showError('email', !emailOk);
+      if (!name || !emailOk) return;
+
+      submitBtn.disabled = true;
+      idle.classList.add('hidden');
+      busy.classList.remove('hidden');
+      busy.classList.add('flex');
+
+      setTimeout(() => {
+        formWrap.hidden = true;
+        successView.hidden = false;
+        setTimeout(close, 2600);
+      }, 1400);
+    });
+  }
+  initContactModal();
+  document.addEventListener('astro:page-load', initContactModal);
+</script>

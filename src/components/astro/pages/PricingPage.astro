@@ -1,0 +1,259 @@
+---
+import { Icon } from 'astro-icon/components';
+
+// Real plans: TIP has a free tier mentioned on the site
+const PLANS = [
+  {
+    name: "AQUA TIP Free",
+    price: "$0",
+    per: "/forever",
+    desc: "Real-Time Threat Intelligence Platform",
+    highlight: false,
+    cta: "Try AQUA TIP",
+    ctaLink: "https://tip.aquasecure.ai",
+    features: [
+      ["1 IP search per day", true],
+      ["Real-time IP reputation lookup", true],
+      ["Threat classification (malware/botnet/scanner)", true],
+      ["Unified risk scoring", true],
+      ["No credit card required", true],
+      ["Advanced feeds & bulk lookup", false],
+      ["API access", false],
+      ["SOC platform access", false],
+    ],
+  },
+  {
+    name: "AQUA TIP Pro",
+    price: "Contact",
+    per: "",
+    desc: "Full Threat Intelligence Platform Access",
+    highlight: true,
+    cta: "Get Pricing",
+    ctaLink: "mailto:info@aquasecure.ai",
+    features: [
+      ["Unlimited IP searches", true],
+      ["Real-time IP reputation lookup", true],
+      ["Advanced threat classification", true],
+      ["Multi-source risk scoring", true],
+      ["Bulk IP lookup", true],
+      ["API access for integration", true],
+      ["Priority support", true],
+      ["Custom feeds", true],
+    ],
+  },
+  {
+    name: "Enterprise Platform",
+    price: "Custom",
+    per: "",
+    desc: "Full Aqua Secure AI Platform",
+    highlight: false,
+    cta: "Contact Sales",
+    ctaLink: "mailto:info@aquasecure.ai",
+    features: [
+      ["GRC compliance automation", true],
+      ["24/7 SOC operations", true],
+      ["Threat intelligence platform", true],
+      ["Asset management", true],
+      ["Training & awareness programs", true],
+      ["Dedicated account manager", true],
+    ],
+  },
+];
+
+const FAQ = [
+  {
+    q: "What is included in the free TIP plan?",
+    a: "The AQUA TIP free plan at tip.aquasecure.ai gives you 1 IP search per day with full real-time IP reputation lookup, threat classification, and risk scoring. No credit card required.",
+  },
+  {
+    q: "How do I access the full SOC platform?",
+    a: "The full Aqua Secure AI platform (GRC, SOC, Threat Intelligence, Asset Management, Training) is available via secureye.io. Contact info@aquasecure.ai for pricing.",
+  },
+  {
+    q: "What GRC frameworks are supported?",
+    a: "Aqua Secure AI automates compliance for CTDISR, ETGRM, ISO 27001 and more. Custom framework support is also available.",
+  },
+  {
+    q: "Is managed SOC service available?",
+    a: "Yes — managed services include incident creation, workflow management, detection and response, and threat hunting. Contact info@aquasecure.ai to discuss managed SOC options.",
+  },
+  {
+    q: "How do I get started?",
+    a: "Sign up at secureye.io/get-started or try AQUA TIP for free at tip.aquasecure.ai. For enterprise enquiries, email info@aquasecure.ai.",
+  },
+];
+---
+
+{/* ── PageHero ── */}
+<section class="relative overflow-hidden pt-[108px] pb-12" style="background:var(--surface)">
+  <div class="wrap relative z-10 text-center">
+    <div>
+      <div class="reveal flex justify-center mb-5">
+        <span class="badge" style="background:rgba(var(--accent-rgb) / 0.12);color:var(--accent);border:1px solid rgba(var(--accent-rgb) / 0.25)">Pricing</span>
+      </div>
+      <h1 class="reveal delay-1 font-black text-text leading-[1.06] tracking-tight mb-4" style="font-size:clamp(34px,6vw,68px);letter-spacing:-0.03em;color:var(--text)">
+        Simple, transparent{' '}
+        <span class="tg" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">pricing</span>
+      </h1>
+      <p class="reveal delay-2 text-lead text-sub leading-[1.8] max-w-[580px] mx-auto mb-8" style="color:rgba(var(--text-rgb) / 0.65)">
+        Start with AQUA TIP free — 1 search per day, no credit card. Contact us for full platform pricing.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section relative overflow-hidden" style="background:var(--bg)">
+  {/* GlowOrbs variant="default" */}
+  <div class="glow-orbs absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="absolute rounded-full" style="width:700px;height:600px;top:-20%;left:40%;transform:translateX(-50%);background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.16) 0%,transparent 70%);filter:blur(140px);animation:orbFloat 7s ease-in-out 0s infinite alternate"></div>
+    <div class="absolute rounded-full" style="width:400px;height:400px;bottom:-8%;left:-5%;background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.12) 0%,transparent 70%);filter:blur(100px);animation:orbFloat 9s ease-in-out 1.5s infinite alternate"></div>
+    <div class="absolute rounded-full" style="width:300px;height:300px;top:25%;right:-8%;background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.09) 0%,transparent 70%);filter:blur(80px);animation:orbFloat 11s ease-in-out 3s infinite alternate"></div>
+  </div>
+  <div class="wrap relative z-10">
+    {/* Plans */}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-20">
+      {
+        PLANS.map((p) => {
+          const isExternal = p.ctaLink.startsWith("http");
+          return (
+            <div
+              class="plan-card relative rounded-xl p-7 flex flex-col border transition-all"
+              data-highlight={p.highlight ? '1' : '0'}
+              style={`background:var(--surface);border-color:${p.highlight ? 'rgba(var(--accent-rgb) / 0.55)' : 'rgba(var(--border-rgb) / 0.2)'};box-shadow:${p.highlight ? '0 0 0 1px rgba(var(--accent-rgb) / 0.55),0 20px 60px rgba(var(--border-rgb) / 0.18)' : 'none'}`}
+            >
+              {p.highlight && (
+                <div
+                  class="absolute -top-4 left-1/2 -translate-x-1/2 text-white text-[11px] font-bold px-5 py-1.5 rounded-pill whitespace-nowrap"
+                  style="background:linear-gradient(135deg,var(--accent),var(--accent-hover));box-shadow:0 4px 18px rgba(var(--accent-rgb) / 0.5)"
+                >
+                  Most Popular
+                </div>
+              )}
+              <p
+                class="text-[12px] font-bold uppercase tracking-widest mb-3"
+                style={`color:${p.highlight ? 'var(--accent)' : 'rgba(var(--text-rgb) / 0.55)'}`}
+              >
+                {p.name}
+              </p>
+              <div class="flex items-baseline gap-1 mb-2">
+                <span class="text-[44px] font-black leading-none tracking-tight" style="color:var(--text)">
+                  {p.price}
+                </span>
+                {p.per && (
+                  <span class="text-[15px]" style="color:rgba(var(--text-rgb) / 0.45)">
+                    {p.per}
+                  </span>
+                )}
+              </div>
+              <p class="text-[13px] mb-6" style="color:rgba(var(--text-rgb) / 0.50)">
+                {p.desc}
+              </p>
+              <div class="h-px mb-6" style="background:rgba(var(--border-rgb) / 0.15)"></div>
+              <ul class="flex flex-col gap-2.5 mb-8 flex-1">
+                {
+                  p.features.map(([f, inc]) => (
+                    <li class="flex items-center gap-3">
+                      <span
+                        class="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={`background:${inc ? 'rgba(var(--accent-rgb) / 0.15)' : 'rgba(255,255,255,0.04)'}`}
+                      >
+                        {inc ? (
+                          <Icon name="lucide:check" class="w-2.5 h-2.5" style="color:var(--accent)" />
+                        ) : (
+                          <span style="color:rgba(var(--text-rgb) / 0.25);font-size:10px">—</span>
+                        )}
+                      </span>
+                      <span
+                        class="text-[13px]"
+                        style={`color:${inc ? 'rgba(var(--text-rgb) / 0.65)' : 'rgba(var(--text-rgb) / 0.28)'}`}
+                      >
+                        {f}
+                      </span>
+                    </li>
+                  ))
+                }
+              </ul>
+              <a
+                href={p.ctaLink}
+                target={isExternal ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                class={`plan-cta ${p.highlight ? "btn-primary" : "btn-outline"} w-full justify-center py-3.5 text-[14px] inline-flex items-center gap-2`}
+              >
+                {p.cta}
+                {isExternal ? (
+                  <Icon name="lucide:external-link" class="w-3.5 h-3.5" />
+                ) : (
+                  <Icon name="lucide:arrow-right" class="w-3.5 h-3.5" />
+                )}
+              </a>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    {/* FAQ */}
+    <div class="max-w-[700px] mx-auto">
+      <h3
+        class="reveal font-extrabold tracking-tight text-center mb-10"
+        style="font-size:clamp(22px,2.5vw,32px);color:var(--text)"
+      >
+        Frequently asked questions
+      </h3>
+      <div class="flex flex-col gap-4">
+        {
+          FAQ.map((item) => (
+            <div
+              class="faq-card reveal rounded-xl p-6 border transition-all"
+              style="background:var(--surface);border-color:rgba(var(--border-rgb) / 0.2)"
+            >
+              <p class="font-semibold text-[15px] mb-2" style="color:var(--text)">
+                {item.q}
+              </p>
+              <p class="text-[14px] leading-relaxed" style="color:rgba(var(--text-rgb) / 0.58)">
+                {item.a}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="reveal text-center mt-10">
+        <p class="text-[14px] mb-3" style="color:rgba(var(--text-rgb) / 0.50)">
+          Have more questions? Email us directly:
+        </p>
+        <a
+          href="mailto:info@aquasecure.ai"
+          class="email-cta btn-primary inline-flex items-center gap-2"
+        >
+          info@aquasecure.ai <Icon name="lucide:external-link" class="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes orbFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-18px) scale(1.04); }
+  }
+
+  /* Plan card — whileHover y:-5 (only non-highlighted) */
+  .plan-card[data-highlight="0"] { transition: transform .3s cubic-bezier(0.16,1,0.3,1); }
+  .plan-card[data-highlight="0"]:hover { transform: translateY(-5px); }
+
+  /* Plan CTA — whileHover scale 1.02 (+shadow for primary), whileTap scale .98 */
+  .plan-cta { transition: transform .15s, box-shadow .15s; }
+  .plan-cta:hover { transform: scale(1.02); }
+  .btn-primary.plan-cta:hover { box-shadow: 0 6px 28px rgba(var(--accent-rgb) / .70); }
+  .plan-cta:active { transform: scale(0.98); }
+
+  /* FAQ card — whileHover borderColor */
+  .faq-card { transition: border-color .3s; }
+  .faq-card:hover { border-color: rgba(var(--accent-rgb) / 0.35); }
+
+  /* Email CTA — whileHover scale 1.03 / shadow, whileTap .97 */
+  .email-cta { transition: transform .15s, box-shadow .15s; }
+  .email-cta:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(var(--accent-rgb) / .70); }
+  .email-cta:active { transform: scale(0.97); }
+</style>

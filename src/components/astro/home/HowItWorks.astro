@@ -1,0 +1,467 @@
+---
+import { Icon } from 'astro-icon/components';
+
+// HowItWorks: dark gradient bg — deep purple-black
+const T = {
+  primary: "var(--accent)",
+  primaryDark: "var(--accent-hover)",
+  primaryLight: "var(--accent-light)",
+  card: "rgba(var(--bg-rgb) / 0.85)",
+  cardBorder: "rgba(var(--accent-rgb) / 0.20)",
+  text: "var(--text)",
+  sub: "rgba(var(--text-rgb) / 0.65)",
+  faint: "rgba(var(--text-rgb) / 0.38)",
+  success: "#29E07A",
+  warning: "#FFB020",
+  info: "var(--accent-bright)",
+  nodeBg: "rgba(var(--bg-rgb) / 0.95)",
+  nodeBorder: "rgba(var(--accent-rgb) / 0.45)",
+  animBg: "rgba(var(--bg-rgb) / 0.90)",
+};
+
+const STEPS = [
+  {
+    icon: "lucide:shield",
+    color: "var(--accent)",
+    bg: "rgba(var(--accent-rgb) / 0.12)",
+    stage: "PREVENT",
+    title: "Proactive Risk Prevention",
+    desc: "Continuously monitor your risk posture and automate GRC compliance. Identify vulnerabilities across your digital footprint before attackers can exploit them.",
+    bullets: ["Risk monitoring & scoring", "GRC Tasks & compliance"],
+  },
+  {
+    icon: "lucide:eye",
+    color: "var(--accent)",
+    bg: "rgba(53,187,255,0.12)",
+    stage: "DETECT",
+    title: "AI-Powered Threat Detection",
+    desc: "Detect threats across every surface — from global Threat Intel feeds to DMARC email fraud, Dark Web leaks, and live Security Incidents — correlated by AI in real time.",
+    bullets: [
+      "Threat Intel feeds",
+      "DMARC email security",
+      "Dark Web monitoring",
+      "Security Incidents",
+    ],
+  },
+  {
+    icon: "lucide:zap",
+    color: "var(--accent)",
+    bg: "rgba(41,224,122,0.12)",
+    stage: "RESPOND",
+    title: "Automated Incident Response",
+    desc: "Processes all incoming data, enriches true threats, and empowers your SOC analysts with automated incident workflows and threat hunting — 24/7.",
+    bullets: [
+      "Total threats processed",
+      "Enriched & prioritised",
+      "Automated triage & response",
+    ],
+  },
+];
+
+const NP = {
+  center: { left: "calc(50% - 55px)", top: "calc(50% - 42px)" },
+  kubernetes: { left: "calc(25% - 22px)", top: "calc(18% - 16px)" },
+  aws: { left: "calc(37% - 36px)", top: "calc(20% - 16px)" },
+  database: { left: "calc(73% - 28px)", top: "calc(18% - 16px)" },
+  cloud: { left: "calc(61% - 36px)", top: "calc(28% - 16px)" },
+  shield: { left: "calc(20% - 70px)", top: "calc(40% - 16px)" },
+  cost: { left: "calc(82% - 36px)", top: "calc(40% - 16px)" },
+};
+
+const NODES = [
+  { k: "kubernetes", label: "Risk" },
+  { k: "aws", label: "Threat Intel" },
+  { k: "database", label: "DMARC" },
+  { k: "cloud", label: "Dark Web" },
+  { k: "shield", label: "Security Incidents" },
+  { k: "cost", label: "GRC Tasks" },
+];
+
+// AIAnimation config — vbW/paths are computed at runtime in the script (aspect-ratio driven).
+const ANIM_HEIGHT = 440;
+
+const CARDS_DATA = {
+  processed: { value: "1.4K", label: "Total" },
+  enriched: { value: "11.2K", label: "Enriched" },
+  skipped: { value: "1.2K", label: "Skipped" },
+};
+
+// Bottom stat cards (icons drawn as inline SVG paths, matching PIcon/EIcon/SIcon)
+const CARDS = [
+  {
+    key: "processed",
+    color: T.info,
+    left: "27%",
+    iconPaths: '<path d="M22 12h-4l-3 9L9 3l-3 9H2" />',
+  },
+  {
+    key: "enriched",
+    color: T.success,
+    left: "50%",
+    iconPaths:
+      '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />',
+  },
+  {
+    key: "skipped",
+    color: T.warning,
+    left: "74%",
+    iconPaths:
+      '<circle cx="12" cy="12" r="10" /><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />',
+  },
+];
+---
+
+<section
+  id="how"
+  class="section relative overflow-hidden"
+  style="background:var(--bg)"
+>
+  {/* Radial glow */}
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background:radial-gradient(ellipse 70% 50% at 50% 50%, rgba(var(--border-rgb) / 0.10) 0%, transparent 70%)"
+  >
+  </div>
+
+  <div class="wrap relative z-10">
+    <div class="text-center mb-14">
+      <p class="reveal delay-1 badge mb-4">How It Works</p>
+      <h2
+        class="reveal delay-2 font-extrabold tracking-tight leading-tight mb-4"
+        style="font-size:clamp(26px,3.8vw,44px);color:var(--text)"
+      >
+        How do we{" "}
+        <span
+          style="background:linear-gradient(135deg,var(--text),var(--accent-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"
+        >
+          prevent cyber attacks?
+        </span>
+      </h2>
+      <p
+        class="reveal delay-3 text-lead leading-[1.8] max-w-[540px] mx-auto"
+        style="color:rgba(var(--text-rgb) / 0.65)"
+      >
+        A three-stage AI-powered SecOps pipeline — PREVENT, DETECT, RESPOND
+        — running continuously, empowering your SOC analysts to stay ahead
+        of every threat.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <div>
+        {
+          STEPS.map((s, i) => (
+            <div class="hiw-step reveal flex gap-4 mb-7 group">
+              <div class="flex flex-col items-center">
+                <div
+                  class="hiw-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={`background:${s.bg}`}
+                >
+                  <Icon name={s.icon} class="w-5 h-5" style={`color:${s.color}`} />
+                </div>
+                {i < STEPS.length - 1 && (
+                  <div
+                    class="w-px mt-2 flex-1"
+                    style={`background:linear-gradient(to bottom,${s.color}40,transparent);min-height:24px`}
+                  />
+                )}
+              </div>
+              <div class="pb-2 flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  <span
+                    class="text-[10px] font-black px-2.5 py-1 rounded-pill"
+                    style={`background:${s.bg};color:${s.color};border:1px solid ${s.color}40`}
+                  >
+                    {s.stage}
+                  </span>
+                  <p class="font-bold text-[15px]" style="color:var(--text)">
+                    {s.title}
+                  </p>
+                </div>
+                <p
+                  class="text-[13px] leading-relaxed mb-3"
+                  style="color:rgba(var(--text-rgb) / 0.60)"
+                >
+                  {s.desc}
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  {s.bullets.map((b) => (
+                    <span
+                      class="text-[10px] font-medium px-2 py-0.5 rounded-pill"
+                      style="background:rgba(var(--border-rgb) / 0.10);color:rgba(var(--text-rgb) / 0.65);border:1px solid rgba(var(--border-rgb) / 0.20)"
+                    >
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="reveal delay-2">
+        <p
+          class="text-[11px] font-bold uppercase tracking-widest text-center mb-4"
+          style="color:rgba(var(--text-rgb) / 0.38)"
+        >
+          Aqua Secure AI — SecOps Pipeline
+        </p>
+        <div
+          class="rounded-2xl overflow-hidden"
+          style="border:1px solid rgba(var(--accent-rgb) / 0.25);box-shadow:0 0 0 1px rgba(var(--border-rgb) / 0.08),0 32px 80px rgba(0,0,0,0.55)"
+        >
+          {/* AIAnimation */}
+          <div
+            class="aia-root"
+            data-anim-height={ANIM_HEIGHT}
+            style={`position:relative;background-color:${T.animBg};border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid ${T.cardBorder};height:${ANIM_HEIGHT}px;width:100%;backdrop-filter:blur(12px)`}
+          >
+            <div
+              style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(var(--accent-rgb) / 0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--accent-rgb) / 0.04) 1px,transparent 1px);background-size:40px 40px"
+            >
+            </div>
+            <div
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:100px;pointer-events:none;background:radial-gradient(ellipse at center,rgba(var(--accent-rgb) / 0.14) 0%,transparent 70%)"
+            >
+            </div>
+            <svg
+              class="aia-svg"
+              viewBox="0 0 180 100"
+              preserveAspectRatio="none"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"
+            >
+              <defs>
+                <linearGradient id="ag1d" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color={T.primary} stop-opacity="0.18"></stop>
+                  <stop offset="50%" stop-color={T.primary} stop-opacity="0.55"></stop>
+                  <stop offset="100%" stop-color={T.primary} stop-opacity="0.18"></stop>
+                </linearGradient>
+                <linearGradient id="ag2d" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color={T.primary} stop-opacity="0.45"></stop>
+                  <stop offset="100%" stop-color={T.primaryLight} stop-opacity="0.18"></stop>
+                </linearGradient>
+                <filter id="aglwd">
+                  <feGaussianBlur stdDeviation="1.2" result="b"></feGaussianBlur>
+                  <feMerge>
+                    <feMergeNode in="b"></feMergeNode>
+                    <feMergeNode in="SourceGraphic"></feMergeNode>
+                  </feMerge>
+                </filter>
+              </defs>
+              {/* input paths */}
+              <g class="aia-in-paths"></g>
+              {/* output paths */}
+              <g class="aia-out-paths"></g>
+              <g filter="url(#aglwd)" class="aia-particles"></g>
+            </svg>
+            {
+              NODES.map((n) => (
+                <div
+                  class="aia-node"
+                  style={`position:absolute;padding:0 10px;min-width:42px;min-height:32px;background-color:${T.nodeBg};border-radius:7px;display:flex;align-items:center;justify-content:center;border:2px solid ${T.nodeBorder};z-index:5;white-space:nowrap;box-sizing:border-box;left:${NP[n.k].left};top:${NP[n.k].top}`}
+                >
+                  <span style={`font-size:11px;font-weight:700;color:${T.primary}`}>
+                    {n.label}
+                  </span>
+                </div>
+              ))
+            }
+            <div
+              style={`position:absolute;width:110px;height:84px;background:linear-gradient(135deg,${T.primaryDark},var(--accent-hover));border-radius:11px;display:flex;align-items:center;justify-content:center;z-index:10;border:2px solid ${T.primaryLight};left:${NP.center.left};top:${NP.center.top}`}
+            >
+              {/* RobotIcon */}
+              <svg
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
+                <path d="M12 2v2"></path>
+                <path d="M9 12v9"></path>
+                <path d="M15 12v9"></path>
+                <path d="M5 16l4 -2"></path>
+                <path d="M15 14l4 2"></path>
+                <path d="M9 18h6"></path>
+                <path d="M10 8v.01"></path>
+                <path d="M14 8v.01"></path>
+              </svg>
+            </div>
+            {
+              CARDS.map((c) => {
+                const data = CARDS_DATA[c.key] || { value: "0", label: c.key };
+                return (
+                  <div
+                    class="aia-card"
+                    style={`position:absolute;display:flex;flex-direction:column;padding:10px 13px;border-radius:11px;background-color:${T.card};border:1px solid ${T.cardBorder};min-width:100px;animation:none;z-index:15;backdrop-filter:blur(10px);left:${c.left};bottom:5%;transform:translateX(-50%)`}
+                  >
+                    <div
+                      style={`width:28px;height:28px;border-radius:8px;background-color:${c.color}22;display:flex;align-items:center;justify-content:center;margin-bottom:8px`}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={c.color}
+                        stroke-width="2"
+                        set:html={c.iconPaths}
+                      />
+                    </div>
+                    <span
+                      style={`font-size:20px;font-weight:700;color:${T.text};line-height:1.2`}
+                    >
+                      {data.value}
+                    </span>
+                    <span
+                      style={`font-size:10px;font-weight:500;color:${T.faint};text-transform:uppercase;letter-spacing:0.5px;margin-top:3px`}
+                    >
+                      {data.label}
+                    </span>
+                  </div>
+                );
+              })
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* aia-node / aia-card hover (was injected AI_CSS + framer motion.div hovers) */
+  .aia-node { transition: transform .2s ease, border-color .2s ease; }
+  .aia-node:hover { transform: scale(1.08); border-color: var(--accent) !important; }
+  .aia-card { transition: box-shadow .2s ease, border-color .2s ease; cursor: default; }
+  .aia-card:hover {
+    box-shadow: 0 6px 28px rgba(var(--accent-rgb) / 0.28) !important;
+    border-color: rgba(var(--accent-rgb) / 0.50) !important;
+  }
+
+  /* step whileHover={{ x: 4 }} */
+  .hiw-step { transition: transform .2s ease; }
+  .hiw-step:hover { transform: translateX(4px); }
+
+  /* icon whileHover={{ scale: 1.15, rotate: 8 }} */
+  .hiw-icon { transition: transform .2s ease; }
+  .hiw-step:hover .hiw-icon { transform: scale(1.15) rotate(8deg); }
+</style>
+
+<script>
+  function initHowItWorks() {
+    const roots = document.querySelectorAll<HTMLElement>('.aia-root');
+    roots.forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+
+      const svg = root.querySelector<SVGSVGElement>('.aia-svg');
+      const inG = root.querySelector<SVGGElement>('.aia-in-paths');
+      const outG = root.querySelector<SVGGElement>('.aia-out-paths');
+      const partG = root.querySelector<SVGGElement>('.aia-particles');
+      if (!svg || !inG || !outG || !partG) return;
+
+      const SVGNS = 'http://www.w3.org/2000/svg';
+      const primary = 'var(--accent)';
+      const primaryLight = 'var(--accent-light)';
+
+      const build = (vbW: number) => {
+        const sx = (x: number) => (x * vbW) / 100;
+        const inp = [
+          { id: 'k', delay: 0, d: `M ${sx(25)},18 L ${sx(25)},29 Q ${sx(25)},30 ${sx(26)},30 L ${sx(29)},30 Q ${sx(30)},30 ${sx(30)},31 L ${sx(30)},44 Q ${sx(30)},45 ${sx(31)},45 L ${sx(45)},45` },
+          { id: 'a', delay: 0.8, d: `M ${sx(37)},20 L ${sx(37)},34 Q ${sx(37)},35 ${sx(38)},35 L ${sx(41)},35 Q ${sx(42)},35 ${sx(42)},36 L ${sx(42)},49 Q ${sx(42)},50 ${sx(43)},50 L ${sx(50)},50` },
+          { id: 'd', delay: 1.6, d: `M ${sx(73)},18 L ${sx(73)},32 Q ${sx(73)},33 ${sx(72)},33 L ${sx(71)},33 Q ${sx(70)},33 ${sx(70)},34 L ${sx(70)},44 Q ${sx(70)},45 ${sx(69)},45 L ${sx(55)},45` },
+          { id: 'c', delay: 2.4, d: `M ${sx(61)},28 L ${sx(61)},49 Q ${sx(61)},50 ${sx(60)},50 L ${sx(55)},50` },
+          { id: 's', delay: 3.2, d: `M ${sx(20)},40 L ${sx(26)},40 Q ${sx(27)},40 ${sx(27)},41 L ${sx(27)},54 Q ${sx(27)},55 ${sx(28)},55 L ${sx(45)},55` },
+          { id: 'g', delay: 4.0, d: `M ${sx(82)},40 L ${sx(76)},40 Q ${sx(75)},40 ${sx(75)},41 L ${sx(75)},54 Q ${sx(75)},55 ${sx(74)},55 L ${sx(55)},55` },
+        ];
+        const out = [
+          { id: 'ol', delay: 0.5, d: `M ${sx(50)},58 L ${sx(50)},67 Q ${sx(50)},68 ${sx(49)},68 L ${sx(39)},68 Q ${sx(38)},68 ${sx(38)},69 L ${sx(38)},79 Q ${sx(38)},80 ${sx(37)},80 L ${sx(31)},80` },
+          { id: 'oc', delay: 1.0, d: `M ${sx(50)},58 L ${sx(50)},78` },
+          { id: 'or', delay: 1.5, d: `M ${sx(50)},58 L ${sx(50)},67 Q ${sx(50)},68 ${sx(51)},68 L ${sx(61)},68 Q ${sx(62)},68 ${sx(62)},69 L ${sx(62)},79 Q ${sx(62)},80 ${sx(63)},80 L ${sx(69)},80` },
+        ];
+
+        svg.setAttribute('viewBox', `0 0 ${vbW} 100`);
+        inG.innerHTML = '';
+        outG.innerHTML = '';
+        partG.innerHTML = '';
+
+        const mkPath = (d: string, stroke: string, width: string) => {
+          const p = document.createElementNS(SVGNS, 'path');
+          p.setAttribute('d', d);
+          p.setAttribute('fill', 'none');
+          p.setAttribute('stroke', stroke);
+          p.setAttribute('stroke-width', width);
+          p.setAttribute('stroke-linecap', 'round');
+          p.setAttribute('stroke-linejoin', 'round');
+          return p;
+        };
+
+        inp.forEach((p) => inG.appendChild(mkPath(p.d, 'url(#ag1d)', '0.7')));
+        out.forEach((p) => outG.appendChild(mkPath(p.d, 'url(#ag2d)', '0.8')));
+
+        const mkParticle = (path: string, delay: number, color: string) => {
+          const circle = document.createElementNS(SVGNS, 'circle');
+          circle.setAttribute('r', '2.5');
+          circle.setAttribute('fill', color);
+
+          const am = document.createElementNS(SVGNS, 'animateMotion');
+          am.setAttribute('dur', '7s');
+          am.setAttribute('repeatCount', 'indefinite');
+          am.setAttribute('begin', `${delay}s`);
+          am.setAttribute('path', path);
+          circle.appendChild(am);
+
+          const aOp = document.createElementNS(SVGNS, 'animate');
+          aOp.setAttribute('attributeName', 'opacity');
+          aOp.setAttribute('values', '0;1;1;0');
+          aOp.setAttribute('dur', '7s');
+          aOp.setAttribute('repeatCount', 'indefinite');
+          aOp.setAttribute('begin', `${delay}s`);
+          circle.appendChild(aOp);
+
+          const aR = document.createElementNS(SVGNS, 'animate');
+          aR.setAttribute('attributeName', 'r');
+          aR.setAttribute('values', '1;1.25;1');
+          aR.setAttribute('dur', '1s');
+          aR.setAttribute('repeatCount', 'indefinite');
+          circle.appendChild(aR);
+
+          return circle;
+        };
+
+        inp.forEach((p) => partG.appendChild(mkParticle(p.d, p.delay, primary)));
+        out.forEach((p) => partG.appendChild(mkParticle(p.d, p.delay, primaryLight)));
+      };
+
+      let lastVbW = -1;
+      const upd = () => {
+        const { width, height } = root.getBoundingClientRect();
+        if (height > 0) {
+          const ar = width / height;
+          const vbW = Math.round(100 * ar);
+          if (vbW !== lastVbW) {
+            lastVbW = vbW;
+            build(vbW);
+          }
+        }
+      };
+
+      // initial (matches React default ar=1.8 then updates on measure)
+      build(Math.round(100 * 1.8));
+      upd();
+
+      const ro = new ResizeObserver(upd);
+      ro.observe(root);
+    });
+  }
+  initHowItWorks();
+  document.addEventListener('astro:page-load', initHowItWorks);
+</script>

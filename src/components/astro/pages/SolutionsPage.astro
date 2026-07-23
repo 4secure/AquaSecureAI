@@ -1,0 +1,346 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const SOLUTIONS = [
+  {
+    icon: 'lucide:activity',
+    slug: 'manage-siem',
+    name: 'Manage SIEM',
+    tagline: 'Managed SIEM Service',
+    color: 'var(--accent)',
+    img: '/images/manage-siem-dashboard.jpg',
+    bg: 'rgba(var(--accent-rgb) / 0.10)',
+    headline: 'Enterprise SIEM without the complexity',
+    desc: 'Let Aqua Secure AI manage your SIEM end-to-end — log collection, rule tuning, event correlation, and alerting — so your team focuses on response, not maintenance.',
+    features: [
+      'Fully managed log collection & ingestion',
+      'Continuous rule tuning & optimisation',
+      'Real-time event correlation & alerting',
+      'Compliance-ready reporting',
+      'Multi-tenant & multi-source support',
+      'SIEM-as-a-Service with 24/7 coverage',
+    ],
+  },
+  {
+    icon: 'lucide:mail',
+    slug: 'dmarc',
+    name: 'DMARC',
+    tagline: 'Email Authentication & Anti-Spoofing',
+    color: 'var(--accent)',
+    img: '/images/dmarc-dashboard.jpg',
+    bg: 'rgba(var(--accent-rgb) / 0.10)',
+    headline: 'Stop email fraud before it reaches your inbox',
+    desc: 'Deploy and manage DMARC, DKIM, and SPF authentication to protect your domain from spoofing, phishing, and business email compromise attacks.',
+    features: [
+      'DMARC, DKIM & SPF deployment',
+      'Real-time email authentication reporting',
+      'Spoofing & phishing detection',
+      'Brand protection monitoring',
+      'Guided policy enforcement',
+      'Forensic reporting & incident alerts',
+    ],
+  },
+  {
+    icon: 'lucide:globe',
+    slug: 'attack-surface',
+    name: 'Attack Surface',
+    tagline: 'Attack Surface Management',
+    color: 'var(--accent)',
+    img: '/images/attack-dashboard.jpg',
+    bg: 'rgba(var(--accent-rgb) / 0.10)',
+    headline: 'See your organisation the way attackers do',
+    desc: 'Continuously discover and monitor your external digital footprint — domains, IPs, open ports, and exposed services — before attackers exploit unknown assets.',
+    features: [
+      'Continuous external asset discovery',
+      'Domain & subdomain enumeration',
+      'Open port & service monitoring',
+      'Exposure risk scoring',
+      'Shadow IT detection',
+      'Actionable remediation guidance',
+    ],
+  },
+  {
+    icon: 'lucide:book-open',
+    slug: 'e-learning',
+    name: 'E-learning',
+    tagline: 'Cybersecurity Training & Education',
+    img: '/images/elearning-dashboard.jpg',
+    color: 'var(--accent)',
+    bg: 'rgba(var(--accent-rgb) / 0.10)',
+    headline: 'Build a security-aware culture',
+    desc: 'Role-based cybersecurity e-learning modules covering phishing awareness and compliance requirements — trackable, measurable, and tailored to your team.',
+    features: [
+      'Role-based learning paths',
+      'Phishing awareness modules',
+      'Compliance training (GDPR, ISO 27001)',
+      'Progress tracking & completion reporting',
+      'Custom training content support',
+      'Automated reminders & scheduling',
+    ],
+  },
+];
+
+const textH = 'var(--text)';
+const textBody = 'rgba(var(--text-rgb) / 0.65)';
+const textFeat = 'rgba(var(--text-rgb) / 0.70)';
+const divider = 'rgba(var(--border-rgb) / 0.10)';
+---
+
+{/* ── PageHero ── */}
+<section class="relative overflow-hidden pt-[108px] pb-12" style="background:var(--surface)">
+  <div class="wrap relative z-10 text-center">
+    <div>
+      <div class="reveal delay-1 flex justify-center mb-5">
+        <span class="badge" style="background:rgba(var(--accent-rgb) / 0.12);color:var(--accent);border:1px solid rgba(var(--accent-rgb) / 0.25)">Solutions</span>
+      </div>
+      <h1
+        class="reveal delay-2 font-black text-text leading-[1.06] tracking-tight mb-4"
+        style="font-size:clamp(34px,6vw,68px);letter-spacing:-0.03em;color:var(--text)"
+      >
+        Security for every{' '}
+        <span class="tg" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">business & industry</span>
+      </h1>
+      <p
+        class="reveal delay-3 text-lead text-sub leading-[1.8] max-w-[580px] mx-auto mb-8"
+        style="color:rgba(var(--text-rgb) / 0.65)"
+      >
+        Manage SIEM · Attack Surface · DMARC · Phishing Campaigns · E-learning · Compliance Management
+      </p>
+      <a
+        href="https://secureye.io"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hero-cta btn-primary text-[15px] px-9 py-4 inline-flex reveal delay-4"
+        style="background:linear-gradient(135deg, var(--accent), var(--accent-hover));color:white"
+      >
+        Get Started Free
+      </a>
+    </div>
+  </div>
+</section>
+
+<div>
+  {
+    SOLUTIONS.map((s, idx) => {
+      const isEven = idx % 2 === 0;
+      const isDark = idx % 2 !== 0;
+      const bg = isDark ? 'var(--surface-2)' : 'var(--surface)';
+      return (
+        <div style={`background:${bg}`}>
+          <div
+            class="wrap grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16 border-b last:border-0"
+            style={`border-color:${divider}`}
+          >
+            {/* ── Text ── */}
+            <div class={`reveal ${!isEven ? 'lg:order-2' : ''}`}>
+              <div class="flex items-center gap-3 mb-5">
+                <div class="sol-icon w-12 h-12 rounded-xl flex items-center justify-center" style={`background:${s.bg}`}>
+                  <Icon name={s.icon} class="w-6 h-6" style={`color:${s.color};stroke-width:1.8`} />
+                </div>
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-widest" style={`color:${s.color}`}>
+                    {s.tagline}
+                  </p>
+                  <h3 class="text-[22px] font-extrabold" style={`color:${textH}`}>
+                    {s.name}
+                  </h3>
+                </div>
+              </div>
+
+              <h4 class="font-bold leading-tight mb-4" style={`font-size:clamp(18px,2.2vw,26px);color:${textH}`}>
+                {s.headline}
+              </h4>
+
+              <p class="text-[14px] leading-[1.85] mb-6" style={`color:${textBody}`}>
+                {s.desc}
+              </p>
+
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-7">
+                {s.features.map((f) => (
+                  <li class="flex items-center gap-2.5">
+                    <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={`background:${s.color}18`}>
+                      <Icon name="lucide:check" class="w-3 h-3" style={`color:${s.color};stroke-width:2.5`} />
+                    </span>
+                    <span class="text-[13px]" style={`color:${textFeat}`}>
+                      {f}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="flex gap-3">
+                <a
+                  href="https://secureye.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="sol-cta btn-primary text-[14px] inline-flex items-center gap-2"
+                >
+                  Get Started <Icon name="lucide:external-link" class="w-3.5 h-3.5" />
+                </a>
+                <a href={`/solutions/${s.slug}`}>
+                  <span class="sol-learn btn-outline text-[14px] inline-flex items-center gap-2 cursor-pointer" style="color:var(--text)">
+                    Learn More <Icon name="lucide:arrow-right" class="w-3.5 h-3.5" />
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* ── Image ── */}
+            <div class={`sol-img ${!isEven ? 'lg:order-1' : ''}`}>
+              <div class="relative w-full">
+                {/* Frame — no aspect ratio, natural image height */}
+                <div
+                  class="relative rounded-2xl overflow-hidden border"
+                  style="border-color:rgba(var(--accent-rgb) / 0.35);box-shadow:0 4px 24px rgba(var(--accent-rgb) / 0.12);background:var(--bg)"
+                >
+                  {/* Top bar chrome */}
+                  <div
+                    class="flex items-center px-3 gap-1.5 h-8 flex-shrink-0"
+                    style="background:rgba(var(--bg-rgb) / 0.95);border-bottom:1px solid rgba(var(--accent-rgb) / 0.15)"
+                  >
+                    <div class="w-2.5 h-2.5 rounded-full" style="background:#FF5C5C"></div>
+                    <div class="w-2.5 h-2.5 rounded-full" style="background:#FFB020"></div>
+                    <div class="w-2.5 h-2.5 rounded-full" style="background:#29E07A"></div>
+                    <div class="flex-1 mx-3 h-4 rounded-md" style="background:rgba(255,255,255,0.06)"></div>
+                  </div>
+
+                  {/* Screenshot — natural size, no crop, no zoom */}
+                  <img
+                    src={s.img}
+                    alt={`${s.name} dashboard`}
+                    class="sol-shot w-full h-auto block"
+                    style="background:var(--bg)"
+                  />
+
+                  {/* Placeholder — hidden by default */}
+                  <div class="sol-placeholder flex-col items-center justify-center gap-3 py-16" style="display:none;background:var(--bg)">
+                    <div
+                      class="w-14 h-14 rounded-2xl flex items-center justify-center border"
+                      style="background:rgba(var(--accent-rgb) / 0.08);border-color:rgba(var(--accent-rgb) / 0.20)"
+                    >
+                      <svg class="w-7 h-7 opacity-30" fill="none" stroke="rgba(var(--accent-rgb) / 0.8)" stroke-width="1.5" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <path d="M21 15l-5-5L5 21"></path>
+                      </svg>
+                    </div>
+                    <p class="text-[12px] font-semibold" style="color:rgba(var(--accent-rgb) / 0.60)">
+                      {s.name} screenshot
+                    </p>
+                    <p class="text-[10px] text-center px-6" style="color:rgba(255,255,255,0.20)">
+                      public{s.img}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>
+
+{/* CTA strip */}
+<section class="section-sm relative overflow-hidden" style="background:var(--accent-light)">
+  {/* GlowOrbs variant="subtle" */}
+  <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="glow-orb absolute rounded-full" style="width:600px;height:500px;top:-10%;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.10) 0%,transparent 70%);filter:blur(120px);animation:solFloat 7s ease-in-out 0s infinite alternate"></div>
+    <div class="glow-orb absolute rounded-full" style="width:300px;height:300px;bottom:5%;right:5%;background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.08) 0%,transparent 70%);filter:blur(80px);animation:solFloat 9s ease-in-out 1.5s infinite alternate"></div>
+  </div>
+  <div class="wrap relative z-10">
+    <div
+      class="reveal rounded-2xl p-10 md:p-14 text-center relative overflow-hidden border"
+      style="background:linear-gradient(135deg,var(--surface),var(--surface-2),var(--surface));border-color:rgba(var(--accent-rgb) / 0.22)"
+    >
+      {/* GlowOrbs variant="subtle" */}
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="glow-orb absolute rounded-full" style="width:600px;height:500px;top:-10%;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.10) 0%,transparent 70%);filter:blur(120px);animation:solFloat 7s ease-in-out 0s infinite alternate"></div>
+        <div class="glow-orb absolute rounded-full" style="width:300px;height:300px;bottom:5%;right:5%;background:radial-gradient(circle,rgba(var(--accent-rgb) / 0.08) 0%,transparent 70%);filter:blur(80px);animation:solFloat 9s ease-in-out 1.5s infinite alternate"></div>
+      </div>
+      <div class="relative z-10">
+        <p class="reveal delay-1 badge mb-4">Not sure where to start?</p>
+        <h2
+          class="reveal delay-2 font-extrabold tracking-tight mb-4"
+          style="font-size:clamp(24px,3vw,38px);color:var(--text)"
+        >
+          Let's find the right solution for you
+        </h2>
+        <p
+          class="reveal delay-3 text-lead mb-7 max-w-[440px] mx-auto"
+          style="color:rgba(var(--text-rgb) / 0.55)"
+        >
+          Contact our team at{' '}
+          <a href="mailto:info@aquasecure.ai" style="color:var(--accent)" class="hover:underline">
+            info@aquasecure.ai
+          </a>{' '}
+          and we'll help find the right solution for your organisation.
+        </p>
+        <div class="reveal delay-4 flex flex-wrap gap-4 justify-center">
+          <a
+            href="https://secureye.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sol-cta btn-primary text-[15px] px-8 py-3.5 inline-flex items-center gap-2"
+          >
+            Get Started Free <Icon name="lucide:external-link" class="w-4 h-4" />
+          </a>
+          <a href="/contact">
+            <span class="sol-learn btn-outline text-[15px] px-8 py-3.5 inline-flex items-center gap-2 cursor-pointer">
+              Contact Sales
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes solFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-18px) scale(1.04); }
+  }
+  /* PageHero CTA (framer whileHover scale 1.03 / whileTap 0.97) */
+  .hero-cta { transition: transform .2s, box-shadow .2s; }
+  .hero-cta:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(var(--accent-rgb) / 0.40); }
+  .hero-cta:active { transform: scale(0.97); }
+
+  /* Icon badge hover — framer whileHover scale 1.14 rotate 7 */
+  .sol-icon { transition: transform .25s cubic-bezier(.16,1,.3,1); }
+  .sol-icon:hover { transform: scale(1.14) rotate(7deg); }
+
+  /* Image column hover — framer whileHover y:-5 */
+  .sol-img { transition: transform .3s cubic-bezier(.16,1,.3,1); }
+  .sol-img:hover { transform: translateY(-5px); }
+
+  /* Primary CTA hover — framer whileHover scale 1.04 / whileTap 0.97 */
+  .sol-cta { transition: transform .2s, box-shadow .2s; }
+  .sol-cta:hover { transform: scale(1.04); box-shadow: 0 6px 28px rgba(var(--accent-rgb) / .70); }
+  .sol-cta:active { transform: scale(0.97); }
+
+  /* Learn More / Contact Sales outline hover — framer whileHover borderColor + x:2 */
+  .sol-learn { transition: transform .2s, border-color .2s; }
+  .sol-learn:hover { border-color: rgba(var(--accent-rgb) / 0.55); transform: translateX(2px); }
+</style>
+
+<script>
+  function initSolutionsPage() {
+    // Image onError -> hide img, show placeholder (React nextSibling behaviour)
+    document.querySelectorAll('.sol-shot').forEach((el) => {
+      const img = el as HTMLImageElement;
+      if (img.dataset.bound) return;
+      img.dataset.bound = '1';
+      const swap = () => {
+        img.style.display = 'none';
+        const ph = img.nextElementSibling as HTMLElement | null;
+        if (ph) ph.style.display = 'flex';
+      };
+      img.addEventListener('error', swap);
+      // Catch images that errored before the listener attached
+      if (img.complete && img.naturalWidth === 0) swap();
+    });
+  }
+  initSolutionsPage();
+  document.addEventListener('astro:page-load', initSolutionsPage);
+</script>
