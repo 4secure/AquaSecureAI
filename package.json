@@ -18,7 +18,9 @@
     "@astrojs/tailwind": "^6.0.2",
     "@iconify-json/lucide": "^1.2.118",
     "astro": "^5.18.2",
-    "astro-icon": "^1.1.5"
+    "astro-icon": "^1.1.5",
+    "dotted-map": "^3.1.0",
+    "gsap": "^3.15.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

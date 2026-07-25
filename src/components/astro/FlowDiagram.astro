@@ -1,0 +1,280 @@
+---
+/*
+ * FlowDiagram — animated end-to-end data pipeline.
+ * Six teal glass spine nodes (Sources -> SIEM -> Edge -> Proxy -> Core -> Outputs)
+ * connected by SVG paths. On section enter GSAP draws the connectors left->right
+ * and pops the node cards in; after intro, glowing teal packets flow down the pipe
+ * on a continuous MotionPath loop (desktop only). Teal tokens only.
+ * Reduced-motion = static. Mobile = vertical stack, no packets.
+ */
+import { Icon } from 'astro-icon/components';
+
+// Spine stages, left -> right. cx is the horizontal center used to anchor the SVG connectors.
+const STAGES = [
+  { id: 'sources', icon: 'lucide:cloud',            label: 'Data Sources',  sub: 'Cloud · Endpoints · Network' },
+  { id: 'siem',    icon: 'lucide:database',          label: 'Aqua SIEM',     sub: 'Collect & aggregate' },
+  { id: 'edge',    icon: 'lucide:filter',            label: 'Aqua Edge',     sub: 'Normalize · OCSF' },
+  { id: 'proxy',   icon: 'lucide:route',             label: 'Aqua Proxy',    sub: 'Receive & route' },
+  { id: 'core',    icon: 'lucide:shield-check',      label: 'Core Platform', sub: 'Store · AI · Modules' },
+  { id: 'outputs', icon: 'lucide:layout-dashboard',  label: 'Outputs',       sub: 'Alerts · Reports · Dashboards' },
+];
+
+// Branch chips (short labels off the spine — no packets).
+const BRANCHES = [
+  'Agentic AI (L0–L3)',
+  'Gen AI + RAG',
+  'Data Enrichment',
+  'Destinations (AWS · Splunk · Elastic)',
+];
+
+// Connector geometry — one horizontal segment between each pair of stage centers.
+// viewBox 1200 x 60; six evenly spaced node centers, gaps carry the connectors.
+const VB_W = 1200;
+const VB_H = 60;
+const CY = VB_H / 2;
+const N = STAGES.length;
+// center x of each node column (matches the 6-col grid: each col = VB_W/N wide).
+const colW = VB_W / N;
+const centers = STAGES.map((_, i) => colW * (i + 0.5));
+// Connector runs from just right of node i to just left of node i+1.
+const PAD = 46; // gap kept clear around each node center so lines meet the card edge
+const SEGMENTS = [];
+for (let i = 0; i < N - 1; i++) {
+  SEGMENTS.push({ x1: centers[i] + PAD, x2: centers[i + 1] - PAD });
+}
+---
+
+<section class="fd-section relative overflow-hidden section-sm">
+  <div class="wrap relative z-10">
+    <div class="text-center max-w-[680px] mx-auto mb-12">
+      <div class="reveal flex justify-center mb-4"><span class="badge">Platform Pipeline</span></div>
+      <h2 class="reveal delay-1 font-black tracking-tight mb-4" style="font-size:clamp(26px,3.4vw,42px);color:var(--text)">
+        How your data flows <span class="tg">across the platform</span>
+      </h2>
+      <p class="reveal delay-2 text-lead" style="color:rgba(var(--text-rgb) / 0.6)">
+        Every signal moves through one continuous pipeline — collected, normalized, routed, and enriched
+        before it reaches AI-driven detection, storage, and the modules your team lives in.
+      </p>
+    </div>
+
+    <div class="fd-stage reveal delay-2 mx-auto" data-flow-diagram style="max-width:1120px">
+      {/* Connectors: a thin horizontal SVG band that sits behind the node cards. */}
+      <svg class="fd-connectors" viewBox={`0 0 ${VB_W} ${VB_H}`} preserveAspectRatio="none"
+           fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="fd-lines">
+          {SEGMENTS.map((s, i) => (
+            <line class="fd-line" data-i={i} x1={s.x1} y1={CY} x2={s.x2} y2={CY} />
+          ))}
+        </g>
+        {/* Packet dots — animated along a full-spine path on desktop. */}
+        <path class="fd-spine" d={`M ${SEGMENTS[0].x1} ${CY} L ${SEGMENTS[SEGMENTS.length - 1].x2} ${CY}`} />
+        <circle class="fd-packet" r="4.5" cx={SEGMENTS[0].x1} cy={CY} />
+        <circle class="fd-packet" r="4.5" cx={SEGMENTS[0].x1} cy={CY} />
+        <circle class="fd-packet" r="4.5" cx={SEGMENTS[0].x1} cy={CY} />
+      </svg>
+
+      {/* Node cards — CSS grid on desktop (6 cols), vertical stack on mobile. */}
+      <div class="fd-grid">
+        {STAGES.map((stage) => (
+          <div class="fd-node glass" data-node>
+            <span class="fd-ico"><Icon name={stage.icon} class="w-6 h-6" /></span>
+            <span class="fd-label">{stage.label}</span>
+            <span class="fd-sub">{stage.sub}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Branch chips off the spine. */}
+    <div class="reveal delay-3 flex flex-wrap justify-center gap-2.5 mt-10">
+      {BRANCHES.map((b) => (
+        <span class="fd-chip">
+          <Icon name="lucide:git-branch" class="w-3.5 h-3.5" />
+          {b}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .fd-section { background: var(--bg); }
+
+  .fd-stage { position: relative; width: 100%; }
+
+  /* Connector band sits centred over the row of cards (desktop only). */
+  .fd-connectors {
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 60px;
+    overflow: visible;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .fd-line {
+    stroke: rgba(var(--accent-rgb) / 0.35);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .fd-spine { fill: none; stroke: none; }
+  .fd-packet {
+    fill: var(--accent-bright);
+    filter: drop-shadow(0 0 6px rgba(var(--accent-rgb) / 0.9));
+    opacity: 0;
+  }
+
+  /* Node grid — 6 columns on desktop; gaps expose the connector line beneath. */
+  .fd-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .fd-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin: 0 14px;
+    padding: 22px 12px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(var(--accent-rgb) / 0.22);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow .25s ease, transform .2s ease, border-color .25s ease;
+  }
+  .fd-node.pulse {
+    border-color: rgba(var(--accent-rgb) / 0.55);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .fd-ico {
+    width: 48px; height: 48px;
+    display: grid; place-items: center;
+    border-radius: 14px;
+    color: #fff;
+    background: var(--grad-accent);
+    box-shadow: var(--shadow-glow);
+  }
+  .fd-label {
+    font-size: 13px; font-weight: 800; letter-spacing: .01em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+  .fd-sub {
+    font-size: 11px; font-weight: 500; line-height: 1.35;
+    color: rgba(var(--text-rgb) / 0.55);
+  }
+
+  .fd-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600;
+    color: var(--accent);
+    background: rgba(var(--accent-rgb) / 0.08);
+    border: 1px solid rgba(var(--accent-rgb) / 0.22);
+    padding: 6px 14px; border-radius: 999px;
+  }
+
+  /* ── Mobile: stack the pipeline vertically, hide the horizontal connectors. ── */
+  @media (max-width: 767px) {
+    .fd-connectors { display: none; }
+    .fd-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .fd-node {
+      margin: 0;
+      flex-direction: row;
+      justify-content: flex-start;
+      text-align: left;
+      gap: 14px;
+      padding: 14px 16px;
+    }
+    .fd-ico { width: 42px; height: 42px; flex: 0 0 auto; }
+    .fd-inner { align-items: flex-start; }
+    /* vertical connector between stacked cards */
+    .fd-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -22px;
+      width: 2px; height: 22px;
+      background: rgba(var(--accent-rgb) / 0.35);
+      transform: translateX(-50%);
+    }
+    .fd-node { position: relative; }
+    .fd-grid { row-gap: 22px; }
+  }
+</style>
+
+<script>
+  import { gsap, prefersReduced, isMobile, onReady } from '../../scripts/motion.js';
+
+  function initFlowDiagram() {
+    const root = document.querySelector('[data-flow-diagram]');
+    if (!root || root.dataset.bound) return;
+    root.dataset.bound = '1';
+
+    const lines = gsap.utils.toArray(root.querySelectorAll('.fd-line'));
+    const nodes = gsap.utils.toArray(root.querySelectorAll('[data-node]'));
+    const packets = gsap.utils.toArray(root.querySelectorAll('.fd-packet'));
+    const spine = root.querySelector('.fd-spine');
+
+    // Reduced motion / mobile: no continuous packets.
+    if (prefersReduced()) {
+      gsap.set(lines, { drawSVG: '100%' });
+      gsap.set(nodes, { opacity: 1, scale: 1 });
+      packets.forEach((p) => { p.style.display = 'none'; });
+      return;
+    }
+
+    gsap.set(lines, { drawSVG: '0%' });
+    gsap.set(nodes, { opacity: 0, scale: 0.8, transformOrigin: 'center' });
+    gsap.set(packets, { opacity: 0 });
+
+    const tl = gsap.timeline({ scrollTrigger: { trigger: root, start: 'top 78%', once: true } });
+    tl.to(nodes, { opacity: 1, scale: 1, duration: 0.55, stagger: 0.08, ease: 'back.out(1.5)' })
+      .to(lines, { drawSVG: '100%', duration: 0.6, stagger: 0.12, ease: 'power2.out' }, '-=0.35')
+      .add(() => { if (!isMobile()) startPackets(); });
+
+    function startPackets() {
+      if (!spine || !packets.length) return;
+
+      // Glow the node the packet is currently passing (approximate by progress).
+      const glowAt = (progress) => {
+        const idx = Math.min(nodes.length - 1, Math.round(progress * (nodes.length - 1)));
+        nodes.forEach((n, i) => n.classList.toggle('pulse', i === idx));
+      };
+
+      packets.forEach((packet, k) => {
+        gsap.set(packet, { opacity: 1 });
+        gsap.to(packet, {
+          duration: 4.2,
+          ease: 'none',
+          repeat: -1,
+          delay: k * 1.4,
+          motionPath: { path: spine, align: spine, alignOrigin: [0.5, 0.5] },
+          onUpdate: function () {
+            // Only the lead packet drives the node glow.
+            if (k === 0) glowAt(this.progress());
+          },
+        });
+        // Fade packets softly at the ends of the run.
+        gsap.fromTo(packet, { opacity: 0 }, {
+          opacity: 1, duration: 0.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: k * 1.4,
+        });
+      });
+    }
+  }
+
+  onReady(initFlowDiagram);
+</script>

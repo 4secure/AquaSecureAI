@@ -1,0 +1,269 @@
+---
+/*
+ * ThreatMap — Aceternity "World Map"-style animated global threat map.
+ * Pure Astro + vanilla GSAP (no React). The dotted world map is generated at
+ * BUILD TIME via `dotted-map` (runs in Node — zero client JS for the dots).
+ * An overlay SVG (sharing the SAME viewBox) draws teal arcs between cities;
+ * DrawSVG animates them on scroll-enter, then glowing pulses travel each arc.
+ * Teal tokens only — reads on both light and dark (tokens flip). Reduced-motion
+ * = static arcs, no pulses.
+ */
+import DottedMap from 'dotted-map';
+
+// Build the dotted map at build time. viewBox is `0 0 119 60` for height 60.
+const map = new DottedMap({ height: 60, grid: 'diagonal' });
+let dotsSvg = map.getSVG({
+  radius: 0.22,
+  color: '#8a8f98',
+  shape: 'circle',
+  backgroundColor: 'transparent',
+});
+// Make dots theme-aware: swap the fixed grey for currentColor, then drive
+// currentColor from a teal-tinted --text token on the wrapper element.
+dotsSvg = dotsSvg.replaceAll('#8a8f98', 'currentColor');
+
+// Shared coordinate space between dots + overlay (must match the getSVG viewBox).
+const VB_W = 119;
+const VB_H = 60;
+
+// ~6 global points. getPin returns { x, y } in the SAME space as the dots SVG.
+const CITIES = {
+  sf: { name: 'San Francisco', ...map.getPin({ lat: 37.77, lng: -122.41 }) },
+  ny: { name: 'New York', ...map.getPin({ lat: 40.71, lng: -74 }) },
+  ldn: { name: 'London', ...map.getPin({ lat: 51.5, lng: -0.12 }) },
+  sg: { name: 'Singapore', ...map.getPin({ lat: 1.35, lng: 103.8 }) },
+  syd: { name: 'Sydney', ...map.getPin({ lat: -33.86, lng: 151.2 }) },
+  sao: { name: 'São Paulo', ...map.getPin({ lat: -23.55, lng: -46.63 }) },
+};
+
+// 5 arcs between city pairs (attack / telemetry routes).
+const PAIRS = [
+  ['sf', 'ldn'],
+  ['ny', 'sg'],
+  ['ldn', 'syd'],
+  ['sao', 'ny'],
+  ['sf', 'sg'],
+];
+
+// Quadratic bezier with the control point raised above the midpoint so the arc
+// bows upward for a nice curve. Curvature scales with horizontal distance.
+function arcPath(a, b) {
+  const x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2;
+  const dist = Math.hypot(x2 - x1, y2 - y1);
+  const lift = Math.min(dist * 0.35, VB_H * 0.55);
+  const cx = mx;
+  const cy = my - lift; // raise control point (smaller y = higher on screen)
+  return `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
+}
+
+const ARCS = PAIRS.map(([ai, bi]) => ({
+  d: arcPath(CITIES[ai], CITIES[bi]),
+  a: CITIES[ai],
+  b: CITIES[bi],
+}));
+
+// Unique endpoint set (so shared cities don't get duplicate dots).
+const ENDPOINTS = Object.values(CITIES);
+---
+
+<section class="tm-section relative overflow-hidden section-sm">
+  <div class="wrap relative z-10">
+    <div class="text-center max-w-[640px] mx-auto mb-10">
+      <div class="reveal flex justify-center mb-4"><span class="badge">Threat Intelligence</span></div>
+      <h2 class="reveal delay-1 font-black tracking-tight mb-4" style="font-size:clamp(26px,3.4vw,42px);color:var(--text)">
+        Global threat intelligence, <span class="tg">in real time</span>
+      </h2>
+      <p class="reveal delay-2 text-lead" style="color:rgba(var(--text-rgb) / 0.6)">
+        Aqua Secure AI correlates signals across every region you operate in — tracing live attack
+        routes between your assets so threats surface the moment they move, wherever they originate.
+      </p>
+    </div>
+
+    <div class="tm-stage reveal delay-2 relative mx-auto" data-threat-map>
+      {/* Dotted world map — generated at build time, themed via currentColor. */}
+      <div class="tm-dots" style="color: rgba(var(--text-rgb) / 0.25)" set:html={dotsSvg} />
+
+      {/* Overlay SVG — SAME viewBox as the dots so getPin coords line up. */}
+      <svg
+        class="tm-overlay"
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+      >
+        <g class="tm-arcs">
+          {ARCS.map((arc, i) => <path class="tm-arc" data-i={i} d={arc.d} />)}
+        </g>
+        <g class="tm-points">
+          {ENDPOINTS.map((c) => (
+            <g class="tm-point">
+              <circle class="tm-ping" cx={c.x} cy={c.y} r="0.9" />
+              <circle class="tm-dot" cx={c.x} cy={c.y} r="0.7" />
+            </g>
+          ))}
+        </g>
+        <g class="tm-pulses">
+          {ARCS.map((arc, i) => (
+            <circle class="tm-pulse" data-i={i} cx={arc.a.x} cy={arc.a.y} r="0.65" />
+          ))}
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tm-section { background: var(--bg); }
+
+  .tm-stage {
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 119 / 60;
+  }
+
+  .tm-dots,
+  .tm-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: auto; /* scales with the aspect-ratio box, no horizontal overflow */
+    display: block;
+  }
+  .tm-dots :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .tm-overlay { overflow: visible; }
+
+  .tm-arc {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 0.28;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px rgba(var(--accent-rgb) / 0.6));
+  }
+
+  .tm-dot {
+    fill: var(--accent);
+    filter: drop-shadow(0 0 3px rgba(var(--accent-rgb) / 0.85));
+  }
+  .tm-ping {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 0.18;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .tm-pulse {
+    fill: var(--accent-bright);
+    filter: drop-shadow(0 0 4px rgba(var(--accent-rgb) / 0.95));
+    opacity: 0;
+  }
+
+  @media (max-width: 640px) {
+    .tm-arc { stroke-width: 0.34; }
+  }
+</style>
+
+<script>
+  import { gsap, prefersReduced, isMobile, onReady } from '../../scripts/motion.js';
+
+  function initThreatMap() {
+    const root = document.querySelector('[data-threat-map]');
+    if (!root || root.dataset.bound) return;
+    root.dataset.bound = '1';
+
+    const arcs = gsap.utils.toArray(root.querySelectorAll('.tm-arc'));
+    const dots = gsap.utils.toArray(root.querySelectorAll('.tm-dot'));
+    const pings = gsap.utils.toArray(root.querySelectorAll('.tm-ping'));
+    const pulses = gsap.utils.toArray(root.querySelectorAll('.tm-pulse'));
+
+    // Reduced motion: draw arcs static, show endpoints, no travelling pulses.
+    if (prefersReduced()) {
+      gsap.set(arcs, { drawSVG: '100%' });
+      gsap.set(dots, { opacity: 1, scale: 1 });
+      gsap.set(pulses, { opacity: 0 });
+      return;
+    }
+
+    gsap.set(arcs, { drawSVG: '0%' });
+    gsap.set(dots, { opacity: 0, scale: 0, transformOrigin: 'center' });
+    gsap.set(pings, { opacity: 0, scale: 0.4, transformOrigin: 'center' });
+    gsap.set(pulses, { opacity: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: root, start: 'top 78%', once: true },
+    });
+
+    tl.to(dots, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        stagger: 0.06,
+        ease: 'back.out(1.7)',
+      })
+      .to(
+        arcs,
+        {
+          drawSVG: '100%',
+          duration: 1.1,
+          stagger: 0.18,
+          ease: 'power2.out',
+        },
+        '-=0.35',
+      )
+      .add(() => {
+        startPings();
+        if (!isMobile()) startPulses();
+      });
+
+    // Soft ping/pulse radiating out from each endpoint, on a loop.
+    function startPings() {
+      pings.forEach((ping, i) => {
+        gsap.to(ping, {
+          opacity: 0,
+          scale: 2.6,
+          duration: 2.2,
+          ease: 'power1.out',
+          repeat: -1,
+          delay: (i % pings.length) * 0.3,
+          onRepeat: () => gsap.set(ping, { opacity: 0.6, scale: 0.4 }),
+        });
+        gsap.set(ping, { opacity: 0.6, scale: 0.4 });
+      });
+    }
+
+    // A glowing teal pulse travels each arc on a loop (staggered starts).
+    function startPulses() {
+      arcs.forEach((arc, i) => {
+        const pulse = pulses[i];
+        if (!pulse) return;
+        const run = () => {
+          gsap.set(pulse, { opacity: 0 });
+          gsap
+            .timeline({ repeat: -1, repeatDelay: 0.8 })
+            .to(pulse, { opacity: 1, duration: 0.3 })
+            .to(
+              pulse,
+              {
+                duration: 2.6,
+                ease: 'power1.inOut',
+                motionPath: { path: arc, align: arc, alignOrigin: [0.5, 0.5] },
+              },
+              0,
+            )
+            .to(pulse, { opacity: 0, duration: 0.35 }, '>-0.35');
+        };
+        gsap.delayedCall(i * 0.55, run);
+      });
+    }
+  }
+
+  onReady(initThreatMap);
+</script>

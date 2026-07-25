@@ -1,37 +1,17 @@
----
-// Home — compiled from the Claude Design "AquaSecure Home.dc.html".
-// Self-contained page (own chrome/theme). Regenerate with: node design/build-home.js
----
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AquaSecure.ai — AI-Powered Cloud Native Cybersecurity</title>
-    <meta name="description" content="AquaSecure stops cyber attacks before they happen — AI threat detection, SOC operations, GRC automation and real-time threat intelligence, from code to cloud to prompt." />
-    <link rel="canonical" href="https://aquasecure.ai/" />
-    <link rel="icon" type="image/png" href="/images/Aquasecureicon1.png" />
-    <meta property="og:title" content="AquaSecure.ai — AI-Powered Cybersecurity" />
-    <meta property="og:description" content="The pioneer in AI-native cloud security. Stop threats in under 50ms." />
-    <meta property="og:url" content="https://aquasecure.ai/" />
-    <meta property="og:image" content="https://aquasecure.ai/images/dashboard-hero.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#0C8F84" />
-
-    <!-- Google Tag Manager -->
-    <script is:inline>
-      (function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-NKD6J56W');
-    </script>
-
-    <!-- No-flash theme -->
-    <script is:inline>(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
-
-    <!-- Map libs -->
-    <script is:inline src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
-    <script is:inline src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
-
-    <style is:inline>
-@font-face{font-family:'Raleway';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/raleway/raleway-variable-latin.woff2') format('woff2');}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<style>
+@font-face{font-family:'Raleway';font-style:normal;font-weight:100 900;font-display:swap;src:url('assets/raleway-variable-latin.woff2') format('woff2');}
 :root{
   color-scheme:light;
   --font-sans:'Raleway',ui-sans-serif,system-ui,sans-serif;
@@ -102,9 +82,8 @@ a:hover{color:var(--accent-hover);}
 @keyframes termGlow{0%,100%{opacity:.5}50%{opacity:1}}
 @media (max-width:820px){#edgeStage{animation:none !important;transform:none !important;}}
 </style>
-  </head>
-  <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKD6J56W" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+</helmet>
+
 <div style="min-height:100vh;background:var(--bg)">
 
   <!-- Announcement bar -->
@@ -118,37 +97,37 @@ a:hover{color:var(--accent-hover);}
   <div id="siteNav" class="navwrap" style="position:sticky;top:0;z-index:50;animation:navDrop .55s cubic-bezier(.16,1,.3,1) both;transition:background .3s,box-shadow .3s,border-color .3s;border-bottom:1px solid transparent">
     <div style="max-width:1200px;margin:0 auto;padding:0 24px;height:66px;display:flex;align-items:center;justify-content:space-between">
       <a href="#top" style="display:flex;align-items:center;flex-shrink:0">
-        <img id="logoLight" src="/images/aquasecure_logo1.png" alt="Aqua Secure AI" style="height:34px;width:auto;display:block"/>
-        <img id="logoDark" src="/images/Aquasecure_logo3.png" alt="Aqua Secure AI" style="height:34px;width:auto;display:none"/>
+        <img id="logoLight" src="assets/aquasecure_logo1.png" alt="Aqua Secure AI" style="height:34px;width:auto;display:block"/>
+        <img id="logoDark" src="assets/aquasecure_logo3.png" alt="Aqua Secure AI" style="height:34px;width:auto;display:none"/>
       </a>
       <nav style="display:flex;align-items:center;gap:2px" class="desknav">
-        <a href="/" class="nl on">Home</a>
+        <a href="#top" class="nl on">Home</a>
         <div class="nitem" style="position:relative">
-          <a href="/products" class="nl">Products <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.55"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <a href="#products" class="nl">Products <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.55"><polyline points="6 9 12 15 18 9"/></svg></a>
           <div class="ndrop">
-            <a href="/products/grc" class="dlink">GRC</a>
-            <a href="/products/soc" class="dlink">SOC</a>
-            <a href="/products/siem" class="dlink">Aqua SIEM</a>
-            <a href="/products/threat-intel" class="dlink">Threat Intelligence</a>
-            <a href="/products/asset-management" class="dlink">Asset Management</a>
-            <a href="/products/dark-web" class="dlink">Dark Web</a>
-            <a href="/products/phishbot" class="dlink">Phishbot</a>
+            <a href="#products" class="dlink">GRC</a>
+            <a href="#products" class="dlink">SOC</a>
+            <a href="#products" class="dlink">Aqua SIEM</a>
+            <a href="#products" class="dlink">Threat Intelligence</a>
+            <a href="#products" class="dlink">Asset Management</a>
+            <a href="#products" class="dlink">Dark Web</a>
+            <a href="#products" class="dlink">Phishbot</a>
           </div>
         </div>
         <div class="nitem" style="position:relative">
-          <a href="/solutions" class="nl">Solutions <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.55"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <a href="#platform" class="nl">Solutions <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.55"><polyline points="6 9 12 15 18 9"/></svg></a>
           <div class="ndrop">
-            <a href="/solutions/manage-siem" class="dlink">Manage SIEM</a>
-            <a href="/solutions/attack-surface" class="dlink">Attack Surface</a>
-            <a href="/solutions/dmarc" class="dlink">DMARC</a>
-            <a href="/solutions/phishing-campaigns" class="dlink">Phishing Campaigns</a>
-            <a href="/solutions/e-learning" class="dlink">E-learning</a>
-            <a href="/solutions/compliance-management" class="dlink">Compliance Management</a>
+            <a href="#platform" class="dlink">Manage SIEM</a>
+            <a href="#platform" class="dlink">Attack Surface</a>
+            <a href="#platform" class="dlink">DMARC</a>
+            <a href="#platform" class="dlink">Phishing Campaigns</a>
+            <a href="#platform" class="dlink">E-learning</a>
+            <a href="#platform" class="dlink">Compliance Management</a>
           </div>
         </div>
-        <a href="/platform" class="nl">Platform</a>
-        <a href="/pricing" class="nl">Pricing</a>
-        <a href="/contact" class="nl">Contact</a>
+        <a href="#platform" class="nl">Platform</a>
+        <a href="#products" class="nl">Pricing</a>
+        <a href="#cta" class="nl">Contact</a>
       </nav>
       <div style="display:flex;align-items:center;gap:8px">
         <button id="themeToggle" aria-label="Toggle theme" style="width:38px;height:38px;border:0;border-radius:10px;background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s" style-hover="background:rgba(var(--accent-rgb)/0.08);color:var(--accent)">
@@ -547,8 +526,8 @@ a:hover{color:var(--accent-hover);}
     <div style="max-width:1200px;margin:0 auto;padding:0 24px">
       <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px" class="footgrid">
         <div>
-          <img id="footLogoLight" src="/images/aquasecure_logo1.png" alt="Aqua Secure AI" style="height:32px;width:auto;margin-bottom:16px"/>
-          <img id="footLogoDark" src="/images/Aquasecure_logo3.png" alt="Aqua Secure AI" style="height:32px;width:auto;margin-bottom:16px;display:none"/>
+          <img id="footLogoLight" src="assets/aquasecure_logo1.png" alt="Aqua Secure AI" style="height:32px;width:auto;margin-bottom:16px"/>
+          <img id="footLogoDark" src="assets/aquasecure_logo3.png" alt="Aqua Secure AI" style="height:32px;width:auto;margin-bottom:16px;display:none"/>
           <p style="font-size:14px;line-height:1.7;color:var(--text-2);max-width:320px">The pioneer in AI-native cloud security. Stop threats in under 50ms — from code to cloud to prompt.</p>
           <p style="font-size:13px;color:var(--text-3);margin-top:14px">Managed services available · <a href="mailto:info@aquasecure.ai" style="color:var(--accent)">info@aquasecure.ai</a></p>
         </div>
@@ -574,9 +553,9 @@ a:hover{color:var(--accent-hover);}
         <div>
           <p style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px">Company</p>
           <div style="display:flex;flex-direction:column;gap:9px">
-            <a href="/platform" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Platform</a>
-            <a href="/pricing" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Pricing</a>
-            <a href="/contact" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Contact</a>
+            <a href="#top" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Platform</a>
+            <a href="#products" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Pricing</a>
+            <a href="#cta" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">Contact</a>
             <a href="https://tip.aquasecure.ai" target="_blank" rel="noopener" style="font-size:14px;color:var(--text-2)" style-hover="color:var(--accent)">AQUA TIP</a>
           </div>
         </div>
@@ -591,14 +570,8 @@ a:hover{color:var(--accent-hover);}
     </div>
   </footer>
 </div>
-    <script is:inline>
-      // DCLogic shim — provides props (respecting reduced-motion) so the design class runs vanilla.
-      class DCLogic {
-        constructor() {
-          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          this.props = { motionLevel: reduce ? 'off' : 'full', feedSpeed: 2600, showAnnouncement: true };
-        }
-      }
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motionLevel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;restrained&quot;,&quot;off&quot;],&quot;default&quot;:&quot;full&quot;,&quot;tsType&quot;:&quot;'full'|'restrained'|'off'&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;feedSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2600,&quot;min&quot;:1200,&quot;max&quot;:5000,&quot;step&quot;:200,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;showAnnouncement&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
 class Component extends DCLogic {
   componentDidMount(){
     this.timers=[]; this.observers=[];
@@ -1064,21 +1037,6 @@ class Component extends DCLogic {
     hubs.forEach(h=>{const p=P(h.c);marker(p[0],p[1],h.n,true);});
   }
 }
-      // style-hover shim (replaces the design-runtime feature)
-      (function () {
-        function bind() {
-          document.querySelectorAll('[style-hover]').forEach(function (el) {
-            if (el.__shb) return; el.__shb = 1;
-            var base = el.getAttribute('style') || '';
-            var hov = el.getAttribute('style-hover');
-            el.addEventListener('mouseenter', function () { el.setAttribute('style', base + ';' + hov); });
-            el.addEventListener('mouseleave', function () { el.setAttribute('style', base); });
-          });
-        }
-        function boot() { try { new Component().componentDidMount(); } catch (e) { console.error(e); } bind(); }
-        if (document.readyState !== 'loading') boot();
-        else document.addEventListener('DOMContentLoaded', boot);
-      })();
-    </script>
-  </body>
+</script>
+</body>
 </html>

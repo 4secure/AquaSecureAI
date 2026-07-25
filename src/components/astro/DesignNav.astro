@@ -1,0 +1,167 @@
+---
+// Navbar — from the AquaSecure Home design, wired to real routes + a mobile drawer.
+import { Icon } from 'astro-icon/components';
+
+const PRODUCTS = [
+  ['GRC', '/products/grc'], ['SOC', '/products/soc'], ['Aqua SIEM', '/products/siem'],
+  ['Threat Intelligence', '/products/threat-intel'], ['Asset Management', '/products/asset-management'],
+  ['Dark Web', '/products/dark-web'], ['Phishbot', '/products/phishbot'],
+];
+const SOLUTIONS = [
+  ['Manage SIEM', '/solutions/manage-siem'], ['Attack Surface', '/solutions/attack-surface'],
+  ['DMARC', '/solutions/dmarc'], ['Phishing Campaigns', '/solutions/phishing-campaigns'],
+  ['E-learning', '/solutions/e-learning'], ['Compliance Management', '/solutions/compliance-management'],
+];
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const on = (h) => (h === '/' ? path === '/' : path === h || path.startsWith(h + '/'));
+---
+
+<header id="d-nav" class="d-nav">
+  <div class="d-nav-inner">
+    <a href="/" class="d-nav-logo">
+      <img class="d-logo d-logo-light" src="/images/aquasecure_logo1.png" alt="Aqua Secure AI" />
+      <img class="d-logo d-logo-dark" src="/images/Aquasecure_logo3.png" alt="Aqua Secure AI" />
+    </a>
+
+    <nav class="d-desknav">
+      <a href="/" class:list={['nl', { on: on('/') }]}>Home</a>
+      <div class="nitem">
+        <a href="/products" class:list={['nl', { on: on('/products') }]}>Products <Icon name="lucide:chevron-down" class="chev" /></a>
+        <div class="ndrop">{PRODUCTS.map(([l, h]) => <a href={h} class="dlink">{l}</a>)}</div>
+      </div>
+      <div class="nitem">
+        <a href="/solutions" class:list={['nl', { on: on('/solutions') }]}>Solutions <Icon name="lucide:chevron-down" class="chev" /></a>
+        <div class="ndrop">{SOLUTIONS.map(([l, h]) => <a href={h} class="dlink">{l}</a>)}</div>
+      </div>
+      <a href="/platform" class:list={['nl', { on: on('/platform') }]}>Platform</a>
+      <a href="/pricing" class:list={['nl', { on: on('/pricing') }]}>Pricing</a>
+      <a href="/contact" class:list={['nl', { on: on('/contact') }]}>Contact</a>
+    </nav>
+
+    <div class="d-nav-right">
+      <button id="d-theme" class="d-icon-btn" aria-label="Toggle theme" data-theme-toggle>
+        <Icon name="lucide:moon" class="ic-moon" />
+        <Icon name="lucide:sun" class="ic-sun" />
+      </button>
+      <a href="https://secureye.io/login" target="_blank" rel="noopener" class="d-login">Login</a>
+      <a href="https://secureye.io/get-started" target="_blank" rel="noopener" class="d-cta">
+        Get Started <Icon name="lucide:arrow-right" class="w-[14px] h-[14px]" />
+      </a>
+      <button id="d-burger" class="d-icon-btn d-burger" aria-label="Menu">
+        <Icon name="lucide:menu" class="ic-open" />
+        <Icon name="lucide:x" class="ic-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="d-drawer" class="d-drawer">
+  <a href="/" class:list={['dm', { on: on('/') }]}>Home</a>
+  <a href="/products" class:list={['dm', { on: on('/products') }]}>Products</a>
+  <a href="/solutions" class:list={['dm', { on: on('/solutions') }]}>Solutions</a>
+  <a href="/platform" class:list={['dm', { on: on('/platform') }]}>Platform</a>
+  <a href="/pricing" class:list={['dm', { on: on('/pricing') }]}>Pricing</a>
+  <a href="/contact" class:list={['dm', { on: on('/contact') }]}>Contact</a>
+  <a href="https://secureye.io/get-started" target="_blank" rel="noopener" class="d-cta" style="margin-top:14px">Get Started</a>
+</div>
+
+<style>
+  @keyframes navDrop { from { transform: translateY(-72px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .d-nav {
+    position: sticky; top: 0; z-index: 50;
+    border-bottom: 1px solid transparent;
+    animation: navDrop .55s cubic-bezier(.16,1,.3,1) both;
+    transition: background .3s, box-shadow .3s, border-color .3s;
+  }
+  .d-nav.scrolled {
+    background: rgba(var(--surface-rgb)/0.86);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: rgba(var(--accent-rgb)/0.18);
+    box-shadow: 0 4px 30px rgba(0,0,0,.08);
+  }
+  .d-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 66px; display: flex; align-items: center; justify-content: space-between; }
+  .d-nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+  .d-logo { height: 34px; width: auto; display: block; }
+  .d-logo-light { filter: brightness(0.15) saturate(2); }
+  .d-logo-dark { display: none; }
+  :global(html.dark) .d-logo-light { display: none; }
+  :global(html.dark) .d-logo-dark { display: block; filter: none; }
+
+  .d-desknav { display: flex; align-items: center; gap: 2px; }
+  .nl { position: relative; color: var(--text-2); font-weight: 500; font-size: 14px; padding: 6px 12px; border-radius: 8px; transition: color .15s, background .15s; display: inline-flex; align-items: center; gap: 5px; }
+  .nl:hover, .nl.on { color: var(--accent); background: rgba(var(--accent-rgb)/0.07); }
+  .chev { width: 13px; height: 13px; opacity: .55; transition: transform .18s; }
+  .nitem { position: relative; }
+  .nitem:hover .chev { transform: rotate(180deg); }
+  .ndrop {
+    position: absolute; top: 100%; left: 0; margin-top: 8px; min-width: 216px; padding: 7px;
+    border-radius: 16px; background: var(--surface); border: 1px solid rgba(var(--accent-rgb)/0.18);
+    box-shadow: 0 24px 60px rgba(0,0,0,.16), 0 0 0 1px rgba(var(--accent-rgb)/0.06);
+    opacity: 0; visibility: hidden; transform: translateY(8px) scale(.98);
+    transition: opacity .16s, transform .16s, visibility .16s; z-index: 60;
+  }
+  .nitem:hover .ndrop { opacity: 1; visibility: visible; transform: none; }
+  .dlink { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 10px; font-size: 13px; font-weight: 500; color: var(--text-2); transition: color .14s, background .14s; }
+  .dlink:hover { color: var(--text); background: rgba(var(--accent-rgb)/0.09); }
+
+  .d-nav-right { display: flex; align-items: center; gap: 8px; }
+  .d-icon-btn { width: 38px; height: 38px; border: 0; border-radius: 10px; background: transparent; color: var(--text-2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color .15s, background .15s; }
+  .d-icon-btn :global(svg) { width: 18px; height: 18px; }
+  .d-icon-btn:hover { background: rgba(var(--accent-rgb)/0.08); color: var(--accent); }
+  .ic-sun { display: none; }
+  :global(html.dark) .ic-moon { display: none; }
+  :global(html.dark) .ic-sun { display: block; }
+  .d-login { font-size: 13px; font-weight: 600; color: var(--accent); padding: 8px 14px; border-radius: 10px; transition: background .15s; }
+  .d-login:hover { background: rgba(var(--accent-rgb)/0.08); }
+  .d-cta { font-size: 13px; font-weight: 700; color: #fff; padding: 9px 18px; border-radius: 11px; display: inline-flex; align-items: center; gap: 7px; background: var(--grad-accent); box-shadow: 0 3px 14px rgba(var(--accent-rgb)/0.38); transition: transform .15s, box-shadow .15s; }
+  .d-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(var(--accent-rgb)/0.5); }
+  .d-cta :global(svg) { width: 14px; height: 14px; }
+
+  .d-burger { display: none; }
+  .ic-close { display: none; }
+  .d-drawer {
+    position: fixed; inset: 0; z-index: 40; background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    transform: translateX(100%); transition: transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .dm { font-size: 20px; font-weight: 700; color: var(--text-2); padding: 8px 16px; border-radius: 10px; }
+  .dm:hover, .dm.on { color: var(--accent); }
+  body.d-drawer-open .d-drawer { transform: none; }
+  body.d-drawer-open .ic-open { display: none; }
+  body.d-drawer-open .ic-close { display: block; }
+
+  @media (max-width: 980px) {
+    .d-desknav, .d-login { display: none; }
+    .d-burger { display: flex; }
+  }
+</style>
+
+<script>
+  function initDesignNav() {
+    const nav = document.getElementById('d-nav');
+    if (nav && !nav.dataset.bound) {
+      nav.dataset.bound = '1';
+      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+    document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+      const b = btn as HTMLElement;
+      if (b.dataset.bound) return;
+      b.dataset.bound = '1';
+      b.addEventListener('click', () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+      });
+    });
+    const burger = document.getElementById('d-burger');
+    const drawer = document.getElementById('d-drawer');
+    if (burger && drawer && !burger.dataset.bound) {
+      burger.dataset.bound = '1';
+      burger.addEventListener('click', () => document.body.classList.toggle('d-drawer-open'));
+      drawer.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('d-drawer-open')));
+    }
+  }
+  initDesignNav();
+  document.addEventListener('astro:page-load', initDesignNav);
+</script>

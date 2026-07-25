@@ -1,9 +1,9 @@
 ---
 import '../index.css';
 import { ClientRouter } from 'astro:transitions';
-import AnnouncementBar from '../components/astro/AnnouncementBar.astro';
-import Navbar from '../components/astro/Navbar.astro';
-import Footer from '../components/astro/Footer.astro';
+import AnnouncementBar from '../components/astro/DesignAnnounce.astro';
+import Navbar from '../components/astro/DesignNav.astro';
+import Footer from '../components/astro/DesignFooter.astro';
 import BackToTop from '../components/astro/BackToTop.astro';
 import ScrollProgress from '../components/astro/ScrollProgress.astro';
 import ContactModal from '../components/astro/ContactModal.astro';
@@ -126,6 +126,11 @@ const resolvedOgDescription = ogDescription || description;
       }
       initReveal();
       document.addEventListener('astro:page-load', initReveal);
+    </script>
+
+    {/* GSAP motion foundation (parallax, scene helpers, cleanup) */}
+    <script>
+      import '../scripts/motion.js';
     </script>
   </body>
 </html>

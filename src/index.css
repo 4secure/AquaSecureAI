@@ -74,7 +74,8 @@
   --info: #2563eb;
 }
 
-html.dark {
+html.dark,
+.ops-band {
   color-scheme: dark;
 
   --bg: #212327;
@@ -262,4 +263,57 @@ html.dark {
   .glass        { background: rgba(var(--surface-rgb) / 0.75); backdrop-filter: blur(16px); border: 1px solid var(--border); }
   .bg-grid      { background-image: linear-gradient(rgba(var(--accent-rgb) / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent-rgb) / 0.06) 1px, transparent 1px); background-size: 60px 60px; }
   .bg-dots      { background-image: radial-gradient(circle, rgba(var(--accent-rgb) / 0.18) 1px, transparent 1px); background-size: 32px 32px; }
+
+  /* Motion helpers (reference existing tokens only — no new colours) */
+  .glow-hover   { transition: box-shadow .25s ease, transform .2s ease; }
+  .glow-hover:hover { box-shadow: var(--shadow-glow); }
+  .learn-arrow  { transition: transform .2s cubic-bezier(.16,1,.3,1); }
+  .group:hover .learn-arrow, a:hover > .learn-arrow { transform: translateX(4px); }
+}
+
+/* "Ops band" — a deliberate always-dark platform-console band that hosts the
+   live animated sections (attack graph, data flow, threat map). It re-uses the
+   dark theme token values (declared above via the shared selector) so children
+   render dark on BOTH global themes. Gives the light page dramatic rhythm and
+   makes the glowing motion + the threat map read as one cohesive product screen. */
+.ops-band {
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid rgba(var(--accent-rgb) / 0.18);
+  border-bottom: 1px solid rgba(var(--accent-rgb) / 0.18);
+  background:
+    radial-gradient(85% 55% at 50% 0%, rgba(var(--accent-rgb) / 0.12), transparent 62%),
+    radial-gradient(70% 50% at 50% 100%, rgba(var(--accent-rgb) / 0.07), transparent 60%),
+    var(--bg);
+  color: var(--text);
+}
+.ops-band::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(var(--accent-rgb) / 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb) / 0.055) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(115% 100% at 50% 25%, #000 55%, transparent 92%);
+  -webkit-mask-image: radial-gradient(115% 100% at 50% 25%, #000 55%, transparent 92%);
+}
+/* Sections inside share the band's surface (override their inline bg). */
+.ops-band section { background: transparent !important; }
+.ops-band .ng-section,
+.ops-band .fd-section { background: transparent !important; }
+.ops-band-head { padding: 4.5rem 0 0.5rem; }
+.ops-band-head .badge { margin-bottom: 1rem; }
+/* tighten the stacked console sections so they read as one band, not three pages */
+.ops-band > section { padding-top: 2rem; padding-bottom: 2rem; }
+
+/* Accessibility: respect reduced-motion — kill decorative/looping motion,
+   reveal all content immediately. (Motion is progressive enhancement only.) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
