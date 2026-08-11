@@ -1,0 +1,87 @@
+---
+const links = [
+  { label: 'Products', href: '#products', plus: true },
+  { label: 'Solutions', href: '#solutions', plus: true },
+  { label: 'Platform', href: '#platform', plus: false },
+  { label: 'Pricing', href: '#pricing', plus: false },
+  { label: 'Contact', href: '#contact', plus: false },
+];
+---
+
+<div class="absolute inset-x-0 top-0 z-50 px-6 py-5 md:px-[60px] xl:px-[120px]">
+  <div
+    class="mx-auto flex h-[72px] max-w-wrap items-center justify-between rounded-full border-[0.8px] border-line bg-white pl-5 pr-3 shadow-nav"
+  >
+    <a href="/" class="flex shrink-0 items-center" aria-label="Aqua Secure AI — home">
+      <img src="/logo/color_logo.svg" alt="Aqua Secure AI" width="148" height="46" class="h-[46px] w-auto" />
+    </a>
+
+    <nav class="hidden items-center gap-5 lg:flex" aria-label="Main">
+      {
+        links.map((l) => (
+          <a href={l.href} class="flex items-center gap-1 text-small font-medium text-ink transition hover:text-brand">
+            {l.label}
+            {l.plus && (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 4.5v7M4.5 8h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+              </svg>
+            )}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-5">
+      <a href="#login" class="hidden text-small font-medium text-ink transition hover:text-brand lg:inline">Login</a>
+      <a href="#demo" class="btn-primary hidden h-[46px] whitespace-nowrap !py-0 text-small sm:inline-flex">Request Demo</a>
+      <button
+        id="navToggle"
+        type="button"
+        class="flex h-[46px] w-[46px] items-center justify-center rounded-full text-ink lg:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="navPanel"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="navPanel"
+    hidden
+    class="mx-auto mt-3 max-w-wrap rounded-3xl border-[0.8px] border-line bg-white p-4 shadow-nav lg:hidden"
+  >
+    <nav class="flex flex-col" aria-label="Mobile">
+      {
+        links.map((l) => (
+          <a href={l.href} class="rounded-xl px-3 py-3 text-body font-medium text-ink hover:bg-brand/10">
+            {l.label}
+          </a>
+        ))
+      }
+      <a href="#login" class="rounded-xl px-3 py-3 text-body font-medium text-ink hover:bg-brand/10">Login</a>
+      <a href="#demo" class="btn-primary mt-3 sm:hidden">Request Demo</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById('navToggle');
+  const panel = document.getElementById('navPanel');
+  btn?.addEventListener('click', () => {
+    const open = panel?.hasAttribute('hidden');
+    if (open) panel?.removeAttribute('hidden');
+    else panel?.setAttribute('hidden', '');
+    btn.setAttribute('aria-expanded', String(!!open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      panel.setAttribute('hidden', '');
+      btn?.setAttribute('aria-expanded', 'false');
+    }),
+  );
+</script>

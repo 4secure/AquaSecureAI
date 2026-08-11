@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+}
+
+@layer components {
+  /* 1200px content column inside the 120px page gutter from Figma */
+  .wrap {
+    @apply mx-auto w-full max-w-wrap px-6 md:px-[60px] xl:px-0;
+  }
+
+  /* Vertical rhythm: 100px top/bottom on every section */
+  .section {
+    @apply py-[72px] md:py-[100px];
+  }
+
+  /* #4FC2BB at 8% over white */
+  .section-tint {
+    background-color: rgba(79, 194, 187, 0.08);
+  }
+
+  .eyebrow {
+    @apply inline-block rounded-full border-[0.8px] border-brand px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-brand;
+  }
+
+  .h2 {
+    @apply font-display text-h2 font-semibold text-ink;
+  }
+
+  .sub {
+    @apply text-body font-medium text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-body font-semibold transition;
+  }
+
+  .btn-primary {
+    @apply btn border-[1.5px] border-brand bg-brand text-white hover:bg-[#3FB0A9] hover:border-[#3FB0A9];
+  }
+
+  .btn-light {
+    @apply btn border-[1.5px] border-white bg-white text-ink hover:bg-white/90;
+  }
+
+  .btn-ghost {
+    @apply btn border-[1.5px] border-white bg-transparent text-white hover:bg-white/10;
+  }
+
+  .card {
+    @apply rounded-xl bg-white p-5 shadow-card;
+  }
+
+  .foot-link {
+    @apply text-small font-medium text-muted transition hover:text-brand;
+  }
+}
+
+/* --- Gradients: CSS approximations of the layered blurred vectors in Figma --- */
+.hero-grad {
+  background-image:
+    radial-gradient(ellipse 65% 55% at 12% 105%, rgba(255, 255, 255, 0.5), transparent 70%),
+    linear-gradient(103deg, #2a4a92 0%, #3670a9 32%, #47acb6 62%, #4fc2bb 84%, #6ecfc9 100%);
+}
+
+.cta-grad {
+  background-image:
+    radial-gradient(ellipse 55% 60% at 18% -15%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 82% -10%, rgba(149, 218, 214, 0.9), transparent 65%),
+    linear-gradient(92deg, #2b549d 0%, #35579a 22%, #4098b2 68%, #4ec1bb 100%);
+}
+
+.footer-grad {
+  background-image:
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 34%, rgba(255, 255, 255, 0) 76%),
+    linear-gradient(100deg, #5b78b4 0%, #4cb5b9 60%, #58c8c2 100%);
+}
+
+/* Exclusive accordion: hide the default marker, flip the chevron when open */
+.acc summary {
+  list-style: none;
+  cursor: pointer;
+}
+.acc summary::-webkit-details-marker {
+  display: none;
+}
+.acc[open] .acc-chev {
+  transform: rotate(180deg);
+}
