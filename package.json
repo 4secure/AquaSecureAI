@@ -16,7 +16,8 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.18.2"
+    "astro": "^5.18.2",
+    "motion": "^13.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

@@ -1,0 +1,138 @@
+---
+// Product-page hero, from the Claude Design SOC file's revised hero.
+// Replaces the old dashboard-in-glass treatment with an animated radar backdrop, a row of
+// glass "signal" chips and a divider strapline. Shared by every product page so they cannot
+// drift apart.
+//
+// Props:
+//   eyebrow   pill text above the headline
+//   title     h1
+//   sub       supporting paragraph
+//   primary   { label, href }  filled white button
+//   secondary { label, href }  outlined white button
+//   chips     [{ label, value }]  the signal row
+//   tagline   small uppercase strapline between the two rules
+const { eyebrow, title, sub, primary, secondary, chips = [], tagline } = Astro.props;
+---
+
+<section id="top" class="relative isolate overflow-hidden">
+  <div class="hero-grad absolute inset-0 -z-10"></div>
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+  >
+  </div>
+
+  <!-- Decorative backdrop: masked 64px grid + radar sweep. Purely presentational, so it is
+       aria-hidden and driven by CSS keyframes that stop under prefers-reduced-motion. -->
+  <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div class="hero-grid absolute inset-0 opacity-[0.16]"></div>
+
+    <svg
+      viewBox="-500 -500 1000 1000"
+      width="1040"
+      height="1040"
+      class="absolute left-1/2 top-[320px] -ml-[520px] -mt-[520px] overflow-visible"
+    >
+      <defs>
+        <radialGradient id="socFade" cx="50%" cy="50%" r="50%">
+          <stop offset="55%" stop-color="#fff" stop-opacity="1"></stop>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"></stop>
+        </radialGradient>
+        <mask id="socMask">
+          <rect x="-500" y="-500" width="1000" height="1000" fill="url(#socFade)"></rect>
+        </mask>
+        <linearGradient id="socSweep" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0.22"></stop>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+
+      <g mask="url(#socMask)" fill="none">
+        <g data-motion="sweep" class="origin-[0_0] [animation:sweep_18s_linear_infinite]">
+          <path d="M0 0 L460 0 A460 460 0 0 0 429.4 -165.2 Z" fill="url(#socSweep)"></path>
+          <line x1="0" y1="0" x2="460" y2="0" stroke="#fff" stroke-opacity="0.4" stroke-width="1"></line>
+        </g>
+
+        <circle r="130" stroke="#fff" stroke-opacity="0.22" stroke-width="1"></circle>
+        <circle r="240" stroke="#fff" stroke-opacity="0.18" stroke-width="1"></circle>
+        <circle r="350" stroke="#fff" stroke-opacity="0.14" stroke-width="1"></circle>
+        <circle r="460" stroke="#fff" stroke-opacity="0.1" stroke-width="1"></circle>
+
+        <circle
+          data-motion="ring"
+          r="130"
+          stroke="#fff"
+          stroke-opacity="0.34"
+          stroke-width="1.5"
+          class="origin-[0_0] [animation:ringPulse_6s_ease-out_infinite]"></circle>
+
+        <g stroke="#fff" stroke-opacity="0.12" stroke-width="1">
+          <line x1="-460" y1="0" x2="460" y2="0"></line>
+          <line x1="0" y1="-460" x2="0" y2="460"></line>
+          <line x1="-325" y1="-325" x2="325" y2="325"></line>
+          <line x1="-325" y1="325" x2="325" y2="-325"></line>
+        </g>
+
+        <g fill="#fff" fill-opacity="0.5">
+          <circle cx="188" cy="-96" r="3"></circle>
+          <circle cx="-268" cy="142" r="2.5"></circle>
+          <circle cx="96" cy="286" r="2.5"></circle>
+          <circle cx="-142" cy="-212" r="2"></circle>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="wrap relative z-[1] pt-[140px] text-center md:pt-[176px]">
+    <div data-reveal-group="90" data-reveal-now>
+      <span
+        class="inline-block rounded-full border border-white px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+      >
+        {eyebrow}
+      </span>
+
+      <h1 class="mx-auto mt-4 max-w-[900px] text-balance font-display text-hero font-bold text-white">
+        {title}
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-[660px] text-pretty text-lead font-medium text-white">{sub}</p>
+
+      <div class="mt-[30px] flex flex-wrap items-center justify-center gap-3">
+        <a href={primary.href} class="btn-light">{primary.label}</a>
+        <a href={secondary.href} class="btn-ghost">{secondary.label}</a>
+      </div>
+    </div>
+
+    <div
+      class="mx-auto mt-[52px] flex max-w-[900px] flex-wrap items-center justify-center gap-3"
+      data-reveal
+      data-reveal-now
+      data-reveal-delay="240"
+    >
+      {
+        chips.map((c, i) => (
+          <div
+            data-motion="drift"
+            style={`animation-delay:${i * 0.6}s`}
+            class="inline-flex items-center gap-2.5 rounded-full border border-white/[0.34] bg-white/[0.12] px-[18px] py-2.5 backdrop-blur-[6px] [animation:drift_7s_ease-in-out_infinite]"
+          >
+            <span
+              data-motion="dot"
+              class="h-2 w-2 shrink-0 rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.22)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            />
+            <span class="whitespace-nowrap text-[15px] font-semibold text-white">{c.label}</span>
+            <span class="whitespace-nowrap font-display text-[15px] font-bold text-white/70">{c.value}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mx-auto mt-11 flex items-center justify-center gap-3" data-reveal data-reveal-now data-reveal-delay="340">
+      <span class="h-px w-14 bg-white/40"></span>
+      <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white/70">{tagline}</span>
+      <span class="h-px w-14 bg-white/40"></span>
+    </div>
+  </div>
+
+  <div class="h-[120px]"></div>
+</section>

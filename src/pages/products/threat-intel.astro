@@ -1,0 +1,391 @@
+---
+// Threat Intelligence product page — implements the Claude Design file
+// "AquaSecure Threat Intelligence.dc.html". Shares ProductHero and the site utilities with
+// the other product pages, so this file is layout + copy only.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ProductHero from '../../components/ProductHero.astro';
+
+const sources = [
+  {
+    icon: 'threat-intelligence',
+    name: 'Commercial Feeds',
+    controls: 'Premium sources',
+    note: 'Vendor intelligence on active campaigns, malware families, and infrastructure.',
+  },
+  {
+    icon: 'observability',
+    name: 'Open Source',
+    controls: 'OSINT & CERTs',
+    note: 'Public advisories, national CERT bulletins, and community indicator lists.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Dark Web',
+    controls: 'Forums & markets',
+    note: 'Leaked credentials, initial access brokers, and chatter naming your brand.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'Malware Analysis',
+    controls: 'Sandbox verdicts',
+    note: 'Behavioural detonation results with extracted indicators and TTPs.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Vulnerabilities',
+    controls: 'CVE & exploit',
+    note: 'Exploit availability and in-the-wild activity mapped to your exposed assets.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Sector Reporting',
+    controls: 'Industry ISACs',
+    note: 'Intelligence shared within your industry and geography, kept current.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'Phishing Intel',
+    controls: 'Kits & lookalikes',
+    note: 'Newly registered lookalike domains and phishing kits impersonating you.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'AI Correlation',
+    controls: 'Scoring engine',
+    note: 'Confidence scoring, de-duplication, and relevance ranking for your estate.',
+  },
+];
+
+const features = [
+  {
+    icon: 'threat-intelligence',
+    title: 'Curated Global Feeds',
+    desc: 'Commercial, open source, and community intelligence aggregated and de-duplicated into a single normalised stream.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'IOC Enrichment & Scoring',
+    desc: 'Every indicator arrives with confidence score, first and last seen, related infrastructure, and mapped ATT&CK techniques.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Threat Actor Profiling',
+    desc: 'Track the groups active in your sector — their tooling, targets, and current campaigns — in maintained actor profiles.',
+  },
+  {
+    icon: 'observability',
+    title: 'Sector & Estate Relevance',
+    desc: 'Intelligence is filtered against your industry, geography, and technology stack so analysts read only what applies.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Automated Distribution',
+    desc: 'Push indicators straight into SIEM, EDR, and firewalls via STIX/TAXII and API, so intelligence becomes prevention.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Briefings & Reporting',
+    desc: 'Analyst-written briefings and executive summaries covering emerging threats relevant to your organisation.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Aggregate',
+    open: true,
+    body: 'Commercial, open source, dark web, and sector feeds are collected continuously and normalised into one indicator schema.',
+  },
+  {
+    num: '02',
+    title: 'Enrich',
+    open: false,
+    body: 'Indicators are de-duplicated, scored for confidence, and linked to actors, malware families, and ATT&CK techniques.',
+  },
+  {
+    num: '03',
+    title: 'Contextualise',
+    open: false,
+    body: 'Relevance is judged against your sector, geography, and asset inventory, so what surfaces is what could actually reach you.',
+  },
+  {
+    num: '04',
+    title: 'Distribute',
+    open: false,
+    body: 'Indicators are pushed to SIEM, EDR, and network controls over STIX/TAXII or API, and briefings go to the people who need them.',
+  },
+];
+
+const actorPoints = [
+  'Maintained profiles for the actors active in your sector, with tooling and known campaigns.',
+  'Techniques mapped to MITRE ATT&CK so you can test detection coverage against real behaviour.',
+  'Campaign timelines showing what changed, when, and which indicators went stale.',
+  'Analyst briefings translate the activity into what to prioritise this week.',
+];
+
+const useCases = ['Threat Hunting', 'Detection Engineering', 'Executive Briefings', 'Risk Prioritisation'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Threat Intelligence — Aqua Secure AI"
+  description="Aqua TIP aggregates global threat feeds, enriches every indicator with context, and delivers intelligence relevant to your industry and estate."
+>
+  <Nav />
+
+  <ProductHero
+    eyebrow="Threat Intelligence Platform"
+    title="Know the threats aimed at you before they land"
+    sub="Aqua TIP aggregates global threat feeds, enriches every indicator with context, and delivers intelligence that is actually relevant to your industry and estate."
+    primary={{ label: 'Book A Demo', href: '#demo' }}
+    secondary={{ label: 'Explore Intelligence Sources', href: '#coverage' }}
+    chips={[
+      { label: 'Intelligence sources', value: '50+' },
+      { label: 'Feed updates', value: 'Continuous' },
+      { label: 'Indicator scoring', value: 'AI-powered' },
+      { label: 'Distribution', value: 'STIX/TAXII' },
+    ]}
+    tagline="Global signal. Local relevance."
+  />
+
+  <!-- ============ INTELLIGENCE SOURCES ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Intelligence Sources</span>
+        <h2 class="mt-4 h2">Every Feed.<br />One Intelligence Picture.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Open, commercial, and community sources are de-duplicated, scored, and correlated into a single stream your
+          tools can consume.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          sources.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Talk To Our Intelligence Team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Aggregation, Enrichment And Distribution<br />In One Platform.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-start gap-[60px] lg:grid-cols-2" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Global Feed To Blocked Indicator
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Aqua TIP runs continuously — collecting, scoring, and pushing intelligence into the controls that act on it.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book An Intelligence Briefing</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACTOR PROFILING ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div class="grid items-center gap-[60px] lg:grid-cols-2" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">Actor Profiling</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Understand The Actors Targeting Your Sector
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              actorPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card">
+          <img
+            src="/img/threat-map.png"
+            alt="Live threat map with global attack activity and indicators"
+            width="755"
+            height="566"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Aqua TIP?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Aqua TIP is built for teams who need intelligence they can act on — feeding detections, briefing leadership, and
+        prioritising what to fix first.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Turn Global Intelligence Into Local Defence
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Curated feeds, actor profiling, IOC enrichment, and automated distribution to the controls that block them.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

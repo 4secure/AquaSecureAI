@@ -1,21 +1,11 @@
 ---
+import { PRODUCTS, SOLUTIONS, PLATFORM } from '../data/nav.js';
+
+// Same source as the navbar, so the two can never disagree.
 const columns = [
-  {
-    title: 'Platform',
-    links: ['GRC', 'SOC', 'Threat Intelligence', 'Asset Management', 'Dark Web', 'Phishbot'],
-  },
-  {
-    title: 'Solutions',
-    links: ['Manage SIEM', 'Attack Surface', 'DMARC', 'Phishing Campaigns', 'E-Learning', 'Compliance Management'],
-  },
-  {
-    title: 'Products',
-    links: ['Aqua SIEM', 'Aqua Edge', 'Aqua Proxy', 'Aqua Hunter', 'Aqua GRC'],
-  },
-  {
-    title: 'Resources',
-    links: ['Documentation', 'Blog', 'Research', 'Webinars', 'Case Studies'],
-  },
+  { title: 'Products', links: PRODUCTS },
+  { title: 'Solutions', links: SOLUTIONS },
+  { title: 'Platform', links: PLATFORM },
 ];
 ---
 
@@ -37,7 +27,7 @@ const columns = [
 
       <!-- Link columns -->
       <div
-        class="grid flex-1 grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-[140px_186px_96px_112px_minmax(200px,1fr)]"
+        class="grid flex-1 grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-[176px_212px_168px_minmax(200px,1fr)]"
       >
         {
           columns.map((col) => (
@@ -46,8 +36,13 @@ const columns = [
               <ul class="mt-[18px] flex flex-col gap-[18px]">
                 {col.links.map((l) => (
                   <li>
-                    <a href="#" class="foot-link">
-                      {l}
+                    <a
+                      href={l.href}
+                      target={l.external ? '_blank' : undefined}
+                      rel={l.external ? 'noopener' : undefined}
+                      class="foot-link"
+                    >
+                      {l.label}
                     </a>
                   </li>
                 ))}

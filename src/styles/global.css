@@ -17,6 +17,15 @@
   }
 }
 
+@layer base {
+  /* Pre-animation state. Scoped to `motion-ready`, which only exists while JS is present and
+     the motion module has not finished — never a permanent hidden state. */
+  .motion-ready [data-reveal],
+  .motion-ready [data-reveal-group] > * {
+    opacity: 0;
+  }
+}
+
 @layer components {
   /* 1200px content column inside the 120px page gutter from Figma */
   .wrap {
@@ -53,6 +62,10 @@
     @apply btn border-[1.5px] border-brand bg-brand text-white hover:bg-[#3FB0A9] hover:border-[#3FB0A9];
   }
 
+  .btn-outline {
+    @apply btn border-[1.5px] border-brand bg-transparent text-brand hover:bg-brand/10;
+  }
+
   .btn-light {
     @apply btn border-[1.5px] border-white bg-white text-ink hover:bg-white/90;
   }
@@ -71,26 +84,177 @@
 }
 
 /* --- Gradients: CSS approximations of the layered blurred vectors in Figma --- */
+/* Hero background.
+   Layer geometry was fitted numerically against the reference screenshot (mean error
+   2.8/255 over the visible area). All positions and radii are percentages of this
+   element's box, so the composition scales with the viewport instead of drifting:
+   deep cobalt upper-left, turquoise upper-right, light fade toward the bottom.
+   Each glow uses a 4-stop falloff (A -> .55A -> .18A -> 0) so it has no visible edge.
+   Layers are listed top-most first. */
 .hero-grad {
   background-image:
-    radial-gradient(ellipse 65% 55% at 12% 105%, rgba(255, 255, 255, 0.5), transparent 70%),
-    linear-gradient(103deg, #2a4a92 0%, #3670a9 32%, #47acb6 62%, #4fc2bb 84%, #6ecfc9 100%);
+    /* soft white lift, lower-right -> very light cyan */
+    radial-gradient(
+      ellipse 31% 35% at 92% 54%,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.1375) 35%,
+      rgba(255, 255, 255, 0.045) 65%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    /* stronger white lift, lower-left -> near-white with a cool blue cast */
+    radial-gradient(
+      ellipse 28% 41% at -4% 58%,
+      rgba(255, 255, 255, 0.59) 0%,
+      rgba(255, 255, 255, 0.3245) 35%,
+      rgba(255, 255, 255, 0.1062) 65%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    /* overall downward lightening, ramped so it stays flat through the upper half */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 38%,
+      rgba(255, 255, 255, 0.315) 61%,
+      rgba(255, 255, 255, 0.9) 100%
+    ),
+    /* deep blue concentrated toward the upper-left */
+    radial-gradient(
+      ellipse 34% 39% at 28% 20%,
+      rgba(14, 0, 147, 0.33) 0%,
+      rgba(14, 0, 147, 0.1815) 35%,
+      rgba(14, 0, 147, 0.0594) 65%,
+      rgba(14, 0, 147, 0) 100%
+    ),
+    /* base: cobalt -> blue-teal -> turquoise, holding turquoise across the right */
+    linear-gradient(90deg, #345296 0%, #5da4b2 40%, #6fbfba 72%, #6fbfba 100%);
 }
 
-.cta-grad {
-  background-image:
-    radial-gradient(ellipse 55% 60% at 18% -15%, rgba(255, 255, 255, 0.85), transparent 60%),
-    radial-gradient(ellipse 60% 70% at 82% -10%, rgba(149, 218, 214, 0.9), transparent 65%),
-    linear-gradient(92deg, #2b549d 0%, #35579a 22%, #4098b2 68%, #4ec1bb 100%);
+/* --- Hero dashboard: atmospheric stage + glass surface ---
+   `.hero-stage` paints two large diffused light sources behind the preview (blue from the
+   upper-left, teal from the upper-right) using pseudo-elements, so no extra DOM is needed.
+   They deliberately overflow the content column so the glow wraps the panel's sides. */
+.hero-stage {
+  position: relative;
 }
 
+.hero-stage::before,
+.hero-stage::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(30px);
+}
+
+.hero-stage::before {
+  inset: -16% 24% 24% -20%;
+  background: radial-gradient(
+    closest-side ellipse,
+    rgba(47, 86, 168, 0.42),
+    rgba(47, 86, 168, 0.16) 45%,
+    transparent 72%
+  );
+}
+
+.hero-stage::after {
+  inset: -18% -18% 28% 26%;
+  background: radial-gradient(
+    closest-side ellipse,
+    rgba(79, 194, 187, 0.46),
+    rgba(79, 194, 187, 0.18) 45%,
+    transparent 72%
+  );
+}
+
+/* The frosted surface the screenshot sits in.
+   Two background layers via the padding-box/border-box trick: the first is the glass pane
+   itself, the second paints the 1.5px rim as a gradient so the edge catches light unevenly
+   (bright white at the top-left, a faint teal mid-way) instead of reading as a flat white
+   margin. Kept translucent so the atmosphere tints the rim. */
+/* Measured off the reference at ~6x zoom (5.9px per CSS px):
+     - the 20px band is a PERFECTLY FLAT 10% white over the atmosphere — standard deviation
+       0.00 across 100px at every height, so no gradient, no inset shading, no edge glow
+     - both boundaries are crisp: a hard step in, a hard step out
+     - there is no shadow of any kind. "Just outside" and "far outside" the panel measure
+       identical to the byte, so any outer diffusion would be a deviation.
+   That makes the whole surface a single flat translucent fill — nothing else. */
+.hero-glass {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Stops moved 34%/76% -> 62%/92% in the revised design: more white before the gradient. */
 .footer-grad {
   background-image:
-    linear-gradient(to bottom, #ffffff 0%, #ffffff 34%, rgba(255, 255, 255, 0) 76%),
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 62%, rgba(255, 255, 255, 0) 92%),
     linear-gradient(100deg, #5b78b4 0%, #4cb5b9 60%, #58c8c2 100%);
 }
 
+/* --- Product hero backdrop: masked 64px grid + radar sweep --- */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.55) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.55) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 38%, #000 20%, transparent 78%);
+  mask-image: radial-gradient(ellipse 65% 60% at 50% 38%, #000 20%, transparent 78%);
+}
+
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0.08;
+  }
+  100% {
+    transform: scale(3.54);
+    opacity: 0;
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* The radar and chips animate forever, so they must stop when motion is unwelcome. */
+@media (prefers-reduced-motion: reduce) {
+  [data-motion] {
+    animation: none !important;
+  }
+}
+
 /* Exclusive accordion: hide the default marker, flip the chevron when open */
+/* flow-root keeps the children's margins inside this box, so its measured height is the
+   height it will actually occupy. Without it the margins collapse through the wrapper and
+   the open animation targets a value short of the real one, clipping the last line. */
+.acc-body {
+  display: flow-root;
+}
+
 .acc summary {
   list-style: none;
   cursor: pointer;

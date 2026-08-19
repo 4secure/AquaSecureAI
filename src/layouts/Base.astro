@@ -27,8 +27,25 @@ const { title, description } = Astro.props;
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&family=Manrope:wght@500;600;700&display=swap"
     />
+    <!-- Set before first paint so revealed elements never flash in at full opacity. Only
+         applied when JS runs, and a watchdog clears it if the motion module fails to load,
+         so content can never be stranded invisible. -->
+    <script is:inline>
+      (function () {
+        var r = document.documentElement;
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          r.classList.add('motion-ready');
+          setTimeout(function () {
+            r.classList.remove('motion-ready');
+          }, 2500);
+        }
+      })();
+    </script>
   </head>
   <body>
     <slot />
+    <script>
+      import '../scripts/motion.js';
+    </script>
   </body>
 </html>

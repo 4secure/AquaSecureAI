@@ -95,6 +95,7 @@ const modules = [
     tagline: 'Broker and audit every outbound request.',
     body: 'Aqua Proxy mediates traffic between your estate and the internet, giving you full visibility and control over egress activity.',
     open: false,
+    media: 'proxy',
   },
 ];
 ---
@@ -103,14 +104,19 @@ const modules = [
   title="AquaSecure.ai — Autonomous Security Operations Powered by AI"
   description="Detect, investigate, enrich, hunt, and respond to threats across your entire infrastructure from a single platform."
 >
+  <Nav />
+
   <!-- ============ HERO ============ -->
   <section class="relative isolate overflow-hidden">
     <div class="hero-grad absolute inset-0 -z-10"></div>
-    <div class="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-white"></div>
+    <!-- long dissolve into white: sits above the preview so panel, screenshot and
+         atmosphere all fade out together instead of ending on a hard edge -->
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
 
-    <Nav />
-
-    <div class="wrap pt-[140px] text-center md:pt-[176px]">
+    <div class="wrap pt-[140px] text-center md:pt-[176px]" data-reveal-group="90" data-reveal-now>
       <span class="inline-block rounded-full border border-white px-4 py-1.5 text-sm font-bold uppercase tracking-[0.04em] text-white">
         AI-native security operations
       </span>
@@ -131,8 +137,8 @@ const modules = [
     </div>
 
     <!-- Product screenshot, clipped by the section edge like the Figma frame -->
-    <div class="mx-auto mt-[60px] w-full max-w-wrap px-6 md:px-[60px] xl:px-0">
-      <div class="rounded-t-[40px] bg-white p-5 pb-0">
+    <div class="hero-stage mx-auto mt-[60px] w-full max-w-wrap px-6 md:px-[60px] xl:px-0" data-reveal data-reveal-now data-reveal-delay="260">
+      <div class="hero-glass rounded-t-[40px] p-5 pb-0">
         <img
           src="/img/hero-dashboard.jpg"
           alt="AquaSecure GRC overview dashboard"
@@ -147,7 +153,7 @@ const modules = [
   <!-- ============ PLATFORM ECOSYSTEM ============ -->
   <section id="platform" class="section bg-white">
     <div class="wrap">
-      <div class="text-center">
+      <div class="text-center" data-reveal>
         <span class="eyebrow">Platform Ecosystem</span>
         <h2 class="mt-4 h2">One Platform.<br />Every Security Domain.</h2>
         <p class="sub mx-auto mt-5 max-w-[680px]">
@@ -155,11 +161,20 @@ const modules = [
         </p>
       </div>
 
-      <div class="mt-[60px] grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-[60px] grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group="70">
         {
           domains.map((d) => (
-            <article class="flex flex-col gap-5 rounded-xl border border-line bg-white p-5">
-              <img src={`/icons/${d.icon}.svg`} alt="" aria-hidden="true" width="60" height="60" class="h-[60px] w-[60px]" />
+            <article
+              class="flex flex-col gap-5 rounded-xl border border-line bg-white p-5 transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open"
+            >
+              <img
+                src={`/icons/${d.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto h-[60px] w-[60px]"
+              />
               <div class="flex flex-col gap-3 text-center">
                 <h3 class="font-display text-h3 font-bold text-ink">{d.title}</h3>
                 <p class="text-small font-medium text-muted">{d.body}</p>
@@ -173,21 +188,32 @@ const modules = [
 
   <!-- ============ HOW IT WORKS — ARCHITECTURE ============ -->
   <section class="section section-tint">
-    <div class="wrap text-center">
+    <div class="wrap text-center" data-reveal>
       <span class="eyebrow">How It Work</span>
       <h2 class="mt-4 h2">How The Platform Works</h2>
       <p class="sub mx-auto mt-5 max-w-[680px]">
         AquaSecure unifies detection, intelligence, compliance, and response into a single AI-driven fabric.
       </p>
-
-      <img
-        src="/img/architecture.png"
-        alt="AquaSecure platform architecture: data sources feeding Aqua SIEM, Aqua Edge and Aqua Proxy through enrichment, storage and AI agents to reporting outputs."
-        width="1200"
-        height="675"
-        class="mt-[60px] w-full"
-      />
     </div>
+
+    <!-- Full-bleed: outside `.wrap`, so it spans the section edge to edge with no gutter.
+         The clip has a baked #F9FEFC background; mix-blend-darken drops it into the section
+         tint. The poster is the clip's final frame, so the full diagram is visible before
+         playback starts and the framing matches exactly. -->
+    <video
+      id="architectureVideo"
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/img/architecture-poster.jpg"
+      width="1600"
+      height="800"
+      aria-label="AquaSecure platform architecture: data sources feeding Aqua SIEM, Aqua Edge and Aqua Proxy through enrichment, storage and AI agents to reporting outputs."
+      class="mx-auto mt-[60px] block w-full max-w-[1000px] mix-blend-darken" data-reveal
+    >
+      <source src="/animations/AquaSecure.webm" type="video/webm" />
+    </video>
   </section>
 
   <!-- ============ INSIDE THE PLATFORM ============ -->
@@ -205,7 +231,7 @@ const modules = [
         <a href="#platform" class="btn-primary shrink-0">Explore The Platform</a>
       </div>
 
-      <div class="mt-[60px] grid gap-5 lg:grid-cols-2">
+      <div class="mt-[60px] grid gap-5 lg:grid-cols-2" data-reveal-group="90">
         {
           wideCards.map((c) => (
             <article class="card flex flex-col">
@@ -216,7 +242,7 @@ const modules = [
                 >
                 </div>
               </div>
-              <div class="mt-5 flex flex-col gap-3 pb-1 text-center">
+              <div class="mt-1 flex flex-col gap-3 pb-1 text-center">
                 <h3 class="font-display text-h3 font-semibold text-ink">{c.title}</h3>
                 <p class="text-small font-medium text-muted">{c.body}</p>
               </div>
@@ -225,7 +251,7 @@ const modules = [
         }
       </div>
 
-      <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group="80">
         {
           narrowCards.map((c) => (
             <article class="card flex flex-col">
@@ -250,7 +276,7 @@ const modules = [
   <!-- ============ HOW IT WORKS — MODULES ============ -->
   <section id="solutions" class="section section-tint">
     <div class="wrap">
-      <div class="text-center">
+      <div class="text-center" data-reveal>
         <span class="eyebrow">How It Work</span>
         <h2 class="mt-4 h2">How The Platform Works</h2>
         <p class="sub mx-auto mt-5 max-w-[680px]">
@@ -258,13 +284,14 @@ const modules = [
         </p>
       </div>
 
-      <div class="mt-[60px] grid items-start gap-[60px] lg:grid-cols-[550px_minmax(0,1fr)]">
+      <div class="mt-[60px] grid items-start gap-[60px] lg:grid-cols-[380px_minmax(0,1fr)]" data-reveal-group="110">
         <div class="flex flex-col gap-5">
           {
             modules.map((m) => (
               <details
                 name="modules"
                 open={m.open}
+                data-media={m.media ?? 'diagram'}
                 class="acc rounded-xl border-[1.5px] border-line bg-white p-5 open:border-brand open:shadow-card-open"
               >
                 <summary class="flex items-center justify-between gap-4">
@@ -280,48 +307,132 @@ const modules = [
                     <path d="m6 9 6 6 6-6" stroke="#0B1630" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </summary>
-                <p class="mt-2.5 text-small font-bold text-brand">{m.tagline}</p>
-                <p class="mt-2.5 text-small font-medium text-muted">{m.body}</p>
+                <div class="acc-body">
+                  <p class="mt-2.5 text-small font-bold text-brand">{m.tagline}</p>
+                  <p class="mt-2.5 text-small font-medium text-muted">{m.body}</p>
+                </div>
               </details>
             ))
           }
         </div>
 
+        <div id="moduleMedia" class="self-center">
+          <img
+            id="moduleDiagram"
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow: endpoints, network devices and cloud sources aggregated by the Wazuh manager, then handed off to Aqua Edge."
+            width="1200"
+            height="621"
+            class="w-full rounded-xl"
+          />
+          <!-- the clip has a baked #FDFDFD background; mix-blend-darken drops it into the
+               section tint without altering the artwork, since every ink colour is darker -->
+          <video
+            id="moduleProxyVideo"
+            hidden
+            muted
+            loop
+            playsinline
+            preload="none"
+            width="2400"
+            height="784"
+            aria-label="Animation of Aqua Proxy brokering outbound requests"
+            class="mx-auto block w-full mix-blend-darken"
+          >
+            <source src="/animations/aqua_proxy.webm" type="video/webm" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Swap the module graphic for the Aqua Proxy animation while that item is open.
+    const items = document.querySelectorAll('details[name="modules"]');
+    const diagram = document.getElementById('moduleDiagram');
+    const video = document.getElementById('moduleProxyVideo');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (diagram && video instanceof HTMLVideoElement) {
+      const sync = () => {
+        const open = Array.from(items).find((d) => d instanceof HTMLDetailsElement && d.open);
+        const showVideo = open instanceof HTMLElement && open.dataset.media === 'proxy';
+        video.hidden = !showVideo;
+        diagram.hidden = showVideo;
+        if (!showVideo) {
+          video.pause();
+          video.currentTime = 0;
+          return;
+        }
+        // preload="none" means the file is only fetched once someone opens Aqua Proxy
+        if (reduceMotion) video.controls = true;
+        else video.play().catch(() => (video.controls = true));
+      };
+      items.forEach((d) => d.addEventListener('toggle', sync));
+      sync();
+    }
+
+    // Architecture animation: preload="none" plus this observer means the 2.4MB clip is only
+    // fetched once the section is actually approached, and playback pauses off-screen.
+    const arch = document.getElementById('architectureVideo');
+    if (arch instanceof HTMLVideoElement) {
+      if (reduceMotion) {
+        arch.controls = true;
+      } else {
+        new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) arch.play().catch(() => (arch.controls = true));
+              else arch.pause();
+            }
+          },
+          { rootMargin: '200px 0px', threshold: 0.1 },
+        ).observe(arch);
+      }
+    }
+  </script>
+
+  <!-- ============ THREAT INTELLIGENCE ============ -->
+  <section class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-start gap-[60px] lg:grid-cols-[550px_minmax(0,1fr)]" data-reveal-group="110">
+        <div class="flex flex-col gap-[30px]">
+          <div>
+            <span class="eyebrow">Threat Intelligence</span>
+            <h2 class="mt-4 h2">Know Your Threats<br />Before They Strike</h2>
+            <p class="sub mt-5">
+              Real-time IP reputation intelligence powered by global threat feeds. Identify malicious actors before they
+              compromise your infrastructure.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#tip" class="btn-primary">Aqua tip</a>
+            <a href="#pricing" class="btn-outline">View pricing</a>
+          </div>
+        </div>
+
         <img
-          src="/img/siem-diagram.png"
-          alt="Aqua SIEM data flow: endpoints, network devices and cloud sources aggregated by the Wazuh manager, then handed off to Aqua Edge."
-          width="1200"
-          height="621"
-          class="w-full rounded-xl"
+          src="/img/threat-globe.svg"
+          alt="World map highlighting global threat intelligence coverage"
+          width="590"
+          height="400"
+          loading="lazy"
+          class="w-full"
         />
       </div>
     </div>
   </section>
 
-  <!-- ============ GLOBAL VISIBILITY ============ -->
-  <section class="section bg-white">
-    <div class="wrap text-center">
-      <span class="eyebrow">Global Visibility</span>
-      <h2 class="mt-4 h2">See The Threat Landscape In Real Time</h2>
-      <p class="sub mx-auto mt-5 max-w-[680px]">
-        Track attacks, threat actors, and indicators across the digital landscape from one unified view.
-      </p>
-
-      <img
-        src="/img/world-map.svg"
-        alt="Dotted world map showing global threat activity"
-        width="1200"
-        height="778"
-        loading="lazy"
-        class="mt-[60px] w-full"
-      />
-    </div>
-  </section>
-
   <!-- ============ CTA ============ -->
-  <section id="demo" class="section bg-white">
+  <section id="demo" class="section section-tint">
     <div class="wrap">
-      <div class="cta-grad flex flex-col items-center rounded-[20px] px-6 py-16 text-center md:px-16 md:py-[80px]">
+      <!-- authored 1200x400 background from Figma; stretched rather than cropped so its baked
+           rx=20 corners stay aligned with the container's own radius at every width -->
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
         <span class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white">
           Get Started
         </span>
