@@ -21,10 +21,11 @@ export const SOLUTIONS = [
   { label: 'Compliance Management', href: '/solutions/compliance-management' },
 ];
 
-// Both live products, so these are absolute and open in a new tab.
+// Both have pages on this site now, so they route internally rather than opening the live
+// product hosts in a new tab.
 export const PLATFORM = [
-  { label: 'Aqua TIP', href: 'https://tip.aquasecure.ai', external: true },
-  { label: 'Aqua Secure Portal', href: 'https://secureye.io/login', external: true },
+  { label: 'Aqua TIP', href: '/platform/aqua-tip' },
+  { label: 'Aqua Secure Portal', href: '/platform/portal' },
 ];
 
 export const NAV_GROUPS = [

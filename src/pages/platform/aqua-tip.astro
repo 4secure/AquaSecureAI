@@ -1,0 +1,322 @@
+---
+// Aqua TIP platform page — implements the Claude Design file "AquaSecure Aqua TIP.html".
+//
+// That file is plain HTML rather than a .dc.html component: it builds the feed table, lifecycle,
+// region list and integration cards in browser JS, and draws two world maps at runtime with d3 +
+// topojson loaded from CDNs. Here the lists are rendered from data at build time, and both maps
+// were pre-rendered to static SVG with the same projection (geoNaturalEarth1) and the same fit —
+// so the page ships with no client JS, no CDN dependency, and no layout shift while a map loads.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const feed = [
+  { type: 'Domain', ind: 'update-portal-secure[.]net', actor: 'Storm cluster', tech: 'T1566.002', score: 94 },
+  { type: 'IP', ind: '185.199.xx.140', actor: 'Access broker', tech: 'T1071.001', score: 88 },
+  { type: 'Hash', ind: 'a41f…9c02 (loader)', actor: 'Commodity crimeware', tech: 'T1204.002', score: 81 },
+  { type: 'URL', ind: 'hxxps://invoice-review…', actor: 'BEC operator', tech: 'T1534', score: 76 },
+  { type: 'Credential', ind: 'finance@ — stealer log', actor: 'Infostealer market', tech: 'T1555', score: 72 },
+  { type: 'CVE', ind: 'Edge device auth bypass', actor: 'Multiple', tech: 'T1190', score: 97 },
+];
+
+const lifecycle = [
+  { n: '01', t: 'Collect', d: 'Commercial, open source, dark web, sandbox, and sector feeds pulled continuously.' },
+  { n: '02', t: 'Normalise', d: 'De-duplicated into one indicator schema with first and last seen retained.' },
+  { n: '03', t: 'Score', d: 'Confidence, exploitability, and relevance to your estate combined into one score.' },
+  { n: '04', t: 'Distribute', d: 'Pushed to SIEM, EDR, and network controls over STIX/TAXII or API.' },
+];
+
+const regions = [
+  { name: 'Western Europe', note: 'Ransomware affiliates targeting manufacturing and logistics', level: 'High' },
+  { name: 'North America', note: 'Credential theft against cloud identity providers', level: 'High' },
+  { name: 'Gulf & Middle East', note: 'Edge device exploitation across regulated sectors', level: 'Moderate' },
+  { name: 'South & East Asia', note: 'Supply chain intrusion via managed service providers', level: 'Moderate' },
+];
+
+const integrations = [
+  {
+    t: 'Aqua SIEM',
+    d: 'Indicators matched against every event as it is indexed, with retro-hunting on new intel.',
+    tag: 'Native',
+  },
+  { t: 'Aqua SOC', d: 'Alerts arrive pre-enriched with actor, campaign, and confidence context.', tag: 'Native' },
+  { t: 'STIX / TAXII', d: 'Standards-based feed any consuming platform can subscribe to.', tag: 'Open standard' },
+  { t: 'EDR & Firewall', d: 'Block lists and detection content pushed straight to enforcement points.', tag: 'API' },
+  { t: 'Ticketing', d: 'Intelligence-driven tasks raised in Jira or ServiceNow with full context.', tag: 'API' },
+  { t: 'Custom', d: 'REST API and webhooks for anything you have built in-house.', tag: 'API' },
+];
+
+const feedCols = 'grid-cols-[132px_minmax(0,1fr)_150px_132px_96px]';
+---
+
+<Base
+  title="Aqua TIP — Aqua Secure AI"
+  description="The threat intelligence platform behind every Aqua Secure product. Fifty-plus global feeds collected, scored, and correlated, then pushed into your SIEM, SOC console, and network controls."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[16%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.55)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <!-- Quiet map backdrop. Pre-rendered from the same geoNaturalEarth1 projection the design
+         draws at runtime; `slice` reproduces its fitExtent overscan at any viewport. -->
+    <img
+      src="/img/tip-hero-map.svg"
+      alt=""
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-x-0 bottom-0 top-[60px] z-0 h-auto min-h-full w-full object-cover opacity-90"
+    />
+
+    <div class="wrap relative z-[2] pb-[120px] pt-[168px]">
+      <div class="max-w-[660px]" data-reveal-group="90" data-reveal-now>
+        <span
+          class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+        >
+          <span
+            data-motion="dot"
+            class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+          ></span>
+          Platform
+        </span>
+
+        <h1
+          class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,64px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+        >
+          Aqua TIP
+        </h1>
+        <p class="mt-4 text-[clamp(18px,1.8vw,24px)] font-semibold leading-[1.25] text-white">
+          The threat intelligence platform behind every Aqua Secure product.
+        </p>
+        <p class="mt-4 max-w-[560px] text-pretty text-[clamp(16px,1.4vw,19px)] font-medium leading-[1.45] text-white">
+          Fifty-plus global feeds collected, scored, and correlated in one place — then pushed into your SIEM, your SOC
+          console, and your network controls as indicators your tools can act on.
+        </p>
+
+        <div class="mt-[30px] flex flex-wrap gap-3">
+          <a href="#demo" class="btn-light">Request Platform Access</a>
+          <a href="#integrations" class="btn-ghost">See Integrations</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDICATOR STREAM ============ -->
+  <section class="bg-white pb-[100px] pt-[90px]">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+        <div>
+          <span class="eyebrow">Indicator Stream</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.6vw,46px)] font-semibold leading-[1.12] tracking-[-0.02em] text-ink"
+          >
+            What arrives in the platform
+          </h2>
+        </div>
+        <p class="max-w-[420px] text-pretty text-[17px] font-medium leading-[1.45] text-muted">
+          Every indicator lands scored, attributed, and mapped to ATT&amp;CK before it reaches a console or a control.
+        </p>
+      </div>
+
+      <div class="mt-9 overflow-hidden rounded-[14px] border border-line" data-reveal>
+        <div
+          class:list={[
+            'hidden gap-4 bg-brand/[0.08] px-[22px] py-3.5 text-eyebrow font-bold uppercase tracking-[0.08em] text-[#2A4A92] md:grid',
+            feedCols,
+          ]}
+        >
+          <span>Type</span><span>Indicator</span><span>Actor</span><span>ATT&amp;CK</span><span class="text-right"
+            >Score</span
+          >
+        </div>
+
+        {
+          feed.map((r, i) => (
+            <div
+              class:list={[
+                'grid grid-cols-2 items-center gap-4 px-[22px] py-4 transition-colors hover:bg-brand/[0.07] md:grid-cols-[132px_minmax(0,1fr)_150px_132px_96px]',
+                i ? 'border-t border-line' : '',
+              ]}
+            >
+              <span class="text-eyebrow font-bold uppercase tracking-[0.06em] text-brand">{r.type}</span>
+              <span class="truncate font-mono text-[15px] font-medium text-ink">{r.ind}</span>
+              <span class="text-[15px] font-medium text-muted">{r.actor}</span>
+              <span class="font-mono text-[14px] font-medium text-[#2A4A92]">{r.tech}</span>
+              <span class="flex items-center justify-end gap-2">
+                <span class="h-[5px] w-[34px] overflow-hidden rounded-full bg-ink/10">
+                  <span
+                    class="block h-full bg-[linear-gradient(90deg,#2A4A92,#4FC2BB)]"
+                    style={`width:${r.score}%`}
+                  />
+                </span>
+                <span class="font-display text-[15px] font-bold text-ink">{r.score}</span>
+              </span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-6 text-[14px] font-semibold text-muted">
+        <span>De-duplicated across 50+ sources</span>
+        <span>Confidence scored 0–100</span>
+        <span>Stale indicators expired automatically</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDICATOR LIFECYCLE ============ -->
+  <section id="lifecycle" class="section section-tint">
+    <div class="wrap">
+      <div class="max-w-[640px]" data-reveal>
+        <span class="eyebrow">Indicator Lifecycle</span>
+        <h2
+          class="mt-4 font-display text-[clamp(30px,3.6vw,46px)] font-semibold leading-[1.12] tracking-[-0.02em] text-ink"
+        >
+          Collected once. Used everywhere.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]" data-reveal-group="80">
+        {
+          lifecycle.map((s, i) => (
+            <div class:list={['pr-7', i ? 'border-l border-[rgba(42,74,146,0.22)] pl-7' : '']}>
+              <span class="font-display text-[13px] font-bold tracking-[0.1em] text-brand">{s.n}</span>
+              <p class="mt-3 font-display text-h3 font-semibold leading-[1.15] text-ink">{s.t}</p>
+              <p class="mt-2.5 text-pretty text-small font-medium leading-[1.45] text-muted">{s.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGIONAL RELEVANCE ============ -->
+  <section class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-center gap-14 [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">Regional Relevance</span>
+          <h2
+            class="mt-4 font-display text-[clamp(28px,3.2vw,42px)] font-semibold leading-[1.12] tracking-[-0.02em] text-ink"
+          >
+            Intelligence weighted to where you operate
+          </h2>
+          <p class="mt-[18px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+            Global collection, local relevance. Indicators are ranked against your sector, geography, and asset
+            inventory, so a campaign hitting your region and your technology stack outranks noise from the other side of
+            the world.
+          </p>
+
+          <ul class="mt-[26px] flex flex-col gap-3.5">
+            {
+              regions.map((r) => (
+                <li class="flex items-start gap-3.5 border-b border-line pb-3.5">
+                  <span
+                    class:list={[
+                      'mt-[5px] h-2.5 w-2.5 shrink-0 rounded-[3px]',
+                      r.level === 'High' ? 'bg-[#2A4A92]' : 'bg-brand',
+                    ]}
+                  />
+                  <span>
+                    <span class="block font-display text-[17px] font-semibold text-ink">{r.name}</span>
+                    <span class="mt-[3px] block text-[15px] font-medium text-muted">{r.note}</span>
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-line bg-white p-5">
+          <img
+            src="/img/tip-region-map.svg"
+            alt="World map shading regional threat activity: high across Western Europe and North America, moderate across the Gulf, South and East Asia."
+            width="620"
+            height="330"
+            loading="lazy"
+            class="block h-auto w-full"
+          />
+          <div class="mt-3.5 flex flex-wrap gap-[18px] text-[13px] font-semibold text-muted">
+            <span class="inline-flex items-center gap-2"
+              ><span class="h-2.5 w-2.5 rounded-[3px] bg-[#2A4A92]"></span>High activity</span
+            >
+            <span class="inline-flex items-center gap-2"
+              ><span class="h-2.5 w-2.5 rounded-[3px] bg-brand"></span>Moderate</span
+            >
+            <span class="inline-flex items-center gap-2"
+              ><span class="h-2.5 w-2.5 rounded-[3px] bg-ink/[0.12]"></span>Baseline</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DISTRIBUTION ============ -->
+  <section id="integrations" class="section section-tint">
+    <div class="wrap">
+      <div class="max-w-[660px]" data-reveal>
+        <span class="eyebrow">Distribution</span>
+        <h2
+          class="mt-4 font-display text-[clamp(30px,3.6vw,46px)] font-semibold leading-[1.12] tracking-[-0.02em] text-ink"
+        >
+          Intelligence only counts once it reaches a control
+        </h2>
+      </div>
+
+      <div
+        class="mt-11 grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(268px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          integrations.map((o) => (
+            <article class="flex flex-col gap-2.5 rounded-[14px] border border-line bg-white p-6">
+              <div class="flex items-center justify-between gap-3">
+                <span class="font-display text-[21px] font-semibold tracking-[-0.01em] text-ink">{o.t}</span>
+                <span class="shrink-0 rounded-full bg-brand/[0.12] px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.07em] text-[#2A4A92]">
+                  {o.tag}
+                </span>
+              </div>
+              <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{o.d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Put Global Intelligence Behind Your Controls
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Fifty-plus curated sources, confidence scoring, actor attribution, and STIX/TAXII distribution into the tools
+          you already run.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Request Platform Access</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

@@ -1,0 +1,523 @@
+---
+// Phishing Campaigns solution page — implements the Claude Design file
+// "AquaSecure Phishing Campaigns.dc.html". Same architecture as the other solution pages
+// (bespoke split hero, then coverage / features / steps / posture / use-case / CTA).
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const included = ['Campaign design', 'Delivery & scheduling', 'Training content', 'Reporting'];
+
+// Hero snapshot of the latest campaign. The `Escalated` row is the one needing action, so it
+// carries the live treatment (teal border, brighter gradient, filled chip).
+const results = [
+  {
+    label: 'DELIVERED',
+    state: 'Complete',
+    value: '1,240',
+    detail: 'staff across\nnine departments',
+    note: 'Invoice-approval lure, delivered gradually over eleven working days in three languages.',
+  },
+  {
+    label: 'CLICKED',
+    state: 'Escalated',
+    value: '86',
+    detail: 'staff opened\nthe lure',
+    note: 'Each saw a debrief within seconds; 19 repeat clickers enrolled into follow-up training.',
+  },
+  {
+    label: 'REPORTED',
+    state: 'Improving',
+    value: '41%',
+    detail: 'reported it\nbefore clicking',
+    note: 'Up from a 12% baseline, with median time-to-report down to just under four minutes.',
+  },
+].map((x, i) => ({ ...x, live: x.state === 'Escalated', indent: i * 22 }));
+
+const coverage = [
+  {
+    icon: 'employee-security',
+    name: 'Credential Harvest',
+    controls: 'Login lures',
+    note: 'Cloned sign-in pages for the services your staff use every day.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Attachment',
+    controls: 'Files & macros',
+    note: 'Invoice, CV, and delivery-note attachments that record who opened them.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'Business Email Compromise',
+    controls: 'Impersonation',
+    note: 'Executive and supplier pretexts requesting payments or data changes.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'MFA Fatigue',
+    controls: 'Push & OTP',
+    note: 'Approval-request lures testing whether staff rubber-stamp prompts.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Smishing',
+    controls: 'SMS lures',
+    note: 'Text campaigns using delivery, payroll, and IT support pretexts.',
+  },
+  {
+    icon: 'observability',
+    name: 'QR Phishing',
+    controls: 'Quishing',
+    note: 'QR codes in email and print routing to a simulated capture page.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Vishing',
+    controls: 'Voice pretexts',
+    note: 'Scripted phone pretexts run against helpdesk and finance teams.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'Targeted Spear',
+    controls: 'OSINT-based',
+    note: 'Lures written from public data about named roles and current projects.',
+  },
+];
+
+const features = [
+  {
+    icon: 'employee-security',
+    title: 'Campaigns Designed For You',
+    desc: 'We pick and adapt lures for your sector, tooling, and languages rather than sending a generic template to everyone.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Year-Round Scheduling',
+    desc: 'Randomised delivery across the year, so results reflect real behaviour instead of one warned-about test day.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Just-in-Time Training',
+    desc: 'Anyone who clicks lands on a short debrief showing the exact cues they missed, in their own language.',
+  },
+  {
+    icon: 'observability',
+    title: 'Baseline & Benchmarking',
+    desc: 'Start with a baseline campaign, then track click and report rates against your own history and your sector.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Repeat-Clicker Handling',
+    desc: 'Persistent clickers are enrolled into follow-up training automatically, with line-manager reporting if you want it.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Reporting For Every Audience',
+    desc: 'Operational detail for security, completion evidence for compliance, and a one-page trend for the board.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Baseline',
+    open: true,
+    body: 'We agree scope and sensitivities with you, then run an initial campaign to establish your real click and report rates before any training.',
+  },
+  {
+    num: '02',
+    title: 'Design',
+    open: false,
+    body: 'Lures are selected and adapted per audience — role, department, language, and difficulty — with landing pages matched to each.',
+  },
+  {
+    num: '03',
+    title: 'Deliver',
+    open: false,
+    body: 'Campaigns go out gradually and randomised throughout the year, with allow-listing handled so delivery is not skewed by your gateway.',
+  },
+  {
+    num: '04',
+    title: 'Debrief',
+    open: false,
+    body: 'Clickers get immediate training, you get the results, and each campaign is planned off the last one rather than repeating it.',
+  },
+];
+
+const riskPoints = [
+  'Report rate and time-to-report tracked alongside clicks — reporting is the behaviour you want.',
+  'Risk scores per user, team, and department, trended across the whole programme.',
+  'Training completion evidence mapped to your awareness controls in GRC.',
+  'Sector benchmarking to show whether your rates are actually good.',
+];
+
+const useCases = ['Awareness Programmes', 'Compliance Evidence', 'New Starter Testing', 'Board Reporting'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Phishing Campaigns — Aqua Secure AI"
+  description="We design, launch, and report on phishing simulations for you — lures modelled on live attacks, training delivered the moment someone clicks, and a risk picture you can take to the board."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <div class="wrap relative z-[1] pb-[120px] pt-[170px]">
+      <div class="grid items-center gap-16 [grid-template-columns:repeat(auto-fit,minmax(400px,1fr))]">
+        <div data-reveal-group="90" data-reveal-now>
+          <span
+            class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+          >
+            <span
+              data-motion="dot"
+              class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            ></span>
+            Managed Phishing Campaigns
+          </span>
+
+          <h1
+            class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,62px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+          >
+            Run phishing campaigns your staff learn from
+          </h1>
+
+          <p
+            class="mt-[22px] max-w-[560px] text-pretty text-[clamp(16px,1.4vw,20px)] font-medium leading-[1.45] text-white"
+          >
+            We design, launch, and report on phishing simulations for you — lures modelled on live attacks, training
+            delivered the moment someone clicks, and a risk picture you can take to the board.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-light">Request A Baseline Campaign</a>
+            <a href="#how" class="btn-ghost">How Campaigns Run</a>
+          </div>
+
+          <div class="mt-[38px] border-t border-white/30 pt-[26px]">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">What we manage</span>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {
+                included.map((inc) => (
+                  <span class="whitespace-nowrap rounded-lg border border-white/50 px-[13px] py-[7px] text-[14px] font-semibold text-white">
+                    {inc}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-now data-reveal-delay="240">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">Latest campaign results</span>
+            <span class="h-px flex-1 bg-white/[0.34]"></span>
+            <span class="inline-flex items-center gap-[7px] text-eyebrow font-bold tracking-[0.06em] text-brand">
+              <span
+                data-motion="dot"
+                class="h-[7px] w-[7px] rounded-full bg-brand [animation:dotPulse_2.4s_ease-in-out_infinite]"
+              ></span>
+              LIVE
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-3.5">
+            {
+              results.map((r) => (
+                <div
+                  style={`margin-left:${r.indent}px`}
+                  class:list={[
+                    'relative rounded-[14px] border px-[22px] py-5 shadow-[0_12px_30px_rgba(11,22,48,0.16)]',
+                    r.live
+                      ? 'border-[rgba(79,194,187,0.75)] bg-[linear-gradient(135deg,rgba(42,74,146,0.82)_0%,rgba(79,194,187,0.62)_100%)]'
+                      : 'border-[rgba(42,74,146,0.4)] bg-[linear-gradient(135deg,rgba(42,74,146,0.68)_0%,rgba(42,74,146,0.42)_100%)]',
+                  ]}
+                >
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="font-display text-[15px] font-bold tracking-[0.02em] text-white">{r.label}</span>
+                    <span
+                      class:list={[
+                        'shrink-0 rounded-full px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.09em]',
+                        r.live ? 'bg-brand text-white' : 'border border-white/[0.45] text-white/[0.85]',
+                      ]}
+                    >
+                      {r.state}
+                    </span>
+                  </div>
+
+                  <div class="mt-4 flex items-end gap-[18px]">
+                    <span class="font-display text-[40px] font-bold leading-[0.9] tracking-[-0.03em] text-white">
+                      {r.value}
+                    </span>
+                    <span class="whitespace-pre-line pb-[3px] text-[14px] font-semibold leading-[1.3] text-white/[0.82]">
+                      {r.detail}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-pretty text-[14px] font-medium leading-[1.4] text-white/[0.72]">{r.note}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <p class="mt-5 text-[15px] font-semibold leading-[1.4] text-white">
+            Report rate rose from 12% to 41% across three campaigns.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAMPAIGN TYPES ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Campaign Types</span>
+        <h2 class="mt-4 h2">Every Lure.<br />Modelled On Real Attacks.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Templates drawn from live phishing we see in the wild, localised by language and matched to the roles you are
+          testing.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About A Custom Lure</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Design, Delivery And Debrief<br />In One Service.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div
+        class="grid items-start gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From First Baseline To Measured Improvement
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Campaigns run to a plan across the year. We handle design, delivery, and reporting, so your team only reads
+            the results.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A Campaign Plan</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAMME REPORTING ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div
+        class="grid items-center gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div class="card">
+          <img
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow from endpoints, network devices and cloud sources"
+            width="1200"
+            height="621"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Programme Reporting</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Show Behaviour Changing, Not Just Clicks
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Managed Phishing Campaigns?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Managed campaigns are built for teams who need a real awareness programme without running it themselves —
+        security, HR, and compliance working from one set of numbers.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Make Your Next Campaign The One They Remember
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Campaign design, delivery, just-in-time training, and board-ready reporting run for you across the year.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

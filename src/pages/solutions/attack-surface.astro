@@ -1,0 +1,524 @@
+---
+// Attack Surface solution page — implements the Claude Design file "AquaSecure Attack Surface.dc.html".
+// Same architecture as the Managed SIEM solution page (bespoke split hero, then the shared
+// coverage / features / steps / posture / use-case / CTA rhythm), so only copy and data differ.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const included = ['Domains & subdomains', 'Exposed services', 'Certificates', 'Cloud & shadow IT'];
+
+// Hero snapshot, ordered by severity. The `Escalated` row is the one demanding action now, so it
+// carries the live treatment (teal border, brighter gradient, filled chip).
+const exposure = [
+  {
+    label: 'CRITICAL',
+    state: 'Open',
+    count: '3',
+    detail: 'exposed admin\ninterfaces',
+    note: 'Remote management reachable from the internet on two acquired hosts and a test box.',
+  },
+  {
+    label: 'HIGH',
+    state: 'Escalated',
+    count: '11',
+    detail: 'unattributed\nsubdomains',
+    note: 'Dangling DNS records pointing at deprovisioned cloud resources, takeover-prone.',
+  },
+  {
+    label: 'MEDIUM',
+    state: 'Tracked',
+    count: '46',
+    detail: 'certificate &\nconfig issues',
+    note: 'Expiring certificates, weak TLS, and version disclosure across public web hosts.',
+  },
+].map((x, i) => ({ ...x, live: x.state === 'Escalated', indent: i * 22 }));
+
+const coverage = [
+  {
+    icon: 'digital-exposure',
+    name: 'Domains & DNS',
+    controls: 'Subdomain discovery',
+    note: 'Forgotten subdomains, dangling records, and takeover-prone entries.',
+  },
+  {
+    icon: 'observability',
+    name: 'Hosts & Ports',
+    controls: 'Exposed services',
+    note: 'Internet-reachable services, admin panels, and remote access left open.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Certificates',
+    controls: 'TLS hygiene',
+    note: 'Expiring, self-signed, and mismatched certificates across your footprint.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'Web Apps',
+    controls: 'Tech & versions',
+    note: 'Frameworks and versions fingerprinted and matched to known vulnerabilities.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Cloud Exposure',
+    controls: 'Buckets & APIs',
+    note: 'Public storage, open APIs, and orphaned cloud resources still reachable.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'Shadow IT',
+    controls: 'Unattributed',
+    note: 'Assets registered outside IT and attributed back to your organisation.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'Brand & Lookalikes',
+    controls: 'Impersonation',
+    note: 'Newly registered domains and clones set up to imitate your brand.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Third Parties',
+    controls: 'Supplier estate',
+    note: 'Supplier and acquisition footprints that carry your exposure with them.',
+  },
+];
+
+const features = [
+  {
+    icon: 'digital-exposure',
+    title: 'Continuous External Discovery',
+    desc: 'Your footprint is re-scanned from the outside continuously, so new exposure surfaces within hours of appearing.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Automatic Attribution',
+    desc: 'Every finding is traced back to your organisation through registration, certificate, and infrastructure evidence.',
+  },
+  {
+    icon: 'observability',
+    title: 'Shadow IT Detection',
+    desc: 'Surface the assets nobody registered with IT — marketing microsites, test environments, and forgotten cloud accounts.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Vulnerability & Misconfiguration',
+    desc: 'Exposed services are checked for known vulnerabilities, weak configuration, and missing controls.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Risk-Based Prioritisation',
+    desc: 'Findings are ranked by exploitability, exposure, and business criticality — not by raw CVSS alone.',
+  },
+  {
+    icon: 'employee-security',
+    title: 'Remediation Tracking',
+    desc: 'Assign owners, track fixes to closure, and re-scan to verify the exposure is genuinely gone.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Discover',
+    open: true,
+    body: 'Starting from your known domains and IP ranges, we expand outwards through DNS, certificates, and infrastructure records to find everything reachable.',
+  },
+  {
+    num: '02',
+    title: 'Attribute',
+    open: false,
+    body: 'Each asset is tied back to your organisation with evidence, so you are not chasing exposure that belongs to someone else.',
+  },
+  {
+    num: '03',
+    title: 'Assess',
+    open: false,
+    body: 'Services are fingerprinted and tested for known vulnerabilities, weak configuration, and expired or mismatched certificates.',
+  },
+  {
+    num: '04',
+    title: 'Remediate',
+    open: false,
+    body: 'Findings are ranked, assigned to owners, and re-scanned after the fix so closure is verified rather than assumed.',
+  },
+];
+
+const riskPoints = [
+  'Findings ranked by exploitability and exposure, not raw severity scores.',
+  'Every asset carries attribution evidence, owner, and first-seen date.',
+  'Re-scan on remediation confirms the exposure is actually closed.',
+  'Trend your external footprint over time to show it shrinking.',
+];
+
+const useCases = ['Shadow IT', 'M&A Due Diligence', 'Third-Party Risk', 'Pre-Audit Review'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Attack Surface — Aqua Secure AI"
+  description="Attack Surface Management continuously discovers every domain, host, certificate, and exposed service attributed to your organisation — and ranks what to fix first."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <div class="wrap relative z-[1] pb-[120px] pt-[170px]">
+      <div class="grid items-center gap-16 [grid-template-columns:repeat(auto-fit,minmax(400px,1fr))]">
+        <div data-reveal-group="90" data-reveal-now>
+          <span
+            class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+          >
+            <span
+              data-motion="dot"
+              class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            ></span>
+            Attack Surface Management
+          </span>
+
+          <h1
+            class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,62px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+          >
+            See your internet-facing estate the way an attacker does
+          </h1>
+
+          <p
+            class="mt-[22px] max-w-[560px] text-pretty text-[clamp(16px,1.4vw,20px)] font-medium leading-[1.45] text-white"
+          >
+            Attack Surface Management continuously discovers every domain, host, certificate, and exposed service
+            attributed to your organisation — including the assets nobody told you about — and ranks what to fix first.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-light">Get An Exposure Report</a>
+            <a href="#how" class="btn-ghost">How Discovery Works</a>
+          </div>
+
+          <div class="mt-[38px] border-t border-white/30 pt-[26px]">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">What we look for</span>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {
+                included.map((inc) => (
+                  <span class="whitespace-nowrap rounded-lg border border-white/50 px-[13px] py-[7px] text-[14px] font-semibold text-white">
+                    {inc}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-now data-reveal-delay="240">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">Live exposure snapshot</span>
+            <span class="h-px flex-1 bg-white/[0.34]"></span>
+            <span class="inline-flex items-center gap-[7px] text-eyebrow font-bold tracking-[0.06em] text-brand">
+              <span
+                data-motion="dot"
+                class="h-[7px] w-[7px] rounded-full bg-brand [animation:dotPulse_2.4s_ease-in-out_infinite]"
+              ></span>
+              LIVE
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-3.5">
+            {
+              exposure.map((e) => (
+                <div
+                  style={`margin-left:${e.indent}px`}
+                  class:list={[
+                    'relative rounded-[14px] border px-[22px] py-5 shadow-[0_12px_30px_rgba(11,22,48,0.16)]',
+                    e.live
+                      ? 'border-[rgba(79,194,187,0.75)] bg-[linear-gradient(135deg,rgba(42,74,146,0.82)_0%,rgba(79,194,187,0.62)_100%)]'
+                      : 'border-[rgba(42,74,146,0.4)] bg-[linear-gradient(135deg,rgba(42,74,146,0.68)_0%,rgba(42,74,146,0.42)_100%)]',
+                  ]}
+                >
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="font-display text-[15px] font-bold tracking-[0.02em] text-white">{e.label}</span>
+                    <span
+                      class:list={[
+                        'shrink-0 rounded-full px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.09em]',
+                        e.live ? 'bg-brand text-white' : 'border border-white/[0.45] text-white/[0.85]',
+                      ]}
+                    >
+                      {e.state}
+                    </span>
+                  </div>
+
+                  <div class="mt-4 flex items-end gap-[18px]">
+                    <span class="font-display text-[40px] font-bold leading-[0.9] tracking-[-0.03em] text-white">
+                      {e.count}
+                    </span>
+                    <span class="whitespace-pre-line pb-[3px] text-[14px] font-semibold leading-[1.3] text-white/[0.82]">
+                      {e.detail}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-pretty text-[14px] font-medium leading-[1.4] text-white/[0.72]">{e.note}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <p class="mt-5 text-[15px] font-semibold leading-[1.4] text-white">
+            Two of these were not on your asset inventory.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DISCOVERY SCOPE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Discovery Scope</span>
+        <h2 class="mt-4 h2">Every Exposed Asset.<br />Attributed To You.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          We map your external footprint from the outside in, attribute each finding back to your organisation, and
+          re-scan continuously as it changes.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About Your Footprint</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Discovery, Attribution And Remediation<br />In One Service.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div
+        class="grid items-start gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Unknown Exposure To Verified Fix
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Discovery runs continuously from outside your perimeter. New exposure is found, attributed, and ranked
+            without anyone filing a ticket.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A Discovery Review</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPOSURE POSTURE ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div
+        class="grid items-center gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div class="card">
+          <img
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow from endpoints, network devices and cloud sources"
+            width="1200"
+            height="621"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Exposure Posture</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Know Which Exposure Actually Matters
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Attack Surface Management?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Attack Surface Management is built for teams accountable for an estate they did not fully build — after
+        acquisitions, after years of shadow IT, and ahead of every audit.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Close The Gaps You Did Not Know You Had
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Continuous external discovery, asset attribution, risk-based prioritisation, and remediation tracking through
+          to verification.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

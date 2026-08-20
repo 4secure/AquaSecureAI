@@ -1,0 +1,522 @@
+---
+// Managed SIEM solution page — implements the Claude Design file "AquaSecure Managed SIEM.dc.html".
+// Shares Nav, Footer and the site utilities with the product pages. The hero is bespoke to this
+// design (a two-column "who runs what" split rather than the ProductHero radar), so it is inline
+// here instead of being pushed into the shared component.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const included = ['Platform licence', 'Deployment', 'Detection engineering', '24/7 monitoring'];
+
+// Overnight shift log shown in the hero. `Escalated` is the one pane that reached the customer,
+// so it carries the live treatment (teal border, brighter gradient, filled chip).
+const shifts = [
+  {
+    window: '22:00 — 02:00',
+    state: 'Closed',
+    handled: '214',
+    detail: 'alerts triaged\nby our analysts',
+    note: 'Noise from a firewall policy change suppressed at source, no ticket raised.',
+  },
+  {
+    window: '02:00 — 06:00',
+    state: 'Escalated',
+    handled: '1',
+    detail: 'incident verified\nand contained',
+    note: 'Impossible-travel sign-in confirmed, session revoked, your on-call notified at 03:29.',
+  },
+  {
+    window: '06:00 — 09:00',
+    state: 'Handover',
+    handled: '58',
+    detail: 'alerts cleared\nbefore open',
+    note: 'Shift notes and the overnight incident write-up waiting in your inbox.',
+  },
+].map((x, i) => ({ ...x, live: x.state === 'Escalated', indent: i * 22 }));
+
+const coverage = [
+  {
+    icon: 'security-operations',
+    name: 'Firewalls',
+    controls: 'Onboarded & parsed',
+    note: 'We build and maintain the parsers for every perimeter and internal device.',
+  },
+  {
+    icon: 'observability',
+    name: 'Endpoints',
+    controls: 'Agent & EDR',
+    note: 'Deployment support, health monitoring, and coverage gap reporting.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Identity',
+    controls: 'IdP & AD',
+    note: 'Authentication and privilege detections tuned to your access patterns.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Cloud',
+    controls: 'AWS, Azure, GCP',
+    note: 'Control-plane and flow log onboarding across every account you run.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Applications',
+    controls: 'Custom parsers',
+    note: 'Bespoke applications parsed by our engineers, not left to your developers.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'Email',
+    controls: 'Mail gateway',
+    note: 'Phishing and delivery signals correlated with endpoint and identity events.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Threat Intel',
+    controls: 'Managed feeds',
+    note: 'Feed curation and IOC enrichment handled on your behalf.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'Rule Content',
+    controls: 'Continuously tuned',
+    note: 'New detections added and false positives retired as part of the service.',
+  },
+];
+
+const features = [
+  {
+    icon: 'security-operations',
+    title: '24/7 Monitored Coverage',
+    desc: 'Our analysts watch your alerts around the clock, so nights, weekends, and holidays are covered without a rota of your own.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Detection Engineering Included',
+    desc: 'We write, tune, and maintain the correlation rules for your estate, retiring noisy detections instead of leaving them to you.',
+  },
+  {
+    icon: 'observability',
+    title: 'Managed Onboarding',
+    desc: 'Our engineers deploy collectors, build parsers, and validate every log source against a defined onboarding plan.',
+  },
+  {
+    icon: 'employee-security',
+    title: 'Named Service Lead',
+    desc: 'A named lead who knows your environment, runs your monthly service review, and escalates when it matters.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Compliance Reporting',
+    desc: 'Retention, log integrity, and audit reporting maintained to the frameworks you are certified against.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Escalation & Response',
+    desc: 'Verified incidents reach your team with context and recommended actions, or trigger agreed containment on your behalf.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Scope',
+    open: true,
+    body: 'We map your estate, agree the log sources in scope, set retention and compliance requirements, and define your escalation paths.',
+  },
+  {
+    num: '02',
+    title: 'Deploy',
+    open: false,
+    body: 'Our engineers stand up collectors, onboard each source, build the parsers, and validate that events arrive complete and on time.',
+  },
+  {
+    num: '03',
+    title: 'Tune',
+    open: false,
+    body: 'Detections are baselined against your environment over the first weeks, with noisy rules retired before you ever see them.',
+  },
+  {
+    num: '04',
+    title: 'Operate',
+    open: false,
+    body: 'The service runs 24/7 — alerts triaged by our analysts, verified incidents escalated to you, and coverage reviewed with your service lead each month.',
+  },
+];
+
+const riskPoints = [
+  'We own the platform, parsers, detection content, tuning, and 24/7 triage.',
+  'You own the decisions — response approvals, asset context, and business risk calls.',
+  'Your data stays in your tenancy and region, with retention set to your compliance needs.',
+  'Exit is clean: the platform and detection content remain usable if you take the service in-house.',
+];
+
+const useCases = ['No In-House SOC', 'Out-Of-Hours Cover', 'Audit Requirements', 'SIEM Rescue'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Managed SIEM — Aqua Secure AI"
+  description="Managed SIEM gives you the platform, the tuning, and the people. We deploy Aqua SIEM into your estate, own the detection engineering, and watch it around the clock."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <div class="wrap relative z-[1] pb-[120px] pt-[170px]">
+      <div class="grid items-center gap-16 [grid-template-columns:repeat(auto-fit,minmax(400px,1fr))]">
+        <div data-reveal-group="90" data-reveal-now>
+          <span
+            class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+          >
+            <span
+              data-motion="dot"
+              class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            ></span>
+            Managed Service
+          </span>
+
+          <h1
+            class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,62px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+          >
+            Your SIEM, run by our analysts
+          </h1>
+
+          <p
+            class="mt-[22px] max-w-[560px] text-pretty text-[clamp(16px,1.4vw,20px)] font-medium leading-[1.45] text-white"
+          >
+            Managed SIEM gives you the platform, the tuning, and the people. We deploy Aqua SIEM into your estate, own
+            the detection engineering, and watch it around the clock so your team never has to staff a night shift.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-light">Talk To Our Team</a>
+            <a href="#how" class="btn-ghost">How Onboarding Works</a>
+          </div>
+
+          <div class="mt-[38px] border-t border-white/30 pt-[26px]">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">Included in the service</span>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {
+                included.map((inc) => (
+                  <span
+                    class="whitespace-nowrap rounded-lg border border-white/50 px-[13px] py-[7px] text-[14px] font-semibold text-white"
+                  >
+                    {inc}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-now data-reveal-delay="240">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">Last night's shift log</span>
+            <span class="h-px flex-1 bg-white/[0.34]"></span>
+            <span class="inline-flex items-center gap-[7px] text-eyebrow font-bold tracking-[0.06em] text-brand">
+              <span
+                data-motion="dot"
+                class="h-[7px] w-[7px] rounded-full bg-brand [animation:dotPulse_2.4s_ease-in-out_infinite]"
+              ></span>
+              LIVE
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-3.5">
+            {
+              shifts.map((sh) => (
+                <div
+                  style={`margin-left:${sh.indent}px`}
+                  class:list={[
+                    'relative rounded-[14px] border px-[22px] py-5 shadow-[0_12px_30px_rgba(11,22,48,0.16)]',
+                    sh.live
+                      ? 'border-[rgba(79,194,187,0.75)] bg-[linear-gradient(135deg,rgba(42,74,146,0.82)_0%,rgba(79,194,187,0.62)_100%)]'
+                      : 'border-[rgba(42,74,146,0.4)] bg-[linear-gradient(135deg,rgba(42,74,146,0.68)_0%,rgba(42,74,146,0.42)_100%)]',
+                  ]}
+                >
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="font-display text-[15px] font-bold tracking-[0.02em] text-white">{sh.window}</span>
+                    <span
+                      class:list={[
+                        'shrink-0 rounded-full px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.09em]',
+                        sh.live
+                          ? 'bg-brand text-white'
+                          : 'border border-white/[0.45] text-white/[0.85]',
+                      ]}
+                    >
+                      {sh.state}
+                    </span>
+                  </div>
+
+                  <div class="mt-4 flex items-end gap-[18px]">
+                    <span class="font-display text-[40px] font-bold leading-[0.9] tracking-[-0.03em] text-white">
+                      {sh.handled}
+                    </span>
+                    <span class="whitespace-pre-line pb-[3px] text-[14px] font-semibold leading-[1.3] text-white/[0.82]">
+                      {sh.detail}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-pretty text-[14px] font-medium leading-[1.4] text-white/[0.72]">{sh.note}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <p class="mt-5 text-[15px] font-semibold leading-[1.4] text-white">
+            One escalation reached your team. The rest closed before morning.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT WE MANAGE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">What We Manage</span>
+        <h2 class="mt-4 h2">Every Log Source.<br />Managed For You.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          We onboard each source, write the parsers, tune the rules, and keep the coverage current as your estate
+          changes.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About Your Log Sources</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Platform, People And Process<br />In One Service.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-start gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Kick-Off To Fully Managed Coverage
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Onboarding is run by our engineers to a fixed plan. You get coverage in weeks, not a year-long platform
+            project.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book An Onboarding Call</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICE MODEL ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div class="grid items-center gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]" data-reveal-group="110">
+        <div class="card">
+          <img
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow from endpoints, network devices and cloud sources"
+            width="1200"
+            height="621"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Service Model</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            What You Own, And What We Own
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Managed SIEM?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Managed SIEM is built for teams who need enterprise detection without hiring an enterprise SOC — lean IT
+        functions, regulated mid-market firms, and security teams that need their nights and weekends covered.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Get A SIEM Without Building A SOC
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Platform, deployment, detection engineering, 24/7 monitoring, and monthly service reviews under one agreement.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
