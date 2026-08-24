@@ -1,134 +1,49 @@
 ---
-import '../index.css';
-import { ClientRouter } from 'astro:transitions';
-import AnnouncementBar from '../components/astro/DesignAnnounce.astro';
-import Navbar from '../components/astro/DesignNav.astro';
-import Footer from '../components/astro/DesignFooter.astro';
-import BackToTop from '../components/astro/BackToTop.astro';
-import ScrollProgress from '../components/astro/ScrollProgress.astro';
-import ContactModal from '../components/astro/ContactModal.astro';
+import '../styles/global.css';
 
-const {
-  title = 'Aqua Secure AI',
-  description = 'AquaSecure stops cyber attacks before they happen — AI threat detection, container security, runtime protection and automated response from code to cloud to prompt.',
-  ogTitle,
-  ogDescription,
-  ogImage = '/images/dashboard-hero.png',
-  themeColor = '#7A44E4',
-} = Astro.props;
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(ogImage, Astro.site);
-const resolvedOgTitle = ogTitle || title;
-const resolvedOgDescription = ogDescription || description;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager -->
-    <script is:inline>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-NKD6J56W');
-    </script>
-    <!-- End Google Tag Manager -->
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Theme: apply saved light/dark before first paint (no flash) -->
-    <script is:inline>
-      (function () {
-        try {
-          if (localStorage.getItem('theme') === 'dark')
-            document.documentElement.classList.add('dark');
-        } catch (e) {}
-      })();
-      document.addEventListener('astro:after-swap', function () {
-        try {
-          document.documentElement.classList.toggle(
-            'dark',
-            localStorage.getItem('theme') === 'dark'
-          );
-        } catch (e) {}
-      });
-    </script>
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" type="image/png" href="/images/Aquasecureicon1.png" />
-    <meta name="theme-color" content={themeColor} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
 
-    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Aqua Secure AI" />
-    <meta property="og:title" content={resolvedOgTitle} />
-    <meta property="og:description" content={resolvedOgDescription} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={ogImageURL} />
+    <meta name="theme-color" content="#4FC2BB" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={resolvedOgTitle} />
-    <meta name="twitter:description" content={resolvedOgDescription} />
-    <meta name="twitter:image" content={ogImageURL} />
-
-    <ClientRouter />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&family=Manrope:wght@500;600;700&display=swap"
+    />
+    <!-- Set before first paint so revealed elements never flash in at full opacity. Only
+         applied when JS runs, and a watchdog clears it if the motion module fails to load,
+         so content can never be stranded invisible. -->
+    <script is:inline>
+      (function () {
+        var r = document.documentElement;
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          r.classList.add('motion-ready');
+          setTimeout(function () {
+            r.classList.remove('motion-ready');
+          }, 2500);
+        }
+      })();
+    </script>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-NKD6J56W"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"></iframe></noscript
-    >
-    <!-- End Google Tag Manager (noscript) -->
-
-    <ScrollProgress />
-    <AnnouncementBar />
-    <Navbar />
-    <main>
-      <slot />
-    </main>
-    <Footer />
-    <BackToTop />
-    <ContactModal />
-
-    <script>
-      function initReveal() {
-        const els = document.querySelectorAll('.reveal:not(.in)');
-        if (!('IntersectionObserver' in window)) {
-          els.forEach((el) => el.classList.add('in'));
-          return;
-        }
-        const io = new IntersectionObserver(
-          (entries) =>
-            entries.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
-            }),
-          { threshold: 0.1, rootMargin: '0px 0px -32px 0px' }
-        );
-        els.forEach((el) => io.observe(el));
-      }
-      initReveal();
-      document.addEventListener('astro:page-load', initReveal);
-    </script>
-
-    {/* GSAP motion foundation (parallax, scene helpers, cleanup) */}
+    <slot />
     <script>
       import '../scripts/motion.js';
     </script>

@@ -1,0 +1,523 @@
+---
+// DMARC solution page — implements the Claude Design file "AquaSecure DMARC.dc.html".
+// Same architecture as the other solution pages (bespoke split hero, then the shared
+// coverage / features / steps / posture / use-case / CTA rhythm), so only copy and data differ.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const included = ['SPF', 'DKIM', 'DMARC', 'BIMI & MTA-STS'];
+
+// Hero snapshot of the last 30 days of DMARC reports. The `Escalated` row is the one needing
+// action, so it carries the live treatment (teal border, brighter gradient, filled chip).
+const reports = [
+  {
+    label: 'AUTHENTICATED',
+    state: 'Passing',
+    value: '94%',
+    detail: 'of mail volume\naligned and signed',
+    note: 'Your mail platform, ticketing, and payroll senders all passing SPF and DKIM alignment.',
+  },
+  {
+    label: 'UNAUTHORISED',
+    state: 'Escalated',
+    value: '7',
+    detail: 'senders using\nyour domain',
+    note: 'Four spoofing sources now rejected; three were shadow IT tools we authenticated instead.',
+  },
+  {
+    label: 'POLICY',
+    state: 'Enforced',
+    value: '12',
+    detail: 'domains moved\nto p=reject',
+    note: 'Sending and parked domains both enforced, with reports monitored daily for regressions.',
+  },
+].map((x, i) => ({ ...x, live: x.state === 'Escalated', indent: i * 22 }));
+
+const coverage = [
+  {
+    icon: 'compliance',
+    name: 'SPF',
+    controls: 'Sender policy',
+    note: 'Authorised senders kept within the lookup limit as your tooling changes.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'DKIM',
+    controls: 'Signing keys',
+    note: 'Key publication and rotation across every platform that sends for you.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'DMARC',
+    controls: 'Policy & alignment',
+    note: 'Staged movement from none to quarantine to reject, with alignment verified.',
+  },
+  {
+    icon: 'observability',
+    name: 'Aggregate Reports',
+    controls: 'RUA analysis',
+    note: 'Daily XML reports parsed into readable sender and volume reporting.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Forensic Reports',
+    controls: 'RUF samples',
+    note: 'Failure samples reviewed to separate spoofing from misconfiguration.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'BIMI',
+    controls: 'Brand indicators',
+    note: 'Your logo shown in supporting inboxes once enforcement is in place.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'MTA-STS & TLS-RPT',
+    controls: 'Transport security',
+    note: 'Encryption in transit enforced and failures reported back to us.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Parked Domains',
+    controls: 'Full estate',
+    note: 'Non-sending and lookalike-adjacent domains locked down, not left open.',
+  },
+];
+
+const features = [
+  {
+    icon: 'observability',
+    title: 'Readable DMARC Reporting',
+    desc: 'Raw XML from every mailbox provider is parsed into sender, volume, and pass-rate reporting your team can actually act on.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Sender Discovery',
+    desc: 'Every service sending as your domain is identified — including the marketing and finance tools IT never onboarded.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Staged Enforcement',
+    desc: 'We move you from p=none to quarantine to reject on evidence, so legitimate mail is fixed before policy tightens.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Record Management',
+    desc: 'SPF, DKIM, and DMARC records maintained for you, including SPF lookup limits and key rotation.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Spoofing Alerts',
+    desc: 'Unauthorised senders and spoofing attempts against your domains are flagged as they appear in reports.',
+  },
+  {
+    icon: 'employee-security',
+    title: 'Full Domain Estate',
+    desc: 'Sending and parked domains both covered, so an unused domain cannot be used to impersonate you.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Audit',
+    open: true,
+    body: 'We inventory every domain you own, check existing SPF, DKIM, and DMARC records, and publish reporting addresses to start collecting data.',
+  },
+  {
+    num: '02',
+    title: 'Observe',
+    open: false,
+    body: 'At p=none we watch several weeks of reports to build a complete picture of who sends as you and what currently fails alignment.',
+  },
+  {
+    num: '03',
+    title: 'Remediate',
+    open: false,
+    body: 'Legitimate senders are authenticated one by one — records corrected, DKIM signing enabled, SPF kept inside its lookup limit.',
+  },
+  {
+    num: '04',
+    title: 'Enforce',
+    open: false,
+    body: 'Policy moves to quarantine, then reject, with reports monitored throughout and parked domains locked to reject from the start.',
+  },
+];
+
+const riskPoints = [
+  'Every sending service using your domain identified, with volume and pass rate.',
+  'Legitimate senders separated from spoofing before any policy is tightened.',
+  'Alerts when a record changes, a key expires, or a new sender appears.',
+  'Enforcement status per domain, reportable to insurers, customers, and auditors.',
+];
+
+const useCases = ['Brand Protection', 'Phishing Prevention', 'Deliverability', 'Insurer Requirements'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="DMARC — Aqua Secure AI"
+  description="We take your domains from no policy to enforced DMARC without breaking legitimate mail — reading every report, fixing every sender, and moving you to p=reject safely."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <div class="wrap relative z-[1] pb-[120px] pt-[170px]">
+      <div class="grid items-center gap-16 [grid-template-columns:repeat(auto-fit,minmax(400px,1fr))]">
+        <div data-reveal-group="90" data-reveal-now>
+          <span
+            class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+          >
+            <span
+              data-motion="dot"
+              class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            ></span>
+            Email Authentication
+          </span>
+
+          <h1
+            class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,62px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+          >
+            Stop anyone sending email as your domain
+          </h1>
+
+          <p
+            class="mt-[22px] max-w-[560px] text-pretty text-[clamp(16px,1.4vw,20px)] font-medium leading-[1.45] text-white"
+          >
+            We take your domains from no policy to enforced DMARC without breaking legitimate mail — reading every
+            report, fixing every sender, and moving you to p=reject safely.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-light">Get A Free Domain Check</a>
+            <a href="#how" class="btn-ghost">How Enforcement Works</a>
+          </div>
+
+          <div class="mt-[38px] border-t border-white/30 pt-[26px]">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">What we manage</span>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {
+                included.map((inc) => (
+                  <span class="whitespace-nowrap rounded-lg border border-white/50 px-[13px] py-[7px] text-[14px] font-semibold text-white">
+                    {inc}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-now data-reveal-delay="240">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">Last 30 days of reports</span>
+            <span class="h-px flex-1 bg-white/[0.34]"></span>
+            <span class="inline-flex items-center gap-[7px] text-eyebrow font-bold tracking-[0.06em] text-brand">
+              <span
+                data-motion="dot"
+                class="h-[7px] w-[7px] rounded-full bg-brand [animation:dotPulse_2.4s_ease-in-out_infinite]"
+              ></span>
+              LIVE
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-3.5">
+            {
+              reports.map((r) => (
+                <div
+                  style={`margin-left:${r.indent}px`}
+                  class:list={[
+                    'relative rounded-[14px] border px-[22px] py-5 shadow-[0_12px_30px_rgba(11,22,48,0.16)]',
+                    r.live
+                      ? 'border-[rgba(79,194,187,0.75)] bg-[linear-gradient(135deg,rgba(42,74,146,0.82)_0%,rgba(79,194,187,0.62)_100%)]'
+                      : 'border-[rgba(42,74,146,0.4)] bg-[linear-gradient(135deg,rgba(42,74,146,0.68)_0%,rgba(42,74,146,0.42)_100%)]',
+                  ]}
+                >
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="font-display text-[15px] font-bold tracking-[0.02em] text-white">{r.label}</span>
+                    <span
+                      class:list={[
+                        'shrink-0 rounded-full px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.09em]',
+                        r.live ? 'bg-brand text-white' : 'border border-white/[0.45] text-white/[0.85]',
+                      ]}
+                    >
+                      {r.state}
+                    </span>
+                  </div>
+
+                  <div class="mt-4 flex items-end gap-[18px]">
+                    <span class="font-display text-[40px] font-bold leading-[0.9] tracking-[-0.03em] text-white">
+                      {r.value}
+                    </span>
+                    <span class="whitespace-pre-line pb-[3px] text-[14px] font-semibold leading-[1.3] text-white/[0.82]">
+                      {r.detail}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-pretty text-[14px] font-medium leading-[1.4] text-white/[0.72]">{r.note}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <p class="mt-5 text-[15px] font-semibold leading-[1.4] text-white">
+            Three of these senders were legitimate. We fixed them before enforcing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROTOCOL COVERAGE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Protocol Coverage</span>
+        <h2 class="mt-4 h2">Every Sender.<br />Authenticated Or Blocked.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Every record you need to authenticate mail, kept correct as your sending estate changes — and monitored so
+          nothing silently breaks.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About Your Domains</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Records, Reporting And Enforcement<br />In One Service.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div
+        class="grid items-start gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From No Policy To Enforced Reject
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Enforcement is staged deliberately. We monitor first, fix every legitimate sender, then tighten policy so
+            nothing you rely on ever gets blocked.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A DMARC Review</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SENDER VISIBILITY ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div
+        class="grid items-center gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div class="card">
+          <img
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow from endpoints, network devices and cloud sources"
+            width="1200"
+            height="621"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Sender Visibility</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Know Exactly Who Sends As You
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses DMARC Management?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        DMARC management is built for teams protecting a brand in the inbox — and for anyone facing a customer, insurer,
+        or regulator asking why their domain can still be spoofed.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Reach p=reject Without Breaking Mail
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Record management, report analysis, sender remediation, and staged enforcement across every domain you own.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

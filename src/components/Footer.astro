@@ -1,0 +1,100 @@
+---
+import { PRODUCTS, SOLUTIONS, PLATFORM } from '../data/nav.js';
+
+// Same source as the navbar, so the two can never disagree.
+const columns = [
+  { title: 'Products', links: PRODUCTS },
+  { title: 'Solutions', links: SOLUTIONS },
+  { title: 'Platform', links: PLATFORM },
+];
+---
+
+<footer id="contact" class="footer-grad relative overflow-hidden pt-[72px] md:pt-[100px]">
+  <div class="wrap relative z-10">
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-14">
+      <!-- Brand -->
+      <div class="w-full max-w-[240px] shrink-0">
+        <img src="/logo/color_logo.svg" alt="Aqua Secure AI" width="148" height="46" class="h-[46px] w-auto" />
+        <p class="mt-[18px] text-small font-medium text-muted">© 2026 Aqua Secure AI.<br />All rights reserved</p>
+        <img
+          src="/img/social-icons.svg"
+          alt="Social links"
+          width="144"
+          height="30"
+          class="mt-5 h-[30px] w-auto"
+        />
+      </div>
+
+      <!-- Link columns -->
+      <div
+        class="grid flex-1 grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-[176px_212px_168px_minmax(200px,1fr)]"
+      >
+        {
+          columns.map((col) => (
+            <div>
+              <p class="font-display text-body font-semibold text-ink">{col.title}</p>
+              <ul class="mt-[18px] flex flex-col gap-[18px]">
+                {col.links.map((l) => (
+                  <li>
+                    <a
+                      href={l.href}
+                      target={l.external ? '_blank' : undefined}
+                      rel={l.external ? 'noopener' : undefined}
+                      class="foot-link"
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+
+        <div>
+          <p class="font-display text-body font-semibold text-ink">Contact</p>
+          <ul class="mt-[18px] flex flex-col gap-[18px]">
+            <li class="flex items-start gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mt-[3px] shrink-0" aria-hidden="true">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="3" stroke="#4FC2BB" stroke-width="1.6" />
+                <path d="M3.5 6.5 12 13l8.5-6.5" stroke="#4FC2BB" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <a href="mailto:info@aquasecure.ai" class="foot-link">info@aquasecure.ai</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mt-[3px] shrink-0" aria-hidden="true">
+                <path
+                  d="M5 3.5h3l1.5 4L7.5 9a11 11 0 0 0 7.5 7.5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.7 2 2 0 0 1 5 3.5Z"
+                  stroke="#4FC2BB"
+                  stroke-width="1.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <a href="tel:+16845550102" class="foot-link">(684) 555-0102</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mt-[3px] shrink-0" aria-hidden="true">
+                <path
+                  d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"
+                  stroke="#4FC2BB"
+                  stroke-width="1.6"
+                  stroke-linejoin="round"
+                />
+                <circle cx="12" cy="10" r="2.5" stroke="#4FC2BB" stroke-width="1.6" />
+              </svg>
+              <span class="text-small font-medium text-muted">1901 Thornridge Cir. Shiloh, Hawaii 81063</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Oversized AQUA wordmark watermark -->
+  <img
+    src="/img/aqua-watermark.svg"
+    alt=""
+    aria-hidden="true"
+    class="pointer-events-none mx-auto mt-16 block w-full max-w-wrap select-none px-6 opacity-40 md:px-[60px] xl:px-0"
+  />
+</footer>

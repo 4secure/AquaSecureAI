@@ -1,0 +1,391 @@
+---
+// Asset Management product page — implements the Claude Design file
+// "AquaSecure Asset Management.dc.html". Shares ProductHero and the site utilities with the
+// other product pages, so this file is layout + copy only.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ProductHero from '../../components/ProductHero.astro';
+
+const discovery = [
+  {
+    icon: 'observability',
+    name: 'Endpoints',
+    controls: 'Agent-based',
+    note: 'Workstations, servers, and laptops with installed software and patch level.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Network Devices',
+    controls: 'Scan & SNMP',
+    note: 'Switches, routers, firewalls, printers, and anything else answering on the wire.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'Cloud Resources',
+    controls: 'AWS, Azure, GCP',
+    note: 'Instances, storage, databases, and functions discovered through provider APIs.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Identities',
+    controls: 'IdP & AD',
+    note: 'Users, service accounts, and privileged roles with their access footprint.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Software',
+    controls: 'SBOM & versions',
+    note: 'Installed packages and versions, matched against known vulnerabilities.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'SaaS Apps',
+    controls: 'OAuth grants',
+    note: 'Sanctioned and shadow SaaS, including third-party app permissions.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'External Estate',
+    controls: 'Internet-facing',
+    note: 'Domains, certificates, and exposed services attributed back to your organisation.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'OT & IoT',
+    controls: 'Passive discovery',
+    note: 'Operational and unmanaged devices identified without active probing.',
+  },
+];
+
+const features = [
+  {
+    icon: 'observability',
+    title: 'Continuous Asset Discovery',
+    desc: 'Agent, network, cloud, and identity discovery run continuously so new assets appear in the inventory within minutes.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Automatic Classification',
+    desc: 'Assets are typed, grouped, and tagged automatically by function, environment, and business criticality.',
+  },
+  {
+    icon: 'assets-identity',
+    title: 'Ownership & Accountability',
+    desc: 'Every asset carries an owner, team, and location, so remediation goes to the person who can actually action it.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Vulnerability & Risk Scoring',
+    desc: 'Assets are scored on exposure, missing patches, and criticality, giving you a defensible patching order.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Compliance Evidence',
+    desc: 'The inventory feeds GRC directly, satisfying asset management controls in ISO 27001, PCI-DSS, and beyond.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Lifecycle & Change Tracking',
+    desc: 'Full history per asset — first seen, changes, ownership moves, and decommission — with alerts on unexpected change.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Discover',
+    open: true,
+    body: 'Agents, network scans, cloud APIs, and identity connectors find everything in your estate, including assets nobody documented.',
+  },
+  {
+    num: '02',
+    title: 'Classify',
+    open: false,
+    body: 'Each asset is typed, tagged, and grouped by environment and business criticality, then de-duplicated across discovery sources.',
+  },
+  {
+    num: '03',
+    title: 'Score',
+    open: false,
+    body: 'Exposure, missing patches, and criticality combine into a risk score that ranks what to fix first.',
+  },
+  {
+    num: '04',
+    title: 'Maintain',
+    open: false,
+    body: 'The inventory updates itself as assets change, and unexpected changes or newly unmanaged devices raise an alert.',
+  },
+];
+
+const riskPoints = [
+  'Risk scores combine exposure, vulnerability severity, and business criticality per asset.',
+  'Unmanaged and unknown devices are flagged the moment they appear on the network.',
+  'Filter the estate by owner, environment, or tag to scope a patching or audit campaign.',
+  'Inventory data feeds GRC and SIEM, so alerts arrive with asset context already attached.',
+];
+
+const useCases = ['Asset Inventory', 'Patch Prioritisation', 'Audit Evidence', 'Shadow IT Discovery'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Asset Management — Aqua Secure AI"
+  description="Aqua Asset Management discovers every device, cloud resource, and identity in your estate, keeps the inventory current automatically, and shows you where the risk sits."
+>
+  <Nav />
+
+  <ProductHero
+    eyebrow="Asset & Identity Management"
+    title="You cannot secure what you cannot see"
+    sub="Aqua Asset Management discovers every device, cloud resource, and identity in your estate, keeps the inventory current automatically, and shows you where the risk sits."
+    primary={{ label: 'Book A Demo', href: '#demo' }}
+    secondary={{ label: 'Explore Discovery Coverage', href: '#coverage' }}
+    chips={[
+      { label: 'Discovery', value: 'Continuous' },
+      { label: 'Classification', value: 'Automatic' },
+      { label: 'Asset types', value: 'Cloud & on-prem' },
+      { label: 'Risk scoring', value: 'Per asset' },
+    ]}
+    tagline="Full visibility. Always current."
+  />
+
+  <!-- ============ DISCOVERY COVERAGE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Discovery Coverage</span>
+        <h2 class="mt-4 h2">Every Asset.<br />One Live Inventory.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Agent, network, cloud, and identity discovery merge into a single inventory that updates itself as your estate
+          changes.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          discovery.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About A Custom Discovery Source</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Discovery, Classification And Risk Scoring<br />In One Inventory.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-start gap-[60px] lg:grid-cols-2" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Unknown Device To Managed Asset
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Discovery runs continuously. New assets are found, classified, and scored without anyone filing a ticket.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book An Inventory Review</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RISK POSTURE ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div class="grid items-center gap-[60px] lg:grid-cols-2" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">Risk Posture</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            See Which Assets Carry The Most Risk
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card">
+          <img
+            src="/img/audit.png"
+            alt="Asset inventory with risk scores, owners and classification"
+            width="484"
+            height="363"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Aqua Asset Management?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Aqua Asset Management is built for teams who need a defensible inventory — for audits, for patching decisions,
+        and for knowing what an alert is actually touching.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Start With An Inventory You Can Trust
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Continuous discovery, automatic classification, ownership tracking, and risk scoring across your whole estate.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

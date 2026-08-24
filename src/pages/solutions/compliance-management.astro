@@ -1,0 +1,525 @@
+---
+// Compliance Management solution page — implements the Claude Design file
+// "AquaSecure Compliance Management.dc.html". Same architecture as the other solution pages.
+// As on the E-learning page, the hero LIVE indicator is white rather than brand teal, and the
+// posture section uses the campaigns screenshot rather than the SIEM diagram.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const included = ['Gap assessment', 'Policy authoring', 'Evidence collection', 'Audit support'];
+
+// Hero snapshot of ISO 27001 readiness. The `Escalated` row is the one needing action, so it
+// carries the live treatment (teal border, brighter gradient, filled chip).
+const readiness = [
+  {
+    label: 'IMPLEMENTED',
+    state: 'Evidenced',
+    value: '78',
+    detail: 'of 93 controls\nfully evidenced',
+    note: 'Evidence collected automatically from cloud, identity, and endpoint systems each week.',
+  },
+  {
+    label: 'OPEN',
+    state: 'Escalated',
+    value: '9',
+    detail: 'controls awaiting\nowner action',
+    note: 'Supplier reviews and two access recertifications, each with a named owner and due date.',
+  },
+  {
+    label: 'DOCUMENTED',
+    state: 'Complete',
+    value: '100%',
+    detail: 'policy set signed\nand published',
+    note: 'Policies authored, approved at management review, and acknowledged by all staff.',
+  },
+].map((x, i) => ({ ...x, live: x.state === 'Escalated', indent: i * 22 }));
+
+const coverage = [
+  {
+    icon: 'compliance',
+    name: 'ISO 27001',
+    controls: 'Certification',
+    note: 'Full ISMS build, internal audit, and Stage 1 and Stage 2 support.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'SOC 2',
+    controls: 'Type I & II',
+    note: 'Readiness, observation window preparation, and auditor liaison.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'GDPR',
+    controls: 'Compliance programme',
+    note: 'ROPAs, DPIAs, subject request handling, and processor agreements.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'HIPAA',
+    controls: 'Safeguards',
+    note: 'Risk analysis and safeguard implementation for protected health data.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'PCI-DSS',
+    controls: 'SAQ & RoC',
+    note: 'Scoping, segmentation evidence, and QSA engagement support.',
+  },
+  {
+    icon: 'observability',
+    name: 'NIST CSF',
+    controls: 'Maturity uplift',
+    note: 'Current and target profile assessment with a costed roadmap.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'CTDISR',
+    controls: 'Regional baseline',
+    note: 'Regulatory baseline delivered alongside your existing certifications.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'Customer Assurance',
+    controls: 'Questionnaires',
+    note: 'Security questionnaires and due diligence answered on your behalf.',
+  },
+];
+
+const features = [
+  {
+    icon: 'compliance',
+    title: 'Gap Assessment First',
+    desc: 'We assess you against the standard before quoting the work, so the plan reflects your actual starting point.',
+  },
+  {
+    icon: 'observability',
+    title: 'Policies Written For You',
+    desc: 'A full policy set authored around how your business actually operates, not a template pack you have to rewrite.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Evidence Collected Automatically',
+    desc: 'Aqua GRC pulls evidence from your connected systems, so control operation is proven without screenshot marathons.',
+  },
+  {
+    icon: 'employee-security',
+    title: 'Named Consultant',
+    desc: 'One consultant owns your programme end to end — and is in the room, or the call, for the audit itself.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Internal Audit & Management Review',
+    desc: 'The mandatory internal audit and management review are run for you, with findings closed before the external auditor arrives.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Surveillance & Recertification',
+    desc: 'Controls stay evidenced between audits, so surveillance visits are routine rather than a scramble.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Assess',
+    open: true,
+    body: 'We scope the certification, assess you against every clause and control, and give you a dated plan with the effort split between our team and yours.',
+  },
+  {
+    num: '02',
+    title: 'Build',
+    open: false,
+    body: 'Policies, procedures, risk assessment, and the statement of applicability are authored around your business, then implemented with your owners.',
+  },
+  {
+    num: '03',
+    title: 'Evidence',
+    open: false,
+    body: 'Controls go live in Aqua GRC with evidence collected automatically, and we run the internal audit and management review the standard requires.',
+  },
+  {
+    num: '04',
+    title: 'Certify',
+    open: false,
+    body: 'We prepare your team for the auditor, attend the audit, and manage any findings through to closure and certificate issue.',
+  },
+];
+
+const riskPoints = [
+  'Controls stay evidenced continuously, so surveillance audits need no special preparation.',
+  'Control owners are reminded before evidence goes stale, not after a finding.',
+  'Adding a second framework reuses the evidence you already collect.',
+  'Live posture reporting for customers, insurers, and your board between audits.',
+];
+
+const useCases = ['First Certification', 'Customer Requirements', 'Multi-Framework', 'Recertification'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Compliance Management — Aqua Secure AI"
+  description="Our consultants take you from gap assessment to certificate — writing the policies, gathering the evidence, and sitting with you in the audit."
+>
+  <Nav />
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative isolate overflow-hidden">
+    <div class="hero-grad absolute inset-0 -z-10"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[11%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_45%,#ffffff_100%)]"
+    >
+    </div>
+
+    <div class="wrap relative z-[1] pb-[120px] pt-[170px]">
+      <div class="grid items-center gap-16 [grid-template-columns:repeat(auto-fit,minmax(400px,1fr))]">
+        <div data-reveal-group="90" data-reveal-now>
+          <span
+            class="inline-flex items-center gap-2.5 rounded-full border border-white py-[7px] pl-3 pr-4 text-eyebrow font-bold uppercase tracking-[0.06em] text-white"
+          >
+            <span
+              data-motion="dot"
+              class="h-[7px] w-[7px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)] [animation:dotPulse_2.4s_ease-in-out_infinite]"
+            ></span>
+            Managed Compliance
+          </span>
+
+          <h1
+            class="mt-[22px] text-balance font-display text-[clamp(38px,4.8vw,62px)] font-bold leading-[1.08] tracking-[-0.025em] text-white"
+          >
+            Certification, run for you end to end
+          </h1>
+
+          <p
+            class="mt-[22px] max-w-[560px] text-pretty text-[clamp(16px,1.4vw,20px)] font-medium leading-[1.45] text-white"
+          >
+            Our consultants take you from gap assessment to certificate — writing the policies, gathering the evidence,
+            and sitting with you in the audit — with Aqua GRC holding the control set once you are certified.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-light">Book A Gap Assessment</a>
+            <a href="#how" class="btn-ghost">How Certification Works</a>
+          </div>
+
+          <div class="mt-[38px] border-t border-white/30 pt-[26px]">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">What we manage</span>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {
+                included.map((inc) => (
+                  <span class="whitespace-nowrap rounded-lg border border-white/50 px-[13px] py-[7px] text-[14px] font-semibold text-white">
+                    {inc}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-now data-reveal-delay="240">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="text-eyebrow font-bold uppercase tracking-[0.12em] text-white">ISO 27001 readiness</span>
+            <span class="h-px flex-1 bg-white/[0.34]"></span>
+            <span class="inline-flex items-center gap-[7px] text-eyebrow font-bold tracking-[0.06em] text-white">
+              <span
+                data-motion="dot"
+                class="h-[7px] w-[7px] rounded-full bg-white [animation:dotPulse_2.4s_ease-in-out_infinite]"
+              ></span>
+              LIVE
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-3.5">
+            {
+              readiness.map((r) => (
+                <div
+                  style={`margin-left:${r.indent}px`}
+                  class:list={[
+                    'relative rounded-[14px] border px-[22px] py-5 shadow-[0_12px_30px_rgba(11,22,48,0.16)]',
+                    r.live
+                      ? 'border-[rgba(79,194,187,0.75)] bg-[linear-gradient(135deg,rgba(42,74,146,0.82)_0%,rgba(79,194,187,0.62)_100%)]'
+                      : 'border-[rgba(42,74,146,0.4)] bg-[linear-gradient(135deg,rgba(42,74,146,0.68)_0%,rgba(42,74,146,0.42)_100%)]',
+                  ]}
+                >
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="font-display text-[15px] font-bold tracking-[0.02em] text-white">{r.label}</span>
+                    <span
+                      class:list={[
+                        'shrink-0 rounded-full px-[11px] py-1 text-[11px] font-bold uppercase tracking-[0.09em]',
+                        r.live ? 'bg-brand text-white' : 'border border-white/[0.45] text-white/[0.85]',
+                      ]}
+                    >
+                      {r.state}
+                    </span>
+                  </div>
+
+                  <div class="mt-4 flex items-end gap-[18px]">
+                    <span class="font-display text-[40px] font-bold leading-[0.9] tracking-[-0.03em] text-white">
+                      {r.value}
+                    </span>
+                    <span class="whitespace-pre-line pb-[3px] text-[14px] font-semibold leading-[1.3] text-white/[0.82]">
+                      {r.detail}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-pretty text-[14px] font-medium leading-[1.4] text-white/[0.72]">{r.note}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <p class="mt-5 text-[15px] font-semibold leading-[1.4] text-white">
+            Stage 1 audit booked for next month, on the original timeline.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FRAMEWORKS ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Frameworks We Take You Through</span>
+        <h2 class="mt-4 h2">One Control Set.<br />Every Certificate.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Map a control once and reuse it across every framework you pursue. Your second certification costs a fraction
+          of your first.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Ask About Another Framework</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Consultants, Evidence And Audit Support<br />In One Engagement.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div
+        class="grid items-start gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Gap Assessment To Certificate
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            A named consultant runs the programme to a dated plan. You are not handed a spreadsheet and left to
+            interpret the standard.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A Readiness Call</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTINUOUS COMPLIANCE ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div
+        class="grid items-center gap-[60px] [grid-template-columns:repeat(auto-fit,minmax(360px,1fr))]"
+        data-reveal-group="110"
+      >
+        <div class="card">
+          <img
+            src="/img/campaigns.png"
+            alt="Control implementation status with owners, evidence and audit readiness"
+            width="634"
+            height="476"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Continuous Compliance</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Stay Certified Between Audits
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              riskPoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Managed Compliance?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Managed compliance is built for teams facing certification without a compliance function — first-time ISO 27001,
+        a customer demanding SOC 2, or a surveillance audit nobody has prepared for.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Get Certified Without Hiring A Compliance Team
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Gap assessment, policy authoring, evidence collection, internal audit, and auditor support under one
+          engagement.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

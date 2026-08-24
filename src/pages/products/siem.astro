@@ -1,0 +1,399 @@
+---
+// Aqua SIEM product page — implements the Claude Design file "AquaSecure Aqua SIEM.dc.html".
+// Shares ProductHero and the site utilities with the SOC and GRC pages, so this file is
+// layout + copy only. Note the two grids here are auto-fit (340px / 360px) rather than the
+// fixed two-column splits used on those pages — that is the design's own difference.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ProductHero from '../../components/ProductHero.astro';
+
+const coverage = [
+  {
+    icon: 'security-operations',
+    name: 'Firewalls',
+    controls: 'Syslog / CEF',
+    note: 'Perimeter and internal firewall traffic, denies, and policy changes.',
+  },
+  {
+    icon: 'observability',
+    name: 'Endpoints',
+    controls: 'Agent & EDR',
+    note: 'Windows, macOS, and Linux event logs alongside EDR detections.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Identity',
+    controls: 'IdP & AD',
+    note: 'Authentication, MFA, and directory changes from your identity provider.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Cloud',
+    controls: 'AWS, Azure, GCP',
+    note: 'Control-plane audit trails, flow logs, and storage access events.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Applications',
+    controls: 'App & DB logs',
+    note: 'Business applications, web servers, and database audit logs.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'Email',
+    controls: 'Mail gateway',
+    note: 'Delivery, quarantine, and phishing verdicts from your mail security.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Threat Intel',
+    controls: 'IOC enrichment',
+    note: 'Indicators matched against every event as it is indexed.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'Custom',
+    controls: 'API & webhook',
+    note: 'Ship anything else over the ingest API with your own parser.',
+  },
+];
+
+const features = [
+  {
+    icon: 'observability',
+    title: 'Real-time Log Management',
+    desc: 'Collect and index logs from any source — firewalls, endpoints, cloud, apps — with sub-second ingestion.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Advanced Event Correlation',
+    desc: 'AI-powered rules engine correlates events across sources to detect multi-stage attacks and lateral movement.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Threat Detection Dashboards',
+    desc: 'Pre-built and customisable dashboards give SOC analysts instant visibility into alert severity, trends, and status.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Compliance Reporting',
+    desc: 'Automated compliance reports for GDPR, PCI-DSS, ISO 27001 — always audit-ready, zero manual effort.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Custom Alerting & Escalation',
+    desc: 'Define alert thresholds, severity levels, and escalation paths. Notify via email, Slack, or webhook.',
+  },
+  {
+    icon: 'assets-identity',
+    title: 'SIEM-as-a-Service',
+    desc: 'Fully managed SIEM option — Aqua Secure AI handles all tuning, maintenance, and monitoring 24/7.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Collect',
+    open: true,
+    body: 'Agents, syslog, cloud APIs, and the ingest API bring every log source into one pipeline with sub-second ingestion.',
+  },
+  {
+    num: '02',
+    title: 'Normalise',
+    open: false,
+    body: 'Events are parsed into a common schema and enriched with asset, identity, and threat intelligence context as they land.',
+  },
+  {
+    num: '03',
+    title: 'Correlate',
+    open: false,
+    body: 'The AI rules engine links related events across sources to expose multi-stage attacks and lateral movement rather than isolated noise.',
+  },
+  {
+    num: '04',
+    title: 'Alert',
+    open: false,
+    body: 'Detections raise alerts on your thresholds and severity levels, routed to the right responder by email, Slack, or webhook.',
+  },
+];
+
+const architecturePoints = [
+  'Distributed collection with buffering, so no events are lost during a network interruption.',
+  'Hot, warm, and cold retention tiers keep recent data fast and long-term data affordable.',
+  'Role-based access and tenant separation for MSPs and multi-business-unit estates.',
+  'Deploy self-managed, or run it as SIEM-as-a-Service with our team handling tuning around the clock.',
+];
+
+const useCases = ['SOC Teams', 'Compliance Audit', 'Incident Investigation', 'Log Centralisation'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="Aqua SIEM — Aqua Secure AI"
+  description="Aqua SIEM gives your team a single pane of glass across all log sources — with AI-powered correlation that surfaces real threats, not noise."
+>
+  <Nav />
+
+  <ProductHero
+    eyebrow="Security Information & Event Management"
+    title="Centralise and correlate every security event in real time"
+    sub="Aqua SIEM gives your team a single pane of glass across all log sources — with AI-powered correlation that surfaces real threats, not noise."
+    primary={{ label: 'Book A Demo', href: '#demo' }}
+    secondary={{ label: 'See Log Source Coverage', href: '#coverage' }}
+    chips={[
+      { label: 'Event ingestion', value: 'Real-time' },
+      { label: 'Uptime SLA', value: '99.9%' },
+      { label: 'Alert latency', value: '<1s' },
+      { label: 'Correlation', value: 'AI-powered' },
+    ]}
+    tagline="One pipeline. Every source."
+  />
+
+  <!-- ============ LOG SOURCE COVERAGE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Log Source Coverage</span>
+        <h2 class="mt-4 h2">Every Log Source.<br />One Data Lake.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Ingest from anything that writes a log, normalise it once, and query it all from one place with sub-second
+          indexing.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Request A Custom Connector</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Collection, Correlation And Alerting<br />In One Platform.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div
+        class="grid items-start gap-[60px] lg:grid-cols-2"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Raw Log Line To Actionable Alert
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            Aqua SIEM ingests, parses, and correlates continuously — so detections fire on behaviour, not on a single
+            noisy event.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A SIEM Walkthrough</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ARCHITECTURE ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div
+        class="grid items-center gap-[60px] lg:grid-cols-2"
+        data-reveal-group="110"
+      >
+        <div>
+          <span class="eyebrow">Architecture</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Built To Scale With Your Estate
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              architecturePoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card">
+          <img
+            src="/img/siem-diagram.png"
+            alt="Aqua SIEM data flow from endpoints, network devices and cloud sources"
+            width="1200"
+            height="621"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Aqua SIEM?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Aqua SIEM is built for teams that need answers from their logs fast — from a lean IT function to a 200-person
+        enterprise SOC, self-managed or fully managed by us.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Turn Every Log Into A Detection
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Sub-second ingestion, AI correlation, custom alerting, and compliance reporting in one platform.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

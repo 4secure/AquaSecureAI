@@ -1,0 +1,251 @@
+---
+// Two states:
+//   at rest  — fully transparent, white links, white CTA with ink text
+//   scrolled — 198:22687: solid white pill, #E3E3E3 border, drop shadow, ink links, teal CTA
+import { NAV_GROUPS } from '../data/nav.js';
+---
+
+<div id="navwrap" class="navwrap fixed inset-x-0 top-0 z-50 px-6 py-5 md:px-[60px] xl:px-[120px]">
+  <div class="navpill mx-auto flex h-[72px] max-w-wrap items-center justify-between rounded-full pl-5 pr-3">
+    <a href="/" class="flex shrink-0 items-center" aria-label="Aqua Secure AI — home">
+      <img
+        src="/logo/white_logo.svg"
+        alt="Aqua Secure AI"
+        width="148"
+        height="46"
+        class="logo-white h-[46px] w-auto"
+      />
+      <img
+        src="/logo/color_logo.svg"
+        alt="Aqua Secure AI"
+        width="148"
+        height="46"
+        class="logo-color h-[46px] w-auto"
+      />
+    </a>
+
+    <nav class="hidden items-center gap-5 lg:flex" aria-label="Main">
+      {
+        NAV_GROUPS.map((g) => (
+          <div class="nav-item relative">
+            <a href={g.href} class="nav-link flex items-center gap-1 text-small font-medium">
+              {g.label}
+              {g.items.length > 0 && (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 4.5v7M4.5 8h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+              )}
+            </a>
+
+            {g.items.length > 0 && (
+              <div class="nav-drop">
+                {g.items.map((i) => (
+                  <a
+                    href={i.href}
+                    class="nav-drop-link"
+                    target={i.external ? '_blank' : undefined}
+                    rel={i.external ? 'noopener' : undefined}
+                  >
+                    {i.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-5">
+      <a href="#login" class="nav-link hidden text-small font-medium lg:inline">Login</a>
+      <a
+        href="#demo"
+        class="nav-cta hidden h-[46px] items-center justify-center whitespace-nowrap rounded-full border-[1.5px] px-6 text-small font-semibold transition sm:inline-flex"
+      >
+        Request Demo
+      </a>
+      <button
+        id="navToggle"
+        type="button"
+        class="nav-link flex h-[46px] w-[46px] items-center justify-center rounded-full lg:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="navPanel"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="navPanel"
+    hidden
+    class="mx-auto mt-3 max-h-[calc(100vh-140px)] max-w-wrap overflow-y-auto rounded-3xl border-[0.8px] border-line bg-white p-4 shadow-nav lg:hidden"
+  >
+    <nav class="flex flex-col" aria-label="Mobile">
+      {
+        NAV_GROUPS.map((g) => (
+          <div>
+            <a href={g.href} class="block rounded-xl px-3 py-3 text-body font-medium text-ink hover:bg-brand/10">
+              {g.label}
+            </a>
+            {g.items.length > 0 && (
+              <div class="mb-1 flex flex-col border-l border-line pl-3">
+                {g.items.map((i) => (
+                  <a
+                    href={i.href}
+                    target={i.external ? '_blank' : undefined}
+                    rel={i.external ? 'noopener' : undefined}
+                    class="rounded-lg px-3 py-2 text-small font-medium text-muted hover:bg-brand/10 hover:text-ink"
+                  >
+                    {i.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+      <a href="#login" class="rounded-xl px-3 py-3 text-body font-medium text-ink hover:bg-brand/10">Login</a>
+      <a href="#demo" class="btn-primary mt-3 sm:hidden">Request Demo</a>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .navpill {
+    background: transparent;
+    /* transparent border keeps the pill the same size in both states — no shift on scroll */
+    border: 0.8px solid transparent;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .nav-link {
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+
+  /* Dropdowns. The padding/negative-margin pair extends the hover target across the gap to
+     the panel, so the menu does not close while the pointer travels to it. */
+  .nav-item {
+    padding-bottom: 14px;
+    margin-bottom: -14px;
+  }
+
+  .nav-drop {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 216px;
+    padding: 7px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(79, 194, 187, 0.18);
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.16),
+      0 0 0 1px rgba(79, 194, 187, 0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition:
+      opacity 0.16s ease,
+      transform 0.16s ease,
+      visibility 0.16s;
+  }
+
+  /* focus-within keeps the menu reachable by keyboard, not pointer only */
+  .nav-item:hover .nav-drop,
+  .nav-item:focus-within .nav-drop {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-drop-link {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748d;
+    white-space: nowrap;
+    transition:
+      color 0.14s ease,
+      background 0.14s ease;
+  }
+
+  .nav-drop-link:hover {
+    color: #0b1630;
+    background: rgba(79, 194, 187, 0.09);
+  }
+  .nav-link:hover {
+    opacity: 0.75;
+  }
+  .nav-cta {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #0b1630;
+  }
+  .nav-cta:hover {
+    background: rgba(255, 255, 255, 0.88);
+  }
+  .logo-color {
+    display: none;
+  }
+
+  /* --- scrolled --- */
+  .navwrap.scrolled .navpill {
+    background: #ffffff;
+    border-color: #e3e3e3;
+    box-shadow: 0 4px 12px rgba(192, 192, 192, 0.2);
+  }
+  .navwrap.scrolled .nav-link {
+    color: #0b1630;
+  }
+  .navwrap.scrolled .nav-link:hover {
+    color: #4fc2bb;
+    opacity: 1;
+  }
+  .navwrap.scrolled .nav-cta {
+    background: #4fc2bb;
+    border-color: #4fc2bb;
+    color: #ffffff;
+  }
+  .navwrap.scrolled .nav-cta:hover {
+    background: #3fb0a9;
+    border-color: #3fb0a9;
+  }
+  .navwrap.scrolled .logo-white {
+    display: none;
+  }
+  .navwrap.scrolled .logo-color {
+    display: block;
+  }
+</style>
+
+<script>
+  const wrap = document.getElementById('navwrap');
+  const onScroll = () => wrap?.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const btn = document.getElementById('navToggle');
+  const panel = document.getElementById('navPanel');
+  btn?.addEventListener('click', () => {
+    const open = panel?.hasAttribute('hidden');
+    if (open) panel?.removeAttribute('hidden');
+    else panel?.setAttribute('hidden', '');
+    btn.setAttribute('aria-expanded', String(!!open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      panel.setAttribute('hidden', '');
+      btn?.setAttribute('aria-expanded', 'false');
+    }),
+  );
+</script>

@@ -1,0 +1,391 @@
+---
+// SOC product page — implements the Claude Design file "AquaSecure SOC.dc.html".
+// Same template as the GRC page: chrome, hero gradient, glass stage, eyebrows, buttons,
+// cards and accordion all come from the shared utilities, so this file is layout + copy only.
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ProductHero from '../../components/ProductHero.astro';
+
+const coverage = [
+  {
+    icon: 'observability',
+    name: 'Endpoints',
+    controls: 'EDR telemetry',
+    note: 'Process, file, and registry activity from every managed workstation and server.',
+  },
+  {
+    icon: 'digital-exposure',
+    name: 'Network',
+    controls: 'Flow & DNS',
+    note: 'Firewall, proxy, and DNS traffic inspected for command-and-control patterns.',
+  },
+  {
+    icon: 'assets-identity',
+    name: 'Identity',
+    controls: 'Auth events',
+    note: 'Sign-ins, privilege changes, and impossible-travel detection across your IdP.',
+  },
+  {
+    icon: 'security-operations',
+    name: 'Cloud',
+    controls: 'AWS, Azure, GCP',
+    note: 'Control-plane audit logs and misconfiguration signals from every account.',
+  },
+  {
+    icon: 'compliance',
+    name: 'Applications',
+    controls: 'App & API logs',
+    note: 'Business application and API activity correlated with infrastructure events.',
+  },
+  {
+    icon: 'employee-security',
+    name: 'Email',
+    controls: 'Phishing signals',
+    note: 'Malicious attachments, impersonation attempts, and reported messages.',
+  },
+  {
+    icon: 'threat-intelligence',
+    name: 'Threat Intel',
+    controls: 'Live IOC feeds',
+    note: 'Every alert enriched with global indicators, actor context, and severity.',
+  },
+  {
+    icon: 'ai-agents',
+    name: 'AI Agents',
+    controls: 'L0–L3 triage',
+    note: 'Autonomous agents investigate, enrich, and recommend before handover.',
+  },
+];
+
+const features = [
+  {
+    icon: 'observability',
+    title: '24/7 AI-Powered Monitoring',
+    desc: 'Continuous monitoring across your entire environment with AI that learns your baseline and flags true anomalies.',
+  },
+  {
+    icon: 'security-operations',
+    title: 'Automated Incident Creation',
+    desc: 'Detected threats auto-create structured incidents with context, severity, and recommended actions pre-filled.',
+  },
+  {
+    icon: 'digital-exposure',
+    title: 'Investigation Tools',
+    desc: 'Analysts get timeline views, entity graphs, and enriched indicators to investigate threats in minutes, not hours.',
+  },
+  {
+    icon: 'compliance',
+    title: 'Case Management Workflows',
+    desc: 'Track incidents from open to closed with assignment, notes, evidence, and SLA timers built in.',
+  },
+  {
+    icon: 'ai-agents',
+    title: 'Detection & Response Automation',
+    desc: 'Automate containment actions — isolate endpoints, block IPs, revoke sessions — triggered by AI verdicts.',
+  },
+  {
+    icon: 'threat-intelligence',
+    title: 'Threat Hunting',
+    desc: 'Proactively hunt for indicators of compromise across your environment using hypothesis-driven investigation.',
+  },
+];
+
+const steps = [
+  {
+    num: '01',
+    title: 'Detect',
+    open: true,
+    body: 'Telemetry from endpoints, network, identity, cloud, and email is ingested and correlated in real time against behavioural baselines and live threat intelligence.',
+  },
+  {
+    num: '02',
+    title: 'Triage',
+    open: false,
+    body: 'AI agents score and de-duplicate alerts, discard the noise, and promote genuine threats into structured incidents with context attached.',
+  },
+  {
+    num: '03',
+    title: 'Investigate',
+    open: false,
+    body: 'Analysts work from timeline views and entity graphs, with enriched indicators and related events already gathered on the case.',
+  },
+  {
+    num: '04',
+    title: 'Respond',
+    open: false,
+    body: 'Containment runs on approval or automatically — isolate an endpoint, block an IP, revoke a session — and every action is logged on the case.',
+  },
+];
+
+const casePoints = [
+  'Every incident carries severity, owner, SLA timer, and full audit trail from open to closed.',
+  'Notes, evidence, and response actions live on the case, so handovers lose nothing.',
+  'Escalation paths notify the right responder by email, Slack, or webhook.',
+  'Post-incident reporting shows mean time to detect and respond over time.',
+];
+
+const useCases = ['Enterprise SOC', 'Managed Detection', 'Incident Response', 'Threat Hunting'];
+
+const cardClass =
+  'flex flex-col rounded-xl border border-line bg-white transition duration-200 ease-out hover:-translate-y-1 hover:border-brand hover:shadow-card-open';
+---
+
+<Base
+  title="SOC — Aqua Secure AI"
+  description="Aqua Secure SOC empowers your analysts with AI SecOps — automated investigation, smart case management, and threat hunting."
+>
+  <Nav />
+
+  <ProductHero
+    eyebrow="Security Operations Center"
+    title="AI-powered 24/7 threat detection and human-led response"
+    sub="Aqua Secure SOC empowers your analysts with AI SecOps — automated investigation, smart case management, and threat hunting — so they can focus on what matters."
+    primary={{ label: 'Book A Demo', href: '#demo' }}
+    secondary={{ label: 'Explore SecOps Capabilities', href: '#coverage' }}
+    chips={[
+      { label: 'Continuous monitoring', value: '24/7' },
+      { label: 'Triage', value: 'AI-powered' },
+      { label: 'Mean time to alert', value: '<5 min' },
+      { label: 'Autonomous agents', value: 'L0–L3' },
+    ]}
+    tagline="Analyst-led. Machine-speed."
+  />
+
+  <!-- ============ DETECTION COVERAGE ============ -->
+  <section id="coverage" class="section bg-white">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Detection Coverage</span>
+        <h2 class="mt-4 h2">Every Signal.<br />One Command Centre.</h2>
+        <p class="sub mx-auto mt-5 max-w-[680px]">
+          Telemetry from across your estate lands in one console, correlated by AI and triaged before it reaches an
+          analyst.
+        </p>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]"
+        data-reveal-group="60"
+      >
+        {
+          coverage.map((f) => (
+            <article class:list={[cardClass, 'gap-5 p-5']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="60"
+                height="60"
+                class="mx-auto block h-[60px] w-[60px]"
+              />
+              <div class="flex flex-col gap-3 text-center">
+                <h3 class="font-display text-h3 font-bold text-ink">{f.name}</h3>
+                <p class="text-pretty text-small font-medium text-muted">{f.note}</p>
+                <span class="eyebrow self-center">{f.controls}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="#demo" class="btn-outline whitespace-nowrap">Talk To Our SOC Team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY FEATURES ============ -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="text-center" data-reveal>
+        <span class="eyebrow">Key Features</span>
+        <h2 class="mt-4 h2">Detection, Investigation And Response<br />In One Workspace.</h2>
+      </div>
+
+      <div
+        class="mt-[60px] grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]"
+        data-reveal-group="70"
+      >
+        {
+          features.map((f) => (
+            <article class:list={[cardClass, 'gap-[18px] p-6']}>
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                aria-hidden="true"
+                width="52"
+                height="52"
+                class="block h-[52px] w-[52px]"
+              />
+              <div class="flex flex-col gap-2.5">
+                <h3 class="font-display text-[22px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{f.title}</h3>
+                <p class="text-pretty text-small font-medium leading-[1.45] text-muted">{f.desc}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="section bg-white">
+    <div class="wrap">
+      <div class="grid items-start gap-[60px] lg:grid-cols-[380px_minmax(0,1fr)]" data-reveal-group="110">
+        <div>
+          <span class="eyebrow">How It Works</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            From Raw Signal To Contained Threat
+          </h2>
+          <p class="sub mt-5 text-pretty">
+            The SOC runs around the clock. AI handles the volume, your analysts handle the judgement calls.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary">Book A SOC Walkthrough</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          {
+            steps.map((s) => (
+              <details
+                open={s.open}
+                class="acc rounded-xl border-[1.5px] border-line bg-white p-[22px] open:border-brand open:shadow-card-open"
+              >
+                <summary class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-4">
+                    <span class="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand/[0.12] text-small font-bold text-brand">
+                      {s.num}
+                    </span>
+                    <span class="font-display text-h3 font-semibold text-ink">{s.title}</span>
+                  </span>
+                  <svg
+                    class="acc-chev shrink-0 transition-transform"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                      stroke="#0B1630"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <div class="acc-body">
+                  <p class="ml-[50px] mt-3.5 text-pretty text-small font-medium leading-[1.5] text-muted">{s.body}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CASE MANAGEMENT ============ -->
+  <section id="platform" class="section section-tint">
+    <div class="wrap">
+      <div class="grid items-center gap-[60px] lg:grid-cols-[minmax(0,1fr)_550px]" data-reveal-group="110">
+        <div class="card">
+          <img
+            src="/img/threat-map.png"
+            alt="Live threat map with global attack activity and indicators"
+            width="755"
+            height="566"
+            loading="lazy"
+            class="block w-full rounded-lg"
+          />
+        </div>
+
+        <div>
+          <span class="eyebrow">Case Management</span>
+          <h2
+            class="mt-4 font-display text-[clamp(30px,3.4vw,44px)] font-semibold leading-[1.115] tracking-[-0.02em] text-ink"
+          >
+            Track Every Incident From Alert To Closure
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3.5">
+            {
+              casePoints.map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" fill="rgba(79,194,187,.14)" />
+                    <path
+                      d="m7.5 12.2 3 3 6-6.4"
+                      stroke="#4FC2BB"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[17px] font-medium leading-[1.45] text-muted">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section bg-white pb-0">
+    <div class="wrap text-center" data-reveal>
+      <span class="eyebrow">Use Cases</span>
+      <h2 class="mt-4 h2">Who Uses Aqua SOC?</h2>
+
+      <div class="mx-auto mt-8 flex max-w-[820px] flex-wrap justify-center gap-3">
+        {
+          useCases.map((u) => (
+            <span class="rounded-full border border-brand/35 bg-brand/[0.08] px-5 py-2.5 text-small font-semibold text-ink">
+              {u}
+            </span>
+          ))
+        }
+      </div>
+
+      <p class="mx-auto mt-7 max-w-[720px] text-pretty text-[17px] font-medium leading-[1.5] text-muted">
+        Aqua SOC is built for security teams who need real results, not just dashboards — whether you run a two-person
+        team or a 200-person enterprise SOC.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section id="demo" class="section bg-white">
+    <div class="wrap">
+      <div
+        data-reveal
+        class="flex flex-col items-center rounded-[20px] bg-[url('/background/background.svg')] bg-[length:100%_100%] bg-no-repeat px-6 py-16 text-center md:px-16 md:py-[80px]"
+      >
+        <span
+          class="inline-block rounded-full border-[0.8px] border-white px-[14px] py-1 text-eyebrow font-bold uppercase tracking-[0.04em] text-white"
+        >
+          Get Started
+        </span>
+        <h2
+          class="mt-4 font-display text-[clamp(28px,3.6vw,48px)] font-semibold leading-[1.2] tracking-[-0.02em] text-white"
+        >
+          Build A Smarter Security Operation Center
+        </h2>
+        <p class="mx-auto mt-[18px] max-w-[720px] text-body font-medium text-white">
+          Empower your team with AI triage, automated containment, threat hunting, and real-time monitoring.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="#demo" class="btn-light">Schedule A Demo</a>
+          <a href="#contact" class="btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
